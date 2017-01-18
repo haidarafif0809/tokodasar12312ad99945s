@@ -7,12 +7,48 @@
 
     $kode_barang = stringdoang($_POST['kode_barang']);
     $harga = angkadoang($_POST['harga']);
+    $harga_baru = angkadoang($_POST['harga_baru']);
     $jumlah_barang = angkadoang($_POST['jumlah_barang']);
     $nama_barang = stringdoang($_POST['nama_barang']);
     $sales = stringdoang($_POST['sales']);
     $user = $_SESSION['nama'];
     $potongan = stringdoang($_POST['potongan']);
-    $a = $harga * $jumlah_barang;$tahun_sekarang = date('Y');
+    $level_harga = stringdoang($_POST['level_harga']);
+
+    
+
+    if ( $harga != $harga_baru) {
+      
+
+            if ($level_harga == "Level 1") {
+
+               $query00 = $db->query("UPDATE barang SET harga_jual = '$harga_baru' WHERE kode_barang = '$kode_barang'");
+            
+            }
+            else if ($level_harga == "Level 2") {
+
+               $query00 = $db->query("UPDATE barang SET harga_jual2 = '$harga_baru' WHERE kode_barang = '$kode_barang'");
+              
+            }
+            else if ($level_harga == "Level 3") {
+
+               $query00 = $db->query("UPDATE barang SET harga_jual3 = '$harga_baru' WHERE kode_barang = '$kode_barang'");
+              
+            }
+           
+       $harga = $harga_baru;
+    }
+
+    else {
+
+
+       $harga = $harga;
+
+    }
+
+
+    $a = $harga * $jumlah_barang;
+    $tahun_sekarang = date('Y');
     $bulan_sekarang = date('m');
     $tanggal_sekarang = date('Y-m-d');
     $jam_sekarang = date('H:i:sa');
@@ -161,7 +197,6 @@ $jumlah = mysqli_num_rows($cek);
             $jumlah_barang = angkadoang($_POST['jumlah_barang']); 
             $nama_barang = stringdoang($_POST['nama_barang']);
             $satuan = stringdoang($_POST['satuan']);
-            $harga = angkadoang($_POST['harga']);
             $tax = angkadoang($_POST['tax']);
             $subtotal = $harga * $jumlah_barang - $potongan_jadi;
             

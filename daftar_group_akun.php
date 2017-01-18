@@ -9,7 +9,7 @@ include 'sanitasi.php';
 
  
 // menampilkan seluruh data yang ada pada tabel penjualan yang terdapt pada DB
- $perintah = $db->query("SELECT * FROM grup_akun ORDER BY id DESC");
+ //$perintah = $db->query("SELECT * FROM grup_akun ORDER BY id DESC");
 
  ?>
 
@@ -118,7 +118,6 @@ echo '<a href="form_tambah_grup_akun.php" class="btn btn-info"><i class="fa fa-p
 			<th style="background-color: #4CAF50; color:white"> User Buat</th>
 			<th style="background-color: #4CAF50; color:white"> User Edit </th>
 			<th style="background-color: #4CAF50; color:white"> Waktu </th>
-
 			<th style="background-color: #4CAF50; color:white">Detail</th>
 
 <?php 
@@ -136,125 +135,11 @@ $satuan_hapus = mysqli_num_rows($pilih_akses_satuan_hapus);
 			
 		</thead>
 		
+
 		<tbody>
-		<?php
-
 		
-			while ($data = mysqli_fetch_array($perintah))
-			{
-			echo "<tr class='tr-id-". $data['id'] ."'>
-			<td>". $data['kode_grup_akun'] ."</td>
-
-			<td class='edit-nama' data-id='".$data['id']."'><span id='text-nama-". $data['id'] ."'>". $data['nama_grup_akun'] ."</span>
-			<input type='hidden' id='input-nama-".$data['id']."' value='".$data['nama_grup_akun']."' class='input_nama' data-id='".$data['id']."' autofocus=''></td>
-
-			<td class='edit-parent' data-id='".$data['id']."'><span id='text-parent-".$data['id']."'>". $data['parent'] ."</span>
-			<select style='display:none' id='select-parent-".$data['id']."' value='".$data['parent']."' class='select-parent' data-id='".$data['id']."' autofocus=''>";
-
-			echo '<option value="'. $data['kode_grup_akun'] .'"> '. $data['kode_grup_akun'] .'</option>';
-			
-			$query2 = $db->query("SELECT kode_grup_akun FROM grup_akun");
-			
-			while($data2 = mysqli_fetch_array($query2))
-			{
-			
-			echo ' <option>'.$data2["kode_grup_akun"] .'</option>';
-			}
-			
-			
-			echo  '</select>
-			</td>';
-
-			echo"
-			<td class='edit-kategori' data-id='".$data['id']."'><span id='text-kategori-".$data['id']."'>". $data['kategori_akun'] ."</span>
-			<select style='display:none' id='select-kategori-".$data['id']."' value='".$data['kategori_akun']."' class='select-kategori' data-id='".$data['id']."' autofocus=''>";
-
-			echo '<option value="'. $data['kategori_akun'] .'"> '. $data['kategori_akun'] .'</option>
-			
-					<option value="Aktiva">Aktiva</option>	
-					<option value="Kewajiban">Kewajiban</option>	
-					<option value="Modal">Modal</option>	
-					<option value="Pendapatan">Pendapatan</option>	
-					<option value="HPP">HPP</option>	
-					<option value="Biaya">Biaya</option>
-					<option value="HPP">Pendapatan Lain</option>	
-					<option value="Biaya">Biaya Lain</option>			
-			
-			</select>
-			</td>';
-
-			echo"
-			<td class='edit-tipe' data-id='".$data['id']."'><span id='text-tipe-".$data['id']."'>". $data['tipe_akun'] ."</span>
-			<select style='display:none' id='select-tipe-".$data['id']."' value='".$data['tipe_akun']."' class='select-tipe' data-id='".$data['id']."' autofocus=''>";
-
-			echo '<option value="'.$data['tipe_akun'].'"> '. $data['tipe_akun'] .'</option>
-
-					<option>Akun Header</option>	
-					<option>Kas & Bank</option>	
-					<option>Piutang Dagang</option>	
-					<option>Piutang Non Dagang</option>	
-					<option>Persediaan</option>	
-					<option>Investasi Portofolio</option>	
-					<option>Pajak Dibayar Dimuka</option>	
-					<option>Beban Bayar Dimuka</option>	
-					<option>Aktiva Tetap</option>	
-					<option>Akumulasi Penyusutan</option>	
-					<option>Hutang Dagang</option>	
-					<option>Pendapatan Diterima Dimuka</option>	
-					<option>Beban YMH Dibayar</option>	
-					<option>Hutang Pajak</option>	
-					<option>Hutang Bank Jangka Pendek</option>	
-					<option>Hutang Bukan Bank Jangka Pendek</option>	
-					<option>Hutang Non Dagang</option>	
-					<option>Ekuitas</option>
-					<option>Pendapatan Penjualan</option>		
-					<option>Pendapatan Diluar Usaha</option>	
-					<option>Harga Pokok Penjualan</option>	
-					<option>Beban Administrasi dan Umum</option>
-					<option>Beban Penjualan</option>
-					<option>Beban Pemansaran</option>
-					<option>Beban Operasional</option>
-					<option>Beban Diluar Usaha</option>
-					<option>Bunga Pinjaman</option>
-					<option>Hutang Bank Jangka Panjang</option>
-					<option>Hutang Bukan Bank Jangka Panjang</option>
-					<option>Deviden</option>
-					<option>Beban Pajak Penghasilan</option>
-
-			</select>
-			</td>';
-
-			echo"
-			<td>". $data['user_buat'] ."</td>
-			<td>". $data['user_edit'] ."</td>
-			<td>". $data['waktu'] ."</td>
-			
-			<td> <button class='btn btn-info detail' kode_grup_akun='". $data['kode_grup_akun'] ."' ><span class='glyphicon glyphicon-th-list'></span> Detail </button> </td>";
-
-
-include 'db.php';
-
-$pilih_akses_satuan_hapus = $db->query("SELECT grup_akun_hapus FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND grup_akun_hapus = '1'");
-$satuan_hapus = mysqli_num_rows($pilih_akses_satuan_hapus);
-
-
-    if ($satuan_hapus > 0){
-			echo "<td> <button class='btn btn-danger btn-hapus' data-id='". $data['id'] ."' data-satuan='". $data['nama_grup_akun'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>
-
-		</tr>";
-
-		}
-
-
-
-
-			}
-
-//Untuk Memutuskan Koneksi Ke Database
-
-mysqli_close($db); 			
-		?>
 		</tbody>
+
 
 	</table>
 </span>
@@ -263,13 +148,33 @@ mysqli_close($db);
 </div>
 
 
-		<script>
-		
-		$(document).ready(function(){
-		$('#tableuser').DataTable(
-			{"ordering": false});
-		});
-		</script>
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+        var dataTable = $('#tableuser').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"show_data_group_akun.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+
+             $("#tableuser").append('<tbody class="tbody"><tr><th colspan="3">Tidak Ada Data Yang Ditemukan</th></tr></tbody>');
+
+              $("#tableuser_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[10]+'');
+
+         
+            },
+
+        } );
+      } );
+
+    </script>
 
 <script type="text/javascript">
     $(document).ready(function(){
@@ -314,9 +219,8 @@ mysqli_close($db);
 <!-- EDIT --><!-- EDIT --><!-- EDIT --><!-- EDIT --><!-- EDIT --><!-- EDIT --><!-- EDIT -->
 
                              <script type="text/javascript">
-                                 
-                                 $(".edit-nama").dblclick(function(){
-
+                       $(document).on('dblclick', '.edit-nama', function (e) {
+            
                                     var id = $(this).attr("data-id");
 
                                     $("#text-nama-"+id+"").hide();
@@ -325,10 +229,9 @@ mysqli_close($db);
 
                                  });
 
-                                 $(".input_nama").blur(function(){
+                       $(document).on('blur', '.input_nama', function (e) {
 
                                     var id = $(this).attr("data-id");
-
                                     var input_nama = $(this).val();
 
 
@@ -346,8 +249,8 @@ mysqli_close($db);
 
 
                              <script type="text/javascript">
-                                 
-                                 $(".edit-parent").dblclick(function(){
+                       $(document).on('dblclick', '.edit-parent', function (e) {
+                       
 
                                     var id = $(this).attr("data-id");
 
@@ -357,7 +260,7 @@ mysqli_close($db);
 
                                  });
 
-                                 $(".select-parent").blur(function(){
+                       $(document).on('blur', '.select-parent', function (e) {
 
                                     var id = $(this).attr("data-id");
 
@@ -378,9 +281,8 @@ mysqli_close($db);
 
 
                              <script type="text/javascript">
-                                 
-                                 $(".edit-kategori").dblclick(function(){
-
+           $(document).on('dblclick', '.edit-kategori', function (e) {
+                     
                                     var id = $(this).attr("data-id");
 
                                     $("#text-kategori-"+id+"").hide();
@@ -389,7 +291,7 @@ mysqli_close($db);
 
                                  });
 
-                                 $(".select-kategori").blur(function(){
+           $(document).on('blur', '.select-kategori', function (e) {
 
                                     var id = $(this).attr("data-id");
 
@@ -401,7 +303,44 @@ mysqli_close($db);
                                     $("#text-kategori-"+id+"").show();
                                     $("#text-kategori-"+id+"").text(select_kategori);
 
-                                    $("#select-kategori-"+id+"").hide();           
+                                    $("#select-kategori-"+id+"").hide(); 
+
+
+         $('#tableuser').DataTable().destroy();
+        var dataTable = $('#tableuser').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"show_data_group_akun.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+
+             $("#tableuser").append('<tbody class="tbody"><tr><th colspan="3">Tidak Ada Data Yang Ditemukan</th></tr></tbody>');
+
+              $("#tableuser_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[11]+'');
+
+         
+            },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+            $(nRow).attr('class','tr-id-'+aData[11]+'');
+
+        $('td:eq(1)', nRow).attr( 'class','edit-nama');
+        $('td:eq(1)', nRow).html( '<span id='+aData[1]+'</span>');
+
+        $('td:eq(2)', nRow).attr( 'class','edit-parent');
+        $('td:eq(2)', nRow).html( '<span id='+aData[2]+'</span>');
+
+            },
+
+        });   
+
 
                                     });
                                  });
@@ -409,9 +348,8 @@ mysqli_close($db);
                              </script>
 
                              <script type="text/javascript">
-                                 
-                                 $(".edit-tipe").dblclick(function(){
-
+                     $(document).on('dblclick', '.edit-tipe', function (e) {
+                       
                                     var id = $(this).attr("data-id");
 
                                     $("#text-tipe-"+id+"").hide();
@@ -420,7 +358,7 @@ mysqli_close($db);
 
                                  });
 
-                                 $(".select-tipe").blur(function(){
+                     $(document).on('blur', '.select-tipe', function (e) {
 
                                     var id = $(this).attr("data-id");
 
@@ -441,8 +379,8 @@ mysqli_close($db);
 
 
 		<script type="text/javascript">
+$(document).on('click', '.detail', function (e) {
 		
-		$(".detail").click(function(){
 		var kode_grup_akun = $(this).attr('kode_grup_akun');
 		
 		

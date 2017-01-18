@@ -11,6 +11,9 @@ include 'sanitasi.php';
 // menampilkan seluruh data yang ada pada tabel penjualan yang terdapt pada DB
  $perintah = $db->query("SELECT * FROM penjualan");
 
+$pilih_akses_kolom = $db->query("SELECT harga_produk_penjualan FROM otoritas_penjualan WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+$otoritas_kolom = mysqli_fetch_array($pilih_akses_kolom);
+
 
 $session_id = session_id();
 
@@ -343,6 +346,12 @@ $session_id = session_id();
           </select>
   </div>
 
+<?php if ($otoritas_kolom['harga_produk_penjualan'] > 0): ?>
+  <div class="col-sm-2">
+    <input style="height:15px;" type="text" class="form-control" name="harga" autocomplete="off" id="harga_baru" placeholder="Harga Produk">
+  </div>
+<?php endif ?>
+
 
    <div class="col-sm-2">
     <input style="height:15px;" type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Potongan">
@@ -352,18 +361,18 @@ $session_id = session_id();
     <input style="height:15px;" type="text" class="form-control" name="tax" autocomplete="off" id="tax1" placeholder="Tax%" >
   </div>
 
-
+  <div class="col-sm-12">
   <button type="submit" id="submit_produk" class="btn btn-success" style="font-size:15px" >Submit (F3)</button>
+  </div>
 
 </div>
 
   <input type="hidden" class="form-control" name="limit_stok" autocomplete="off" id="limit_stok" placeholder="Limit Stok" >
     <input type="hidden" class="form-control" name="ber_stok" id="ber_stok" placeholder="Ber Stok" >
     <input type="hidden" class="form-control" name="harga_lama" id="harga_lama">
-    <input type="hidden" class="form-control" name="harga_baru" id="harga_baru">
+    <input type="hidden" class="form-control" name="harga_produk" id="harga_produk">
     <input type="hidden" class="form-control" name="jumlahbarang" id="jumlahbarang">
     <input type="hidden" id="satuan_produk" name="satuan" class="form-control" value="" required="">
-    <input type="hidden" id="harga_produk" name="harga" class="form-control" value="" required="">
     <input type="hidden" id="id_produk" name="id_produk" class="form-control" value="" required="">        
 
 </form> <!-- tag penutup form -->
@@ -1047,6 +1056,7 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
     var jumlah_barang = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#jumlah_barang").val()))));
     var level_harga = $("#level_harga").val();
     var harga = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_produk").val()))));
+    var harga_baru = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#harga_baru").val()))));
     var potongan = $("#potongan1").val();
     var tax = $("#tax1").val();
     var jumlahbarang = $("#jumlahbarang").val();
@@ -1096,7 +1106,7 @@ $("#kode_barang").focus();
 $("#total1").val(tandaPemisahTitik(total_akhir));
     $("#total2").val(tandaPemisahTitik(total_akhir));
 
- $.post("prosestbspenjualan.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,sales:sales},function(data){
+ $.post("prosestbspenjualan.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan,sales:sales, level_harga:level_harga},function(data){
      
   
 
@@ -1123,7 +1133,7 @@ $("#total1").val(tandaPemisahTitik(total_akhir));
 
   else{
     $("#kode_barang").focus();
-    $.post("prosestbspenjualan.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,potongan:potongan,tax:tax,satuan:satuan,sales:sales},function(data){
+    $.post("prosestbspenjualan.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,level_harga:level_harga,potongan:potongan,tax:tax,satuan:satuan,sales:sales},function(data){
      
 
       $("#ppn").attr("disabled", true);
