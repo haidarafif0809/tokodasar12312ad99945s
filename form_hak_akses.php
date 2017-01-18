@@ -2508,6 +2508,7 @@ else{
 
 </div> <!-- / of otoritas lap_retur pembelian - retur  penjualan -->
 
+
 <div class="form-group col-sm-12">
     
 </div>
@@ -2602,7 +2603,26 @@ else{
 
 </div> <!-- / of otoritas lap_hutangpembelian - piutang penjualan -->
 
+<div class="col-sm-12">
+    
+</div>
 
+<div class="form-group col-sm-2"> <!-- start otoritas harga produk penjualan -->
+<label>Harga Produk Penjualan</label><br>
+<?php 
+if ($data_otoritas['harga_produk_penjualan'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="harga_produk_penjualan" name="harga_produk_penjualan" checked=""> 
+    <label for="harga_produk_penjualan">Lihat </label><br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="harga_produk_penjualan" name="harga_produk_penjualan"> 
+    <label for="harga_produk_penjualan">Lihat </label><br>';  
+}
+
+?>
+
+</div> <!-- / of otoritas lap_retur pembelian - harga produk penjualan-->
 
 
 

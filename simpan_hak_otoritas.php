@@ -180,6 +180,8 @@ $laporan_hutang_beredar_lihat = stringdoang(isset($_POST['laporan_hutang_beredar
 $laporan_piutang_beredar_lihat = stringdoang(isset($_POST['laporan_piutang_beredar_lihat']));
 
 
+$harga_produk_penjualan = stringdoang(isset($_POST['harga_produk_penjualan']));
+
 
 $update_otoritas_item_keluar = $db->prepare("UPDATE otoritas_item_keluar SET item_keluar_lihat = ?, item_keluar_tambah = ?, item_keluar_edit = ?, item_keluar_hapus = ? WHERE id_otoritas = ?");
 
@@ -262,10 +264,10 @@ $update_otoritas_pembelian->bind_param("iiiiiiiii",
 $update_otoritas_pembelian->execute();
 
 
-$update_otoritas_penjualan = $db->prepare("UPDATE otoritas_penjualan SET penjualan_lihat = ?, penjualan_tambah = ?, penjualan_edit = ?, penjualan_hapus = ?, retur_lihat = ?, retur_penjualan_lihat = ?, retur_penjualan_tambah = ?, retur_penjualan_edit = ?, retur_penjualan_hapus = ? WHERE id_otoritas = ? ");
+$update_otoritas_penjualan = $db->prepare("UPDATE otoritas_penjualan SET penjualan_lihat = ?, penjualan_tambah = ?, penjualan_edit = ?, penjualan_hapus = ?, retur_lihat = ?, retur_penjualan_lihat = ?, retur_penjualan_tambah = ?, retur_penjualan_edit = ?, retur_penjualan_hapus = ?, harga_produk_penjualan = ? WHERE id_otoritas = ? ");
 
-$update_otoritas_penjualan->bind_param("iiiiiiiiii",
-    $penjualan_lihat, $penjualan_tambah, $penjualan_edit, $penjualan_hapus, $retur_lihat, $retur_penjualan_lihat, $retur_penjualan_tambah, $retur_penjualan_edit, $retur_penjualan_hapus, $id);
+$update_otoritas_penjualan->bind_param("iiiiiiiiiii",
+    $penjualan_lihat, $penjualan_tambah, $penjualan_edit, $penjualan_hapus, $retur_lihat, $retur_penjualan_lihat, $retur_penjualan_tambah, $retur_penjualan_edit, $retur_penjualan_hapus,  $harga_produk_penjualan, $id);
 
 $update_otoritas_penjualan->execute();
 
