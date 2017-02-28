@@ -33,7 +33,7 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 <div class="card card-block">
 <!-- PENDAPATAN-->
 <?php
-$select = $db->query("SELECT kode_grup_akun, nama_grup_akun FROM grup_akun WHERE kategori_akun = 'Pendapatan' AND tipe_akun = 'Akun Header' AND parent= '-' GROUP BY kode_grup_akun ");
+$select = $db->query("SELECT kode_grup_akun, nama_grup_akun FROM grup_akun WHERE kategori_akun = 'Pendapatan' AND tipe_akun = 'Akun Header' AND parent= '-' ORDER BY kode_grup_akun ");
 
 $total_pendapatan = 0;
 

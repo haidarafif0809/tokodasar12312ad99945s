@@ -709,9 +709,9 @@ $("#cari_produk_pembelian").click(function(){
   var total1 = $("#total_retur_pembelian1").val();
   var ppn_input = $("#ppn_input").val();
   var jumlah_kas = $("#jumlah1").val();
-  var sisa =  jumlah_kas -  pembayaran_pembelian;
+  var sisauang =  jumlah_kas -  pembayaran_pembelian;
 
-      if (sisa < 0) 
+      if (sisauang < 0) 
 
       {
         alert("Jumlah Kas Tidak Mencukupi Atau Kolom Cara Bayar Masih Kosong");
