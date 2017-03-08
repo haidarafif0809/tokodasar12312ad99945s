@@ -185,7 +185,7 @@ $session_id = session_id();
 
 <!--tampilan modal-->
 <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog ">
 
     <!-- isi modal-->
     <div class="modal-content">
@@ -197,11 +197,27 @@ $session_id = session_id();
       <div class="modal-body">
 
       <div class="table-resposive">
-<span class="modal_baru">
+<div class="table-responsive">
 
-  </span>
+  <table id="tabel_cari" class="table table-bordered table-sm">
+        <thead> <!-- untuk memberikan nama pada kolom tabel -->
+        
+            <th> Kode Barang </th>
+            <th> Nama Barang </th>
+            <th> Harga Jual Level 1</th>
+            <th> Harga Jual Level 2</th>
+            <th> Harga Jual Level 3</th>
+            <th> Jumlah Barang </th>
+            <th> Satuan </th>
+            <th> Kategori </th>
+            <th> Suplier </th>
+        
+        </thead> <!-- tag penutup tabel -->
+  </table>
+
 </div>
-</div> <!-- tag penutup modal-body-->
+      </div>
+    </div> <!-- tag penutup modal-body-->
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
@@ -709,7 +725,9 @@ tr:nth-child(even){background-color: #f2f2f2}
 
           <button type="submit" id="cetak_langsung" target="blank" class="btn btn-success" style="font-size:15px"> Bayar / Cetak (Ctrl + K) </button>
 
-          <a href='cetak_penjualan_tunai_besar.php' id="cetak_tunai_besar" style="display: none;" class="btn btn-warning" target="blank"> Cetak Tunai  Besar </a>
+          <a href='cetak_penjualan_tunai_besar.php' id="cetak_tunai_besar" style="display: none;" class="btn btn-warning" target="blank"> Cetak Tunai Besar </a>
+
+          <a href='cetak_penjualan_surat_jalan.php' id="cetak_surat_jalan" style="display: none;" class="btn btn-danger" target="blank"> Cetak Surat Jalan </a>
           
      
     
@@ -758,6 +776,52 @@ $(document).ready(function(){
 
 </script>
 
+
+
+
+<script type="text/javascript" language="javascript" >
+   $(document).ready(function() {
+        var dataTable = $('#tabel_cari').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"modal_jual_baru.php", // json datasource
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#tabel_cari").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+              $(nRow).attr('class', "pilih");
+              $(nRow).attr('data-kode', aData[0]+" ("+aData[1]+")");
+              $(nRow).attr('nama-barang', aData[1]);
+              $(nRow).attr('harga', aData[2]);
+              $(nRow).attr('harga_level_2', aData[3]);
+              $(nRow).attr('harga_level_3', aData[4]);
+              $(nRow).attr('jumlah-barang', aData[5]);
+              $(nRow).attr('satuan', aData[12]);
+              $(nRow).attr('limit_stok', aData[9]);
+              $(nRow).attr('ber-stok', aData[10]);
+              $(nRow).attr('id-barang', aData[13]);
+
+
+
+
+
+          }
+
+        });    
+     
+  });
+ 
+ </script>
+
+
 <!--untuk memasukkan perintah java script-->
 <script type="text/javascript">
 
@@ -770,8 +834,6 @@ $(document).ready(function(){
   document.getElementById("limit_stok").value = $(this).attr('limit_stok');
   document.getElementById("satuan_produk").value = $(this).attr('satuan');
   document.getElementById("ber_stok").value = $(this).attr('ber-stok');
-  document.getElementById("harga_lama").value = $(this).attr('harga');
-  document.getElementById("harga_baru").value = $(this).attr('harga');
   document.getElementById("satuan_konversi").value = $(this).attr('satuan');
   document.getElementById("id_produk").value = $(this).attr('id-barang');
 
@@ -1217,19 +1279,9 @@ $("#total1").val(tandaPemisahTitik(total_akhir));
       //menyembunyikan notif berhasil
       $("#alert_berhasil").hide();
       
-      var kode_pelanggan = $("#kd_pelanggan").val();
-      //coding update jumlah barang baru "rabu,(9-3-2016)"
-      $.post('modal_jual_baru.php',{kode_pelanggan:kode_pelanggan},function(data) {
-      
-      $(".modal_baru").html(data);
-      $("#cetak_tunai").hide('');
-      $("#cetak_tunai_besar").hide('');
-      $("#cetak_piutang").hide('');
-      });
-      /* Act on the event */
-      });
 
-   </script>
+      });
+</script>
 
 
 
@@ -1241,24 +1293,12 @@ $("#total1").val(tandaPemisahTitik(total_akhir));
 //menampilkan no urut faktur setelah tombol click di pilih
       $("#cari_produk_penjualan").click(function() {
 
-      
-      $.get('no_faktur_jl.php', function(data) {
-      /*optional stuff to do after getScript */ 
-      $("#nomor_faktur_penjualan").val(data);
-      });
-      //menyembunyikan notif berhasil
-      $("#alert_berhasil").hide();
-      
-      var kode_pelanggan = $("#kd_pelanggan").val();
-      //coding update jumlah barang baru "rabu,(9-3-2016)"
-      $.post('modal_jual_baru.php',{kode_pelanggan:kode_pelanggan},function(data) {
-      
-      $(".modal_baru").html(data);
+
       $("#cetak_tunai").hide('');
       $("#cetak_tunai_besar").hide('');
+      $("#cetak_surat_jalan").hide('');
       $("#cetak_piutang").hide('');
-      });
-      /* Act on the event */
+
       });
 
    </script>
@@ -1366,12 +1406,14 @@ alert("Silakan Bayar Piutang");
      var no_faktur = info;
      $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
      $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar.php?no_faktur='+no_faktur+'');
+     $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_faktur+'');
      $("#alert_berhasil").show();
+     $("#cetak_tunai").show();
+     $("#cetak_tunai_besar").show('');
+     $("#cetak_surat_jalan").show('');
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
-     $("#cetak_tunai").show();
-     $("#cetak_tunai_besar").show('');
     
        
    });
@@ -1510,9 +1552,12 @@ alert("Silakan Bayar Piutang");
 
    $.post("proses_bayar_tunai_cetak_langsung.php",{total2:total2,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input},function(info) {
   
-      $("#table-baru").html(info);
-     var no_fak= info;
+     $("#table-baru").html(info);
+     var no_fak = info;
+     $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_fak+'');
+     
      $("#alert_berhasil").show();
+     $("#cetak_surat_jalan").show();
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
@@ -1645,6 +1690,8 @@ alert("Silakan Bayar Piutang");
 
             var no_faktur = info;
             $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang.php?no_faktur='+no_faktur+'');
+            $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_faktur+'');
+            $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_faktur+'');
             $("#table-baru").html(info);
             $("#alert_berhasil").show();
             $("#pembayaran_penjualan").val('');
@@ -1654,6 +1701,7 @@ alert("Silakan Bayar Piutang");
             $("#potongan_persen").val('');
             $("#tanggal_jt").val('');
             $("#cetak_piutang").show();
+            $("#cetak_surat_jalan").show();
             $("#tax").val('');
             
        
@@ -2413,12 +2461,11 @@ function myFunction(event) {
        {
 
         $("#pembayaran_penjualan").val('');
-       $("#sisa_pembayaran_penjualan").val('');
-       $("#kredit").val('');
+        $("#sisa_pembayaran_penjualan").val('');
+        $("#kredit").val('');
         $("#piutang").hide();
         $("#batal_penjualan").hide();
         $("#penjualan").hide();
-        $("#transaksi_baru").show();
         $("#total1").val('');
 
  $.post("cek_subtotal_penjualan.php",{total:total,session_id:session_id,potongan:potongan,tax:tax,},function(data) {
@@ -2428,7 +2475,11 @@ function myFunction(event) {
 
         
             $("#table-baru").html(info);
-            $("#alert_berhasil").show();
+            var no_faktur = info;
+            $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_faktur+'');
+            $("#alert_berhasil").show(); 
+            $("#transaksi_baru").show();           
+            $("#cetak_surat_jalan").show();
             $("#pembayaran_penjualan").val('');
             $("#sisa_pembayaran_penjualan").val('');
             $("#kredit").val('');
