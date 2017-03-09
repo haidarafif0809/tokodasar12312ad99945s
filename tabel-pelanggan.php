@@ -17,6 +17,7 @@ $query = $db->query("SELECT * FROM pelanggan");
 			
 			<th style='background-color: #4CAF50; color: white'> Kode Pelanggan </th>
 			<th style='background-color: #4CAF50; color: white'> Nama Pelanggan </th>
+			<th style='background-color: #4CAF50; color: white'> Flafon </th>
 			<th style='background-color: #4CAF50; color: white'> Level Harga </th>
 			<th style='background-color: #4CAF50; color: white'> Tgl. Lahir </th>
 			<th style='background-color: #4CAF50; color: white'> Nomor Telp </th>
@@ -66,6 +67,7 @@ $pelanggan_edit = mysqli_num_rows($pilih_akses_pelanggan_edit);
 			
 			<td>". $data['kode_pelanggan'] ."</td>
 			<td>". $data['nama_pelanggan'] ."</td>
+			<td>". rp($data['flafon']) ."</td>
 			<td>". $data['level_harga'] ."</td>
 			<td>". tanggal($data['tgl_lahir']) ."</td>
 			<td>". $data['no_telp'] ."</td>

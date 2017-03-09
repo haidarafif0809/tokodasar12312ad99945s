@@ -75,6 +75,9 @@ $pelanggan = mysqli_num_rows($pilih_akses_pelanggan);
 					<label> Wilayah </label><br>
 					<input type="text" name="wilayah" id="wilayah" class="form-control" autocomplete="off" required="" >
 
+					<label> Flafon </label><br>
+					<input type="text" name="flafon" id="flafon" class="form-control" autocomplete="off" placeholder="Flafon (Jumlah Maximal Piutang)" required="" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" >
+
 					<label> Level Harga </label><br>
 					<select type="text" name="level_harga" id="level_harga" class="form-control" required="" >
 
@@ -233,6 +236,9 @@ $pelanggan = mysqli_num_rows($pilih_akses_pelanggan);
 					<label> Wilayah </label><br>
 					<input type="text" name="wilayah" id="edit_wilayah" class="form-control" autocomplete="off" required="" >
 
+					<label> Flafon </label><br>
+					<input type="text" name="edit_flafon" id="edit_flafon" class="form-control" autocomplete="off" placeholder="Flafon (Jumlah Maximal Piutang)" required="" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);" >
+
 					<label> Level Harga </label><br>
 					<select type="text" name="edit_level_harga" id="edit_level_harga" class="form-control" required="" >
 
@@ -283,6 +289,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 			
 			<th style='background-color: #4CAF50; color: white'> Kode Pelanggan </th>
 			<th style='background-color: #4CAF50; color: white'> Nama Pelanggan </th>
+			<th style='background-color: #4CAF50; color: white'> Flafon </th>
 			<th style='background-color: #4CAF50; color: white'> Level Harga </th>
 			<th style='background-color: #4CAF50; color: white'> Tgl. Lahir </th>
 			<th style='background-color: #4CAF50; color: white'> Nomor Telp </th>
@@ -332,6 +339,7 @@ $pelanggan_edit = mysqli_num_rows($pilih_akses_pelanggan_edit);
 			
 			<td>". $data['kode_pelanggan'] ."</td>
 			<td>". $data['nama_pelanggan'] ."</td>
+			<td>". rp($data['flafon']) ."</td>
 			<td>". $data['level_harga'] ."</td>
 			<td>". tanggal($data['tgl_lahir']) ."</td>
 			<td>". $data['no_telp'] ."</td>
@@ -360,7 +368,7 @@ $pelanggan_edit = mysqli_num_rows($pilih_akses_pelanggan_edit);
 
 
     if ($pelanggan_edit > 0){
-			echo "<td> <button class='btn btn-info btn-edit' data-pelanggan='". $data['nama_pelanggan'] ."' data-kode='". $data['kode_pelanggan'] ."' data-tanggal='". $data['tgl_lahir'] ."' data-nomor='". $data['no_telp'] ."' data-email='". $data['e_mail'] ."' data-wilayah='". $data['wilayah'] ."' data-level-harga='". $data['level_harga'] ."' data-id='". $data['id'] ."'> <span class='glyphicon glyphicon-edit'> </span> Edit </button> </td>";
+			echo "<td> <button class='btn btn-info btn-edit' data-pelanggan='". $data['nama_pelanggan'] ."' data-kode='". $data['kode_pelanggan'] ."' data-tanggal='". $data['tgl_lahir'] ."' data-nomor='". $data['no_telp'] ."' data-email='". $data['e_mail'] ."' data-wilayah='". $data['wilayah'] ."' data-level-harga='". $data['level_harga'] ."' data-id='". $data['id'] ."' data-flafon='". $data['flafon'] ."'> <span class='glyphicon glyphicon-edit'> </span> Edit </button> </td>";
 		}
 
 			echo"</tr>";
@@ -433,7 +441,11 @@ $(document).ready(function(){
 					//fungsi untuk menambahkan data
 								$("#submit_tambah").click(function(){
 
-
+ 			var flafon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#flafon").val()))));
+ 			if(flafon == '')
+ 			{
+ 				flafon = 0;
+ 			}
 								var kode_pelanggan = $("#kode_pelanggan").val();
 								var nama_pelanggan = $("#nama_pelanggan").val();
 								var level_harga = $("#level_harga").val();
@@ -462,7 +474,7 @@ $(document).ready(function(){
 									alert("Level Harga Harus Dipilih");
 								}
 								else {								
-									$.post('prosespelanggan.php', {kode_pelanggan:kode_pelanggan,nama_pelanggan:nama_pelanggan,level_harga:level_harga,no_telp:no_telp,e_mail:e_mail,tgl_lahir:tgl_lahir,wilayah:wilayah}, function(data){
+									$.post('prosespelanggan.php', {flafon:flafon,kode_pelanggan:kode_pelanggan,nama_pelanggan:nama_pelanggan,level_harga:level_harga,no_telp:no_telp,e_mail:e_mail,tgl_lahir:tgl_lahir,wilayah:wilayah}, function(data){
 								
 								if (data != "") {
 								$("#kode_pelanggan").val('');
@@ -536,10 +548,13 @@ $(document).ready(function(){
 								var nomor = $(this).attr("data-nomor");
 								var email   = $(this).attr("data-email");
 								var wilayah = $(this).attr("data-wilayah");
+								var flafon = $(this).attr("data-flafon");
 								var level_harga = $(this).attr("data-level-harga");
 								var id   = $(this).attr("data-id");
+
 								$("#edit_nama").val(nama);
 								$("#edit_kode").val(kode);
+								$("#edit_flafon").val(tandaPemisahTitik(flafon));
 								$("#edit_tgl_lahir").val(tanggal);
 								$("#edit_nomor").val(nomor);
 								$("#edit_email").val(email);
@@ -552,6 +567,12 @@ $(document).ready(function(){
 								
 								$("#submit_edit").click(function(){
 								var nama = $("#edit_nama").val();
+
+					var flafon = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#edit_flafon").val()))));
+ 					if(flafon == '')
+			 			{
+			 				flafon = 0;
+			 			}
 								var kode = $("#edit_kode").val();
 								var nomor = $("#edit_nomor").val();
 								var tanggal = $("#edit_tgl_lahir").val();
@@ -581,7 +602,7 @@ $(document).ready(function(){
 									alert("Level Harga Harus Dipilih");
 								}
 								else {
-								$.post("update_pelanggan.php",{nama_pelanggan:nama,kode_pelanggan:kode,no_telp:nomor,tgl_lahir:tanggal,e_mail:email,wilayah:wilayah,level_harga:level_harga,id:id},function(data){
+								$.post("update_pelanggan.php",{flafon:flafon,nama_pelanggan:nama,kode_pelanggan:kode,no_telp:nomor,tgl_lahir:tanggal,e_mail:email,wilayah:wilayah,level_harga:level_harga,id:id},function(data){
 
 								
 
