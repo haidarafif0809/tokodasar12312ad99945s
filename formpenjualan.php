@@ -1640,12 +1640,7 @@ alert("Silakan Bayar Piutang");
 
        var sisa_kredit = total - pembayaran;
 
-      $("#total1").val('');
-       $("#pembayaran_penjualan").val('');
-       $("#sisa_pembayaran_penjualan").val('');
-       $("#kredit").val('');
-       $("#tanggal_jt").val('');
-       
+
       if (sisa_pembayaran == "" )
       {
 
@@ -1676,16 +1671,23 @@ alert("Silakan Bayar Piutang");
        {
 
 
-        $("#piutang").hide();
-        $("#cetak_langsung").hide();
-        $("#simpan_sementara").hide();
-        $("#batal_penjualan").hide();
-        $("#penjualan").hide();
-        $("#transaksi_baru").show();
+     
 
  $.post("cek_subtotal_penjualan.php",{total:total,session_id:session_id,potongan:potongan,tax:tax,},function(data) {
 
-  if (data == "Oke") {
+
+  if (data == 1) {
+
+  //Cek Flafon sesuai dengan kode pelanggan / ID Pelanggannya
+   $.post("cek_flafon.php",{total:total,kode_pelanggan:kode_pelanggan},function(data) {
+    if(data == 1)
+    {
+      alert("Anda Tidak Bisa Melakukan Transaksi Piutang, Cek Jumlah Maximum Piutang");
+    }
+    else
+    {
+      //END BREAK Cek Flafon sesuai dengan kode pelanggan / ID Pelanggannya
+  
        $.post("proses_bayar_jual.php",{total2:total2,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input},function(info) {
 
             var no_faktur = info;
@@ -1705,17 +1707,32 @@ alert("Silakan Bayar Piutang");
             $("#tax").val('');
             
        
+             $("#total1").val('');
+       $("#pembayaran_penjualan").val('');
+       $("#sisa_pembayaran_penjualan").val('');
+       $("#kredit").val('');
+       $("#tanggal_jt").val('');
+          $("#piutang").hide();
+        $("#cetak_langsung").hide();
+        $("#simpan_sementara").hide();
+        $("#batal_penjualan").hide();
+        $("#penjualan").hide();
+        $("#transaksi_baru").show();
        
        });
+         } // else dari cek flafon
+ }); // end fungsi cek flafon
+
   }
   else{
     alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
         window.location.href="formpenjualan.php";
-  }
+  
+    }
 
- });
 
 
+});
 
        
        }  

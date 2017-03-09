@@ -17,10 +17,10 @@ include 'sanitasi.php';
  $total_sub = ($total - $diskon) + $pajak;
 
 if ($total_sub == $total_akhir) {
-		echo "Oke";
+		echo "1";
 	}
 	else{
-		echo "Zonk";
+		echo "0";
 	}
 
 //Untuk Memutuskan Koneksi Ke Database
