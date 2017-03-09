@@ -64,6 +64,9 @@ $perintah = $db->query("SELECT * FROM laporan_fee_produk");
       </table>
 
 </div>
+
+<a href='download_lap_fee_produk.php' type='submit' target="blank" id="btn-download" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
+
 </div>
 
             <script>

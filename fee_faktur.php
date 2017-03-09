@@ -177,7 +177,7 @@ $fee_faktur_hapus = mysqli_num_rows($pilih_akses_fee_faktur_hapus);
 
 include 'db.php';
 
-$pilih_akses_fee_faktur_edit = $db->query("SELECT komisi_fakrur_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND komisi_fakrur_edit = '1'");
+$pilih_akses_fee_faktur_edit = $db->query("SELECT komisi_faktur_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND komisi_faktur_edit = '1'");
 $fee_faktur_edit = mysqli_num_rows($pilih_akses_fee_faktur_edit);
 
     if ($fee_faktur_edit > 0) { 	
