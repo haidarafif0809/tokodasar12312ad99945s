@@ -49,7 +49,7 @@ jika tidak maka nomor terakhir ditambah dengan 1
  */
  if ($v_bulan_terakhir['bulan'] != $bulan_sekarang) {
   # code...
- $no_faktur = "1/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
+ echo $no_faktur = "1/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
  }
 
@@ -58,7 +58,7 @@ jika tidak maka nomor terakhir ditambah dengan 1
 
 $nomor = 1 + $ambil_nomor ;
 
- $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
+ echo $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
 
  }
