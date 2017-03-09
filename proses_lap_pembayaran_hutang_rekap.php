@@ -79,6 +79,8 @@ $total_akhir = $cek02['total_akhir'];
 
        <a href='cetak_lap_pembayaran_hutang_rekap.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' class='btn btn-success'><i class='fa fa-print'> </i> Cetak Pembayaran Hutang </a>
 
+       <a href='download_lap_pembayaran_hutang_rekap.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' type='submit' target="blank" id="btn-download" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
+
 </div>
 
 <script>

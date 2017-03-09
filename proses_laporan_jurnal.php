@@ -194,6 +194,7 @@ $kredit = $cek105['kredit'];
        <a href='cetak_laporan_jurnal.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>'
        class='btn btn-success' target='blank'><i class='fa fa-print'> </i> Cetak Jurnal Transaksi </a>
 
+    <a href='download_lap_jurnal.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' type='submit' target="blank" id="btn-download" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
 </div>     
 
 <script>

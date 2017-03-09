@@ -83,6 +83,8 @@ $perintah = $db->query("SELECT p.id,p.no_faktur_retur,p.total,p.nama_suplier,p.t
 	</table>
 </span>
 </div> <!--/ responsive-->
+
+<a href='download_lap_retur_pembelian.php' type='submit' target="blank" id="btn-download" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
 </div> <!--/ container-->
 
 		<script>

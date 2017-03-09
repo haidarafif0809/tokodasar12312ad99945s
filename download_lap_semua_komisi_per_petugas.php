@@ -1,12 +1,18 @@
 <?php 
+// Fungsi header dengan mengirimkan raw data excel
+header("Content-type: application/vnd-ms-excel");
+ 
+// Mendefinisikan nama file ekspor "hasil-export.xls"
+header("Content-Disposition: attachment; filename=laporan_seluruh_komisi_per_petugas.xls");
 
-include 'sanitasi.php';
 include 'db.php';
+include 'sanitasi.php';
 
+//menampilkan seluruh data yang ada pada tabel Pembelian
 
-$nama_petugas = stringdoang($_POST['nama_petugas']);
-$dari_tanggal = stringdoang($_POST['dari_tanggal']);
-$sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
+$nama_petugas = stringdoang($_GET['nama_petugas']);
+$dari_tanggal = stringdoang($_GET['dari_tanggal']);
+$sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 
 
 //menampilkan seluruh data yang ada pada tabel penjualan
@@ -24,19 +30,13 @@ $total_fee2 = $cek0['total_fee'];
 
 $total_komisi = $total_fee1 + $total_fee2;
 
- ?>
+?>
 
- <style>
-      
-      tr:nth-child(even){background-color: #f2f2f2}
-      
-</style>
+<div class="container">
+<center><h3><b>Data Laporan Seluruh Komisi Per Petugas</b></h3></center>
 
-<div class="card card-block">
-
-<h3><center><b>Komisi Produk / Petugas</b></center></h3><br>
-<div class="table-responsive">
- <table id="tableuser" class="table table-bordered">
+<h3><b>Komisi Produk / Petugas</b></h3><br>
+<table id="tableuser" class="table table-bordered">
             <thead>
                   <th style="background-color: #4CAF50; color: white;"> Nama Petugas </th>
                   <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
@@ -67,7 +67,7 @@ $total_komisi = $total_fee1 + $total_fee2;
                   <td>". $data1['no_faktur'] ."</td>
                   <td>". $data1['kode_produk'] ."</td>
                   <td>". $data1['nama_produk'] ."</td>
-                  <td>". rp($data1['jumlah_fee']) ."</td>
+                  <td>". $data1['jumlah_fee'] ."</td>
                   <td>". tanggal($data1['tanggal']) ."</td>
                   <td>". $data1['jam'] ."</td>
                   </tr>";
@@ -76,15 +76,9 @@ $total_komisi = $total_fee1 + $total_fee2;
             </tbody>
 
       </table>
-</div>
-</div>
-      <h4> Total Komisi / Produk Dari <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?> : <b><?php echo rp($total_fee1); ?></b></h4>
-<br><br>
-
-<div class="card card-block">
-<h3><center><b>Komisi Faktur / Petugas</b></center></h3><br>
-<div class="table-responsive">
- <table id="tableuser" class="table table-bordered">
+<br>
+<h3><b>Komisi Faktur / Petugas</b></h3><br>
+<table id="tableuser" class="table table-bordered">
             <thead>
                   <th style="background-color: #4CAF50; color: white;"> Nama Petugas </th>
                   <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
@@ -105,7 +99,7 @@ $total_komisi = $total_fee1 + $total_fee2;
                   echo "<tr class='pilih' data-petugas='". $data1['nama_petugas'] ."'>
                   <td>". $data0['nama_petugas'] ."</td>
                   <td>". $data0['no_faktur'] ."</td>
-                  <td>". rp($data0['jumlah_fee']) ."</td>
+                  <td>". $data0['jumlah_fee'] ."</td>
                   <td>". tanggal($data0['tanggal']) ."</td>
                   <td>". $data0['jam'] ."</td>
                   </tr>";
@@ -117,26 +111,41 @@ $total_komisi = $total_fee1 + $total_fee2;
             </tbody>
 
       </table>
-</div>
+<br>
+    
+<hr>
+ <div class="row">
+     
+     <div class="col-sm-3"></div>
+     <div class="col-sm-3"></div>
+     <div class="col-sm-3"></div>
+        
+ <table>
+  <tbody>
 
-<a href='cetak_laporan_komisi.php?nama_petugas=<?php echo $nama_petugas; ?>&dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' class='btn btn-success'><i class='fa fa-print'> </i> Cetak Komisi / Petugas</a>
-
-<a href='download_lap_semua_komisi_per_petugas.php?nama_petugas=<?php echo $nama_petugas; ?>&dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' type='submit' target="blank" id="btn-download" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
-
-</div>
-      <h4> Total Komisi / Faktur Dari <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?> : <b><?php echo rp($total_fee2); ?></b></h4><br>
+   <h4> Total Komisi / Produk Dari <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?> : <b><?php echo rp($total_fee1); ?></b></h4>
+   
+ <h4> Total Komisi / Faktur Dari <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?> : <b><?php echo rp($total_fee2); ?></b></h4><br>
 
       <h3 style="color: red"><b> Total Komisi Dari <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?> : <?php echo rp($total_komisi); ?> </b></h3>
 
+          
+    
             
+  </tbody>
+  </table>
 
 
-<script>
-// untuk memunculkan data tabel 
-$(document).ready(function(){
-    $('.table').DataTable();
+   
+
+     <div class="col-sm-3">
+
+ <b>&nbsp;&nbsp;&nbsp;&nbsp;Petugas<br><br><br><br>( ................... )</b>
+
+    </div>
 
 
-});
-  
-</script>
+</div>
+        
+
+</div> <!--end container-->

@@ -68,6 +68,8 @@ $perintah = $db->query("SELECT p.nama_pelanggan,pp.nama_suplier,pp.no_faktur_pem
 
        <a href='cetak_lap_pembayaran_piutang_rekap.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' class='btn btn-success'><i class='fa fa-print'> </i> Cetak Pembayaran Piutang </a>
 
+       <a href='download_lap_bayar_piutang_rekap.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' type='submit' target="blank" id="btn-download" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
+
 </div>
 
 <script>
