@@ -109,7 +109,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 			{
 				//menampilkan data
-			echo "
+			echo "<tr>
 			<td>". $data1['tanggal'] ."</td>
 			<td>". $data1['no_faktur'] ."</td>
 			<td>". $data1['nama'] ."</td>
@@ -137,6 +137,8 @@ tr:nth-child(even){background-color: #f2f2f2}
 <br>
 
        <a href='cetak_laporan_pembelian_hutang.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' class='btn btn-success' target='blank'><span class='glyphicon glyphicon-print'> </span> Cetak Pembelian Hutang</a>
+
+       <a href='download_lap_pembelian_hutang.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' type='submit' target="blank" id="btn-download" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
 
 </div>
 
