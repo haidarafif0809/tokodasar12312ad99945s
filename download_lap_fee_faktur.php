@@ -1,22 +1,21 @@
-<?php include 'session_login.php';
+<?php 
+// Fungsi header dengan mengirimkan raw data excel
+header("Content-type: application/vnd-ms-excel");
+ 
+// Mendefinisikan nama file ekspor "hasil-export.xls"
+header("Content-Disposition: attachment; filename=laporan_komisi.xls");
 
-
-//memasukkan file session login, header, navbar, db.php
-include 'header.php';
-include 'navbar.php';
-include 'sanitasi.php';
 include 'db.php';
+include 'sanitasi.php';
 
-//menampilkan seluruh data yang ada pada tabel penjualan
-$perintah = $db->query("SELECT * FROM laporan_fee_faktur");
+//menampilkan seluruh data yang ada pada tabel Pembelian
+$perintah = $db->query("SELECT nama_petugas,no_faktur,jumlah_fee,tanggal
+,jam FROM laporan_fee_faktur");
 
- ?>
+?>
 
 <div class="container">
-<h3><b> LAPORAN KOMISI FAKTUR </b></h3><hr>
-<a href="lap_jumlah_fee_faktur_petugas.php" class="btn btn-info"> <i class="fa fa-list"> </i> KOMISI / PETUGAS</a><br><br>
-
-<div class="table-responsive">
+<center><h3><b>Data Laporan Komisi Per Faktur</b></h3></center>
 <table id="tableuser" class="table table-bordered">
             <thead>
                   <th style="background-color: #4CAF50; color: white;"> Nama Petugas </th>
@@ -56,25 +55,35 @@ $perintah = $db->query("SELECT * FROM laporan_fee_faktur");
             </tbody>
 
       </table>
+<br>
 
-</div>
+    
+<hr>
+ <div class="row">
+     
+     <div class="col-sm-3"></div>
+     <div class="col-sm-3"></div>
+     <div class="col-sm-3"></div>
+        
+ <table>
+  <tbody>
 
-<a href='download_lap_fee_faktur.php' type='submit' target="blank" id="btn-download" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
-
-</div>
-
-            <script>
+    
             
-            $(document).ready(function(){
-            $('#tableuser').DataTable();
-            });
-            </script>
+  </tbody>
+  </table>
 
 
+   
+
+     <div class="col-sm-3">
+
+ <b>&nbsp;&nbsp;&nbsp;&nbsp;Petugas<br><br><br><br>( ................... )</b>
+
+    </div>
 
 
+</div>
+        
 
-
-<?php 
-include 'footer.php';
- ?>
+</div> <!--end container-->

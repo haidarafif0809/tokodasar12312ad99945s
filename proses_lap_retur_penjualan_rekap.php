@@ -11,10 +11,6 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 //menampilkan seluruh data yang ada pada tabel penjualan
 $perintah = $db->query("SELECT pel.nama_pelanggan,p.no_faktur_retur,p.tanggal,p.kode_pelanggan,p.total,p.potongan,p.tax,p.tunai FROM retur_penjualan p INNER JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
 
-
-
-
-
  ?>
 
  <style>
@@ -75,6 +71,8 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 
        <a href='cetak_lap_retur_penjualan_rekap.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' class='btn btn-success'><i class='fa fa-print'> </i> Cetak Retur Penjualan </a>
+
+<a href='download_lap_retur_jual_rekap.php?dari_tanggal=<?php echo $dari_tanggal; ?>&sampai_tanggal=<?php echo $sampai_tanggal; ?>' type='submit' target="blank" id="btn-download" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
 
 </div>
 

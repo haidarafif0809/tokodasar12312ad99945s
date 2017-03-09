@@ -84,6 +84,8 @@ mysqli_close($db);
 	</table>
 </span>
 </div> <!--/ responsive-->
+<a href='download_lap_retur_jual.php' type='submit' target="blank" id="btn-download" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
+
 </div> <!--/ container-->
 
 		<script>
