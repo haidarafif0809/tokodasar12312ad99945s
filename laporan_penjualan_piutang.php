@@ -13,20 +13,30 @@ include 'db.php';
      <script>
     $(function() {
     $( "#dari_tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
+        $( "#sampai_tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
+    $( "#dari_tanggal2" ).datepicker({dateFormat: "yy-mm-dd"});
+        $( "#sampai_tanggal2" ).datepicker({dateFormat: "yy-mm-dd"});
     });
     </script>
 
 
-    <script>
-    $(function() {
-    $( "#sampai_tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
-    });
-    </script>
+
 
  <div class="container">
 
-<h3> LAPORAN PENJUALAN PIUTANG </h3><hr>
+<h3> LAPORAN PIUTANG </h3><hr>
 
+
+<div class="dropdown">
+             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px"> Jenis Laporan <span class="caret"></span></button>
+
+             <ul class="dropdown-menu">
+				<li><button type="button" class="btn btn-success" id="per_konsumen" >Rekap Konsumen / Sales </button></li> 
+				<li><button type="button" class="btn btn-success" id="non_konsumen" >Rekap Non Konsumen / Sales  </button></li>
+             </ul>
+</div> <!--/ dropdown-->
+
+<span id="rekap_non_konsumen" style="display:none">
 <form class="form-inline" role="form">
 				
 				  <div class="form-group"> 
@@ -36,61 +46,218 @@ include 'db.php';
 
                   <div class="form-group"> 
 
-                  <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control" placeholder="Sampai Tanggal" value="<?php echo date("Y-m-d"); ?>" required="">
+                  <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control" placeholder="Sampai Tanggal" required="">
                   </div>
 
-                  <button type="submit" name="submit" id="submit" class="btn btn-primary" > <i class="fa fa-eye"></i> Tampil </button>
+                  <button type="submit" name="submit" id="submit_non" class="btn btn-primary" > <i class="fa fa-eye"></i> Tampil </button>
 
 </form>
+</span>
+
+<span id="rekap_konsumen" style="display:none">
+<form class="form-inline" role="form">
+				
+			<div class="form-group"> 
+ 				<select name="kode_pelanggan" id="kd_pelanggan" class="form-control" required="" >      
+				  <?php 
+				    
+				    //untuk menampilkan semua data pada tabel pelanggan dalam DB
+				    $query = $db->query("SELECT id,kode_pelanggan,nama_pelanggan FROM pelanggan");
+
+				    //untuk menyimpan data sementara yang ada pada $query
+				    while($data = mysqli_fetch_array($query))
+				    {
+				            if ($data['default_pelanggan'] == '1') {
+
+				    			echo "<option selected value='".$data['kode_pelanggan'] ."' >".$data['kode_pelanggan'] ." | ".$data['nama_pelanggan'] ."</option>";
+				              
+				            }
+
+				            else{
+
+				    			echo "<option value='".$data['kode_pelanggan'] ."' >".$data['kode_pelanggan'] ." | ".$data['nama_pelanggan'] ."</option>";
+
+				            }
+				    }
+				    
+				    
+				    ?>
+   				 </select>
+			</div>
+<div class="form-group"> 
+<select style="font-size:15px; height:35px" name="sales" id="sales" class="form-control" required="">
+
+  <?php 
+    
+    //untuk menampilkan semua data pada tabel pelanggan dalam DB
+    $query01 = $db->query("SELECT nama,default_sales FROM user WHERE status_sales = 'Iya'");
+
+    //untuk menyimpan data sementara yang ada pada $query
+    while($data01 = mysqli_fetch_array($query01))
+    {
+    
+    if ($data01['default_sales'] == '1') {
+
+    echo "<option selected value='".$data01['nama'] ."'>".$data01['nama'] ."</option>";
+      
+    }
+    else{
+
+    echo "<option value='".$data01['nama'] ."'>".$data01['nama'] ."</option>";
+
+    }
+    }
+    
+    
+    ?>
+
+</select>
+</div> 
+
+				  <div class="form-group"> 
+
+                  <input type="text" name="dari_tanggal2" id="dari_tanggal2" class="form-control" placeholder="Dari Tanggal" required="">
+                  </div>
+
+                  <div class="form-group"> 
+
+                  <input type="text" name="sampai_tanggal2" id="sampai_tanggal2" class="form-control" placeholder="Sampai Tanggal" required="">
+                  </div>
+
+                  <button type="submit" name="submit" id="submit_true" class="btn btn-primary" > <i class="fa fa-eye"></i> Tampil </button>
+
+</form>
+</span>
+
 
  <br>
  <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
-<span id="result">
-<table id="tableuser" class="table table-bordered">
+<table id="tableuser" class="table table-bordered table-sm">
 		<thead>
 			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 			<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
-			<th style="background-color: #4CAF50; color: white;"> Kode Pelanggan</th>
-			<th style="background-color: #4CAF50; color: white;"> Total </th>
-			<th style="background-color: #4CAF50; color: white;"> Jam </th>
-			<th style="background-color: #4CAF50; color: white;"> User </th>
-			<th style="background-color: #4CAF50; color: white;"> Status </th>
-			<th style="background-color: #4CAF50; color: white;"> Potongan </th>
-			<th style="background-color: #4CAF50; color: white;"> Tax </th>
-			<th style="background-color: #4CAF50; color: white;"> Kredit </th>
+			<th style="background-color: #4CAF50; color: white;"> Nama Costumer</th>
+			<th style="background-color: #4CAF50; color: white;"> Sales </th>
+			<th style="background-color: #4CAF50; color: white;"> Nilai Faktur </th>
+			<th style="background-color: #4CAF50; color: white;"> Dibayar </th>
+			<th style="background-color: #4CAF50; color: white;"> Piutang </th>
 						
 		</thead>
-		<tbody>
-			
-
-		</tbody>
 
 	</table>
-</span>
 </div> <!--/ responsive-->
+
+
+       <a href='cetak_laporan_penjualan_piutang.php' style="display: none" class='btn btn-success'  id="cetak_non" target='blank'><i class='fa fa-print'> </i> Cetak Penjualan Piutang</a>  
+
+       <a href='download_lap_penjualan_piutang.php' style="display: none" type='submit' target="blank" id="btn-download-non" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
+
+
+       <a href='cetak_laporan_penjualan_piutang_konsumen.php' style="display: none" class='btn btn-success' id="cetak_true" target='blank'><i class='fa fa-print'> </i> Cetak Penjualan Piutang</a>  
+
+       <a href='download_lap_penjualan_piutang_konsumen.php' style="display: none" type='submit' target="blank" id="btn-download-true" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
+
 </div> <!--/ container-->
 
-		<script>
-		
-		$(document).ready(function(){
-		$('#tableuser').DataTable();
-		});
-		</script>
 
-		
-		<script type="text/javascript">
-		$("#submit").click(function(){
+<script type="text/javascript">
+		$("#submit_non").click(function(){
 		
 		var dari_tanggal = $("#dari_tanggal").val();
 		var sampai_tanggal = $("#sampai_tanggal").val();
 		
+			$('#tableuser').DataTable().destroy();
+
+		  var dataTable = $('#tableuser').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "info":     true,
+                "language": {
+              "emptyTable":   "My Custom Message On Empty Table"
+          },
+                "ajax":{
+                  url :"proses_lap_penjualan_piutang.php", // json datasource
+                   "data": function ( d ) {
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+                      type: "post",  // method  , by default get
+                  error: function(){  // error handling
+                    $(".tbody").html("");
+                    $("#tableuser").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#tableuser_processing").css("display","none");
+                    
+                  }
+                }
+          
+              });
 		
-		$.post("proses_lap_penjualan_piutang.php", {dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(info){
+    $("#cetak_non").show();
+    $("#btn-download-non").show();
+     $("#cetak_non").attr("href", "cetak_laporan_penjualan_piutang.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+	 $("#btn-download-non").attr("href", "download_lap_penjualan_piutang.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+	$("#cetak_true").hide();
+    $("#btn-download-true").hide();
+
+
 		
-		$("#result").html(info);
+		});      
+		$("form").submit(function(){
+		
+		return false;
 		
 		});
 		
+		</script>
+
+<script type="text/javascript">
+		$("#submit_true").click(function(){
+		
+		var dari_tanggal = $("#dari_tanggal2").val();
+		var sampai_tanggal = $("#sampai_tanggal2").val();
+		var konsumen = $("#kd_pelanggan").val();
+		var sales = $("#sales").val();
+
+			$('#tableuser').DataTable().destroy();
+
+		  var dataTable = $('#tableuser').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "info":     true,
+                "language": {
+              "emptyTable":   "My Custom Message On Empty Table"
+          },
+                "ajax":{
+                  url :"proses_lap_penjualan_piutang_perkonsumen.php", // json datasource
+                   "data": function ( d ) {
+                      d.dari_tanggal = $("#dari_tanggal2").val();
+                      d.sampai_tanggal = $("#sampai_tanggal2").val();
+                      d.konsumen = $("#kd_pelanggan").val();
+                      d.sales = $("#sales").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+                      type: "post",  // method  , by default get
+                  error: function(){  // error handling
+                    $(".tbody").html("");
+                    $("#tableuser").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                    $("#tableuser_processing").css("display","none");
+                    
+                  }
+                }
+          
+              });
+		
+    $("#cetak_true").show();
+    $("#btn-download-true").show();
+     $("#cetak_true").attr("href", "cetak_laporan_penjualan_piutang_konsumen.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&konsumen="+konsumen+"&sales="+sales+"");
+	 $("#btn-download-true").attr("href", "download_lap_penjualan_piutang_konsumen.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&konsumen="+konsumen+"&sales="+sales+"");
+	$("#cetak_non").hide();
+    $("#btn-download-non").hide();
+
+
 		
 		});      
 		$("form").submit(function(){
@@ -103,6 +270,31 @@ include 'db.php';
 
 
 
+      <script type="text/javascript">
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});   
+      </script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+
+    $("#per_konsumen").click(function(){    
+
+    $("#rekap_konsumen").show();
+    $("#rekap_non_konsumen").hide();
+
+    });
+
+   $("#non_konsumen").click(function(){  
+  
+    $("#rekap_konsumen").hide();
+    $("#rekap_non_konsumen").show();
+    });
+
+
+
+});
+</script>	
 
 <?php 
 include 'footer.php';
