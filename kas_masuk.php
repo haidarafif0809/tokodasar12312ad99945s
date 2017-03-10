@@ -278,12 +278,12 @@ if ($kas_masuk['kas_masuk_hapus'] > 0) {
 		var no_faktur = $("#hapus_no_faktur").val();
 
 		$.post("hapus_kas_masuk.php",{id:id,no_faktur:no_faktur},function(data){
-		if (data != "") {
+
 
 		$("#modal_hapus").modal('hide');
 		$(".tr-id-"+id).remove();
 		
-		}
+
 		
 		});
 		

@@ -254,7 +254,7 @@ if ($kas_keluar['kas_keluar_hapus'] > 0) {
 <script type="text/javascript">
 			
 //fungsi hapus data 
-		$(".btn-hapus").click(function(){
+		$(document).on('click','.btn-hapus',function(e){
 		var no_faktur = $(this).attr("no-faktur");
 		var id = $(this).attr("data-id");
 		$("#hapus_no_faktur").val(no_faktur);
@@ -265,18 +265,18 @@ if ($kas_keluar['kas_keluar_hapus'] > 0) {
 		
 		});
 		
-		$("#btn_jadi_hapus").click(function(){
+		$(document).on('click','#btn_jadi_hapus',function(e){
 		
 		var id = $(this).attr("data-id");
 		var no_faktur = $("#hapus_no_faktur").val();
 
 		$.post("hapus_kas_keluar.php",{id:id,no_faktur:no_faktur},function(data){
-		if (data != "") {
+
 
 		$("#modal_hapus").modal('hide');
 		$(".tr-id-"+id).remove();
 		
-		}
+
 		
 		});
 		
