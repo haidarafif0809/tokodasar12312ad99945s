@@ -16,11 +16,14 @@ $suplier = $_GET['suplier'];
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
-   
+    $potongan = $data0['potongan'];
 
-    $query3 = $db->query("SELECT SUM(jumlah_barang) as total_item FROM detail_pembelian WHERE no_faktur = '$no_faktur'");
+    $query3 = $db->query("SELECT SUM(jumlah_barang) as total_item, SUM(subtotal) as sub_total FROM detail_pembelian WHERE no_faktur = '$no_faktur'");
     $data3 = mysqli_fetch_array($query3);
     $total_item = $data3['total_item'];
+    $sub_total = $data3['sub_total'];
+
+    $potongan_persen = $potongan / $sub_total * 100;
 
     $query04 = $db->query("SELECT SUM(kredit) as total_kredit FROM pembelian WHERE no_faktur = '$no_faktur'");
     $data04 = mysqli_fetch_array($query04);
@@ -156,8 +159,8 @@ $suplier = $_GET['suplier'];
   <tbody>
 
       <tr><td width="75%">Jumlah Item</td> <td> :&nbsp;</td> <td> <?php echo $total_item; ?> </td></tr>
-      <tr><td  width="75%">Potongan</td> <td> :&nbsp;</td> <td> <?php echo rp($data0['potongan']); ?> </td>
-      </tr>
+      <tr><td  width="75%">Potongan</td> <td> :&nbsp;</td> <td> <?php echo rp($data0['potongan']); ?> </td></tr>
+      <tr><td  width="75%">Potongan (%)</td> <td> : </td> <td> <?php echo persen(round($potongan_persen)); ?> </td></tr>
       <tr><td  width="75%">Pajak</td> <td> :&nbsp;</td> <td> <?php echo rp($data0['tax']); ?></td></tr>
             
   </tbody>

@@ -66,7 +66,7 @@ include 'db.php';
 
 
 
-    <center> <h4> <b> Faktur Penjualan Piutang</b> </h4> </center>
+    <center> <h4> <b> Faktur Penjualan</b> </h4> </center>
 
 
   <div class="row">
