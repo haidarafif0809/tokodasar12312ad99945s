@@ -20,7 +20,7 @@ $total_piutang = $data['jumlah_piutang'];
 $hitungan_total_piutang = $total_akhir + $total_piutang; 
 $hitung = $flafon - $hitungan_total_piutang;
 
-if($hitung <= 0)
+if($hitung < 0)
 {
 	echo "1";
 }
