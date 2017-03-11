@@ -16,7 +16,6 @@ $otoritas_kolom = mysqli_fetch_array($pilih_akses_kolom);
 
 
 $session_id = session_id();
-include 'modal_reminder_jatuh_tempo_hutang.php';
  ?>
 
 <!-- js untuk tombol shortcut -->
@@ -343,7 +342,7 @@ include 'modal_reminder_jatuh_tempo_hutang.php';
     <input style="height:15px;" type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah" >
   </div>
 
-  <div class="col-sm-2">
+  <div class="col-sm-1">
           
           <select style="font-size:15px; height:35px" type="text" name="satuan_konversi" id="satuan_konversi" class="form-control"  required="">
           
@@ -369,16 +368,16 @@ include 'modal_reminder_jatuh_tempo_hutang.php';
 <?php endif ?>
 
 
-   <div class="col-sm-2">
-    <input style="height:15px;" type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Potongan">
+   <div class="col-sm-1">
+    <input style="height:15px;" type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" data-toggle="tooltip" data-placement="top" title="Jika Ingin Potongan Dalam Bentuk Persen (%), input : 10%" placeholder="Disc.">
   </div>
 
    <div class="col-sm-1">
     <input style="height:15px;" type="text" class="form-control" name="tax" autocomplete="off" id="tax1" placeholder="Tax%" >
   </div>
 
-  <div class="col-sm-12">
-  <button type="submit" id="submit_produk" class="btn btn-success" style="font-size:15px" >Submit (F3)</button>
+  <div class="col-sm-2">
+  <button type="submit" id="submit_produk" class="btn btn-success" style="font-size:15px" > <i class="fa fa-plus"></i>Submit (F3)</button>
   </div>
 
 </div>
@@ -434,7 +433,7 @@ include 'modal_reminder_jatuh_tempo_hutang.php';
                 <td style='font-size:15px' align='right'><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
                 <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>";
 
-               echo "<td style='font-size:15px'> <button class='btn btn-danger btn-hapus-tbs' id='btn-hapus-".$data1['id']."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td> 
+               echo "<td style='font-size:15px'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='btn-hapus-".$data1['id']."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td> 
 
                 </tr>";
 
@@ -1022,25 +1021,7 @@ $(document).ready(function(){
       
       </script>
 
-<script type="text/javascript">
-  
-        $(document).ready(function(){
-        $("#kode_barcode").blur(function(){
 
-          var kode_barang = $("#kode_barcode").val();
-       
-          $.post("nama_barcode.php",{kode_barang: kode_barang}, function(data){
-          $("#ber_stok").val(data);
-          });
-
-
-
-        });
-        });
-
-      
-      
-</script>
 
     <script>
    
@@ -1050,6 +1031,7 @@ $(document).ready(function(){
     var kode_barang = $("#kode_barcode").val();
     var level_harga = $("#level_harga").val();
     var sales = $("#sales").val();
+
 
    $("#jumlah_barang").val('');
    $("#kode_barcode").val('');
@@ -1067,17 +1049,22 @@ else{
 $("#kode_barcode").focus();
 $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harga},function(data){
 
-
         $(".tr-kode-"+kode_barang+"").remove();
         $("#ppn").attr("disabled", true);
-        $("#tbody").prepend(data);
+        $("#tbody").prepend(data);    
         $("#kode_barang").val('');
         $("#nama_barang").val('');
+        $("#harga_produk").val('');
+        $("#ber_stok").val('');
         $("#jumlah_barang").val('');
         $("#potongan1").val('');
         $("#tax1").val('');
       
-  var session_id = $("#session_id").val();
+
+     
+     });
+}
+
         
         $.get("cek_total_seluruh.php",
         function(data){
@@ -1085,9 +1072,6 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
         $("#total1").val(data);
 
         });
-     
-     });
-}
 
 });
 
@@ -1166,7 +1150,7 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
 
 $("#kode_barang").focus();
 $("#total1").val(tandaPemisahTitik(total_akhir));
-    $("#total2").val(tandaPemisahTitik(total_akhir));
+$("#total2").val(tandaPemisahTitik(total_akhir));
 
  $.post("prosestbspenjualan.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan,sales:sales, level_harga:level_harga},function(data){
      

@@ -1,5 +1,5 @@
 <?php session_start();
 
-	$_SESSION['printer'] = 0;
+	echo $_SESSION['printer'] = 0;
 
  ?>

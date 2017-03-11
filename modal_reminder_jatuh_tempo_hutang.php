@@ -4,7 +4,7 @@
     $select_waktu_jatuh_tempo = $db->query("SELECT waktu FROM setting_waktu_reminder ");
     $data_jatuh_tempo = mysqli_fetch_array($select_waktu_jatuh_tempo);
     $jatuh_tempo = $data_jatuh_tempo['waktu'];
-    $satu_menit = 60 * 1000;
+    $satu_menit = 6 * 1000;
     $waktu_jatuh_tempo = $satu_menit * $jatuh_tempo;
 
     $tanggal_sekarang = date('Y-m-d');
@@ -16,13 +16,15 @@
     $pilih_akses_peringatan = $db->query("SELECT peringatan_jatuh_tempo_hutang FROM otoritas_setting WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
     $otoritas_peringatan = mysqli_fetch_array($pilih_akses_peringatan);
 
+   
 ?>
 
 
 <input type="hidden" id="waktu_jatuh_tempo" value="<?php echo $waktu_jatuh_tempo; ?>"/>
 <input type="hidden" id="row_tanggal_jt" value="<?php echo $row_tanggal_jt; ?>"/>
+<input type="hidden" id="session_print" value="<?php echo $_SESSION['printer']; ?>"/>
 
-<input type="button" style="display: none" id="btn-tampil-modal" value="Click Me" onclick="waktuReminder()"/>
+<button  type="button" style="display: none" id="btn-tampil-modal" value="Click Me" onclick="waktuReminder()" ></button>
 
 
 <!-- Modal Tampilkan Produk yang promo -->
@@ -61,8 +63,8 @@
 
       </div>
       <div class ="modal-footer">
-        <button type ="button" id="btn-iya" class="btn btn-sm btn-warning" value="Tampil Lagi">Yes</button>
-        <button type ="button" id="btn-tidak" class="btn btn-sm btn-default" value="Tidak Tampil Lagi" >Close</button>
+        <button type ="button" id="btn-iya" class="btn btn-warning" value="Tampil Lagi">Yes</button>
+        <button type ="button" id="btn-tidak" class="btn btn-default" value="Tidak Tampil Lagi" >Close</button>
       </div>
   </div>
 
@@ -74,52 +76,49 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function(){
-      <?php if ($otoritas_peringatan['peringatan_jatuh_tempo_hutang'] == 1): ?>
-        <?php if ($_SESSION['printer'] == 1 AND $row_tanggal_jt > 0): ?>
-            btnReminder = setInterval("$('#btn-tampil-modal').click()",1000); 
-        <?php endif ?>
-      <?php endif ?>
-        
-    });
-</script>
+  var session_print = $("#session_print").val();
+  var row_tanggal_jt = $("#row_tanggal_jt").val();
+  var waktu_jatuh_tempo = $("#waktu_jatuh_tempo").val();
 
-<script type="text/javascript">
-var waktu_jatuh_tempo = $("#waktu_jatuh_tempo").val();
-
-  function waktuReminder(){
-      reminderId = setInterval("$('#modal_reminder').show();",waktu_jatuh_tempo);
-
+  function tampilModal(){
+    $('#modal_reminder').modal("show");
   }
 
+  function waktuReminder(){
+    reminderId = setInterval(tampilModal,waktu_jatuh_tempo);
+  }
+
+// Untuk menjalankan function waktuReminder
+      <?php if ($otoritas_peringatan['peringatan_jatuh_tempo_hutang'] == 1): ?>
+        if (session_print == 1 && row_tanggal_jt > 0) {
+          waktuReminder();         
+        }
+      <?php endif ?>
+        
 </script>
+
 
 <script type="text/javascript">
 
 $(document).ready(function(){
   $(document).on('click','#btn-iya',function(){
-        $("#modal_reminder").hide();
 
+        $("#modal_reminder").modal("hide");
     });
-});
 
-</script>
-
-<script type="text/javascript">
-
-$(document).ready(function(){
   $(document).on('click','#btn-tidak',function(){
-        $("#modal_reminder").hide();
-        clearInterval(reminderId);
-        clearInterval(btnReminder);
-      $.get("destroy_session_printer.php",function(data){
-
-      });
+        $("#modal_reminder").modal('hide');
+        $.get("destroy_session_printer.php",function(data){
+          $("#session_print").val(data);
+        });
+        clearInterval(reminderId);  
     });
+
 });
 
 </script>
 
+<!-- DATATABLE-->
 <script type="text/javascript">
 $(document).ready(function(){
     $('#table-hutang-jt').DataTable();

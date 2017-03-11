@@ -228,7 +228,7 @@ $jumlah = mysqli_num_rows($cek);
                 <td><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
                 <td><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>";
 
-                echo "<td style='font-size:15px'> <button class='btn btn-danger btn-hapus-tbs' id='hapus-tbs-".$data1['id']."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td> 
+                echo "<td style='font-size:15px'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='hapus-tbs-".$data1['id']."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td> 
 
                 </tr>";
 
