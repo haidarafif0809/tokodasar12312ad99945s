@@ -183,6 +183,9 @@ $laporan_piutang_beredar_lihat = stringdoang(isset($_POST['laporan_piutang_bered
 $harga_produk_penjualan = stringdoang(isset($_POST['harga_produk_penjualan']));
 
 
+$menu_setting_lihat = stringdoang(isset($_POST['menu_setting_lihat']));
+$peringatan_jatuh_tempo_hutang = stringdoang(isset($_POST['peringatan_jatuh_tempo_hutang']));
+
 $update_otoritas_item_keluar = $db->prepare("UPDATE otoritas_item_keluar SET item_keluar_lihat = ?, item_keluar_tambah = ?, item_keluar_edit = ?, item_keluar_hapus = ? WHERE id_otoritas = ?");
 
 $update_otoritas_item_keluar->bind_param("iiiii",
@@ -305,7 +308,15 @@ $update_otoritas_transaksi_kas->bind_param("ii",
 $update_otoritas_transaksi_kas->execute();
 
 
-header('location: form_hak_akses.php?nama='.$nama.'&id='.$id.'');
+$update_otoritas_setting = $db->prepare("UPDATE otoritas_setting SET menu_setting_lihat = ?, peringatan_jatuh_tempo_hutang = ? WHERE id_otoritas = ?");
+
+$update_otoritas_setting->bind_param("iii",
+    $menu_setting_lihat, $peringatan_jatuh_tempo_hutang, $id);
+
+$update_otoritas_setting->execute();
+
+
+header('location: hak_otoritas.php?nama='.$nama.'&id='.$id.'');
 
 
 //Untuk Memutuskan Koneksi Ke Database

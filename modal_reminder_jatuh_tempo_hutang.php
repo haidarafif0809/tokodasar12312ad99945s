@@ -11,6 +11,10 @@
 
     $ambil_jatuh_tempo = $db->query("SELECT p.tanggal_jt, p.suplier, p.kredit, s.nama AS nama_suplier FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id WHERE p.tanggal_jt = '$tanggal_sekarang'");
     $row_tanggal_jt = mysqli_num_rows($ambil_jatuh_tempo);
+    
+
+    $pilih_akses_peringatan = $db->query("SELECT peringatan_jatuh_tempo_hutang FROM otoritas_setting WHERE id_otoritas = '$_SESSION[otoritas_id]' ");
+    $otoritas_peringatan = mysqli_fetch_array($pilih_akses_peringatan);
 
 ?>
 
@@ -66,11 +70,15 @@
 </div><!-- end of modal buat data  -->
 
 
+  
+
 
 <script type="text/javascript">
     $(document).ready(function(){
-      <?php if ($_SESSION['printer'] == 1): ?>
-          btnReminder = setInterval("$('#btn-tampil-modal').click()",1000); 
+      <?php if ($otoritas_peringatan['peringatan_jatuh_tempo_hutang'] == 1): ?>
+        <?php if ($_SESSION['printer'] == 1 AND $row_tanggal_jt > 0): ?>
+            btnReminder = setInterval("$('#btn-tampil-modal').click()",1000); 
+        <?php endif ?>
       <?php endif ?>
         
     });

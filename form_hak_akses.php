@@ -10,7 +10,7 @@
     $nama = $_GET['nama'];
     $id = $_GET['id'];
 
-    $otoritas_akses = $db->query("SELECT * FROM hak_otoritas ho INNER JOIN otoritas_penjualan open ON ho.id = open.id_otoritas INNER JOIN otoritas_pembelian opem ON ho.id = opem.id_otoritas INNER JOIN otoritas_master_data omd ON ho.id = omd.id_otoritas INNER JOIN otoritas_pembayaran opemb ON ho.id = opemb.id_otoritas INNER JOIN otoritas_transaksi_kas otk ON ho.id = otk.id_otoritas INNER JOIN otoritas_kas_keluar okk ON ho.id = okk.id_otoritas INNER JOIN otoritas_kas_masuk okm ON ho.id = okm.id_otoritas INNER JOIN otoritas_kas_mutasi okmut ON ho.id = okmut.id_otoritas INNER JOIN otoritas_persediaan operse ON ho.id = operse.id_otoritas INNER JOIN otoritas_stok_opname oso ON ho.id = oso.id_otoritas INNER JOIN otoritas_stok_awal osa ON ho.id = osa.id_otoritas INNER JOIN otoritas_item_masuk oim ON ho.id = oim.id_otoritas INNER JOIN otoritas_item_keluar oik ON ho.id = oik.id_otoritas INNER JOIN otoritas_kas ok ON ho.id = ok.id_otoritas INNER JOIN otoritas_laporan ol ON ho.id = ol.id_otoritas WHERE ho.id = '$id'");
+    $otoritas_akses = $db->query("SELECT * FROM hak_otoritas ho INNER JOIN otoritas_penjualan open ON ho.id = open.id_otoritas INNER JOIN otoritas_pembelian opem ON ho.id = opem.id_otoritas INNER JOIN otoritas_master_data omd ON ho.id = omd.id_otoritas INNER JOIN otoritas_pembayaran opemb ON ho.id = opemb.id_otoritas INNER JOIN otoritas_transaksi_kas otk ON ho.id = otk.id_otoritas INNER JOIN otoritas_kas_keluar okk ON ho.id = okk.id_otoritas INNER JOIN otoritas_kas_masuk okm ON ho.id = okm.id_otoritas INNER JOIN otoritas_kas_mutasi okmut ON ho.id = okmut.id_otoritas INNER JOIN otoritas_persediaan operse ON ho.id = operse.id_otoritas INNER JOIN otoritas_stok_opname oso ON ho.id = oso.id_otoritas INNER JOIN otoritas_stok_awal osa ON ho.id = osa.id_otoritas INNER JOIN otoritas_item_masuk oim ON ho.id = oim.id_otoritas INNER JOIN otoritas_item_keluar oik ON ho.id = oik.id_otoritas INNER JOIN otoritas_kas ok ON ho.id = ok.id_otoritas INNER JOIN otoritas_laporan ol ON ho.id = ol.id_otoritas INNER JOIN otoritas_setting oset ON ho.id = oset.id_otoritas WHERE ho.id = '$id'");
     $data_otoritas = mysqli_fetch_array($otoritas_akses);
 
 
@@ -2169,65 +2169,7 @@ else{
 
 </div> <!-- / of otoritas transaksi_jurnal_manual -->
 
-<div class="form-group col-sm-2"> <!-- start otoritas / -->
-<label>Daftar Pajak</label><br>
 
-<?php 
-
-if ($data_otoritas['daftar_pajak_lihat'] == '1'){
-    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1322" name="daftar_pajak_lihat" checked="">
-    <label for="checkbox1322">Lihat</label> <br>';
-}
-
-else{
-    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1322" name="daftar_pajak_lihat">
-    <label for="checkbox1322">Lihat</label> <br>';  
-}
-
- ?>
-
-<?php 
-
-if ($data_otoritas['daftar_pajak_tambah'] == '1'){
-    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1332" name="daftar_pajak_tambah" checked="">
-    <label for="checkbox1332">tambah</label> <br>';
-}
-
-else{
-    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1332" name="daftar_pajak_tambah">
-    <label for="checkbox1332">tambah</label> <br>';  
-}
-
- ?>
-
-<?php 
-
-if ($data_otoritas['daftar_pajak_edit'] == '1'){
-    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1321" name="daftar_pajak_edit" checked="">
-    <label for="checkbox1321">Edit</label> <br>';
-}
-
-else{
-    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1321" name="daftar_pajak_edit">
-    <label for="checkbox1321">Edit</label> <br>';  
-}
-
- ?>
-
-<?php 
-
-if ($data_otoritas['daftar_pajak_hapus'] == '1'){
-    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1334" name="daftar_pajak_hapus" checked="">
-    <label for="checkbox1334">Hapus</label> <br>';
-}
-
-else{
-    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="checkbox1334" name="daftar_pajak_hapus">
-    <label for="checkbox1334">Hapus</label> <br>';  
-}
-
- ?>
-</div> <!-- /  -->
 
 
 <div style="display: none" class="form-group col-sm-2"> <!-- start otoritas laporan_pemasukan_tanggal -->
@@ -2603,6 +2545,38 @@ else{
 
 </div> <!-- / of otoritas lap_hutangpembelian - piutang penjualan -->
 
+
+<div class="form-group col-sm-3"> <!-- start otoritas harga produk penjualan -->
+<label>Setting</label><br>
+<?php 
+if ($data_otoritas['menu_setting_lihat'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="menu_setting_lihat" name="menu_setting_lihat" checked=""> 
+    <label for="menu_setting_lihat">Menu Setting </label><br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="menu_setting_lihat" name="menu_setting_lihat"> 
+    <label for="menu_setting_lihat">Menu Setting </label><br>';  
+}
+
+?>
+
+<?php 
+if ($data_otoritas['peringatan_jatuh_tempo_hutang'] == '1'){
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="peringatan_jatuh_tempo_hutang" name="peringatan_jatuh_tempo_hutang" checked=""> 
+    <label for="peringatan_jatuh_tempo_hutang">Peringatan Jatuh Tempo Hutang </label><br>';
+}
+
+else{
+    echo '<input type="checkbox" value="1" class="cekcbox filled-in" id="peringatan_jatuh_tempo_hutang" name="peringatan_jatuh_tempo_hutang"> 
+    <label for="peringatan_jatuh_tempo_hutang">Peringatan Jatuh Tempo Hutang </label><br>';  
+}
+
+?>
+
+</div> <!-- / of otoritas lap_retur pembelian - harga produk penjualan-->
+
+
 <div class="col-sm-12">
     
 </div>
@@ -2623,6 +2597,7 @@ else{
 ?>
 
 </div> <!-- / of otoritas lap_retur pembelian - harga produk penjualan-->
+
 
 
 

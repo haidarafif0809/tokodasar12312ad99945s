@@ -21,9 +21,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <div class="container">
 
-<?php 
-include 'modal_reminder_jatuh_tempo_hutang.php';
- ?>
 
 <h3><b> SETTING WAKTU REMINDER </b></h3><hr>
 <div class="table-responsive">
