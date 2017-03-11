@@ -150,7 +150,7 @@ echo '<a href="formpembelian.php"  class="btn btn-info"> <i class="fa fa-plus"> 
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="table-baru" > 
-<table id="tableuser" class="table table-bordered">
+<table id="tableuser" class="table table-bordered table-sm">
 		<thead>
 			<th> Detail </th>
 
@@ -186,7 +186,7 @@ $pembelian_hapus = mysqli_num_rows($pilih_akses_pembelian_hapus);
 			<th> Suplier </th>
 			<th> Total </th>
 			<th> Tanggal </th>
-			<th> Tanggal Jatuh Tempo </th>
+			<th> Tanggal JT </th>
 			<th> Jam </th>
 			<th> User </th>
 			<th> Status </th>
@@ -258,7 +258,7 @@ $pembelian_hapus = mysqli_num_rows($pilih_akses_pembelian_hapus);
 
 			if ($data1['status'] == 'Lunas') {
 
-			echo "<td> <a href='cetak_lap_pembelian_tunai.php?no_faktur=".$data1['no_faktur']."&suplier=".$data1['nama']."' id='cetak_tunai' class='btn btn-primary' target='blank'><span class='glyphicon glyphicon-print' > </span> Cetak Tunai </a> </td>";
+			echo "<td> <a href='cetak_lap_pembelian_tunai.php?no_faktur=".$data1['no_faktur']."&suplier=".$data1['nama']."' id='cetak_tunai' class='btn btn-primary' target='blank'><span class='glyphicon glyphicon-print' > </span> Cetak </a> </td>";
 }
 
 else{
@@ -269,7 +269,7 @@ else{
 
 			
 if ($data1['status'] == 'Hutang'){
-	echo "<td> <a href='cetak_lap_pembelian_hutang.php?no_faktur=".$data1['no_faktur']."&suplier=".$data1['nama']."' id='cetak_piutang' class='btn btn-primary' target='blank'><span class='glyphicon glyphicon-print' > </span> Cetak Hutang </a> </td>";
+	echo "<td> <a href='cetak_lap_pembelian_hutang.php?no_faktur=".$data1['no_faktur']."&suplier=".$data1['nama']."' id='cetak_piutang' class='btn btn-primary' target='blank'><span class='glyphicon glyphicon-print' > </span> Cetak </a> </td>";
 }
 
 else {

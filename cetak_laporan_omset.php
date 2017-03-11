@@ -16,7 +16,7 @@ $data_sum_omset = mysqli_fetch_array($sum_omset_penjualan);
  ?>
 
 
-<div class="container">
+ <div style="padding-left: 5%; padding-right: 5%">
  <div class="row"><!--row1-->
         <div class="col-sm-2">
                 <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 

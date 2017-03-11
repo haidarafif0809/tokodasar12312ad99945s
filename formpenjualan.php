@@ -16,7 +16,7 @@ $otoritas_kolom = mysqli_fetch_array($pilih_akses_kolom);
 
 
 $session_id = session_id();
-
+include 'modal_reminder_jatuh_tempo_hutang.php';
  ?>
 
 <!-- js untuk tombol shortcut -->

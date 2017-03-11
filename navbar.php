@@ -135,20 +135,9 @@ if ($lihat['set_akun_lihat'] > 0){
 }
 ?>
 
-<li><a href="setting_antrian_pelanggan.php" class="waves-effect">Setting Antrian</a></li>
 
 <?php
-if ($lihat['set_perusahaan_lihat'] > 0){
-                                echo '<li><a href="setting_perusahaan.php" class="waves-effect">Data Perusahaan</a></li>';
-}
 
-if ($lihat['set_diskon_tax_lihat'] > 0){
-                                echo '<li><a href="set_diskon_tax.php" class="waves-effect">Default Diskon & Pajak</a></li>';
-}
-
-if ($lihat['daftar_pajak_lihat'] > 0){
-                                echo '<li><a href="daftar_pajak.php" class="waves-effect">Daftar Pajak</a></li>';
-}
  
   if ($lihat['master_data_lihat'] > 0){                           
                           echo ' </ul>
@@ -353,11 +342,38 @@ if ($lihat['laporan_lihat'] > 0){
                     </li>';
 }
 
+// MENU SETTING
+echo '<li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-cogs"></i> Setting <i class="fa fa-angle-down rotate-icon"></i></a>
+  <div class="collapsible-body">
+     <ul>';
+
+        echo '<li><a href="setting_antrian_pelanggan.php" class="waves-effect">Setting Antrian</a></li>';
+
+            if ($lihat['set_diskon_tax_lihat'] > 0){
+                    echo '<li><a href="set_diskon_tax.php" class="waves-effect">Setting Diskon</a></li>';
+            }
+
+            if ($lihat['set_perusahaan_lihat'] > 0){
+                    echo '<li><a href="setting_perusahaan.php" class="waves-effect">Setting Perusahaan</a></li>';
+            }
+
+            echo '<li><a href="seeting_waktu_reminder.php" class="waves-effect">Setting Reminder</a></li>';
+
+            if ($lihat['daftar_pajak_lihat'] > 0){
+                    echo '<li><a href="daftar_pajak.php" class="waves-effect">Daftar Pajak</a></li>';
+            }
+echo '</ul>
+  </div>
+</li>';
+// MENU SETTING
 
  if ($lihat['kas_lihat'] > 0){
                 echo '<li><a href="kas.php" class="waves-effect"> <i class="fa fa-money"></i> Posisi Kas </a></li>';
 }
+
+
 ?>
+
                 <li><a href="https://www.andaglos.com" class="waves-effect"> <i class="fa fa-envelope"></i> Contact Us </a></li>
                     
 
@@ -429,3 +445,8 @@ if ($lihat['laporan_lihat'] > 0){
     <!--/Double navigation-->
 
     <main>
+
+    
+<?php 
+include 'modal_reminder_jatuh_tempo_hutang.php';
+ ?>

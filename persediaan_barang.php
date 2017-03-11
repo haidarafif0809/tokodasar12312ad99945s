@@ -127,7 +127,7 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
                 </div>
                 <div class="modal-body">
 
-                    <form enctype="multipart/form-data" role="form" action="prosesbarang.php" method="post">
+                    <form enctype="multipart/form-data" role="form" action="proses_barang_jasa.php" method="post">
 
                         <div class="form-group">
                             <label> Kode Barang </label>
