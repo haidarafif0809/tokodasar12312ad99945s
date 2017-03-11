@@ -73,8 +73,7 @@ include 'sanitasi.php';
   </script>
 
 <!--untuk membuat agar tampilan form terlihat rapih dalam satu tempat -->
- <div class="container">
-
+ <div style="padding-left: 5%; padding-right: 5%">
 
   <!--membuat teks dengan ukuran h3-->      
   <h3>EDIT PENJUALAN </h3><br>
@@ -85,25 +84,17 @@ include 'sanitasi.php';
 <div class="col-sm-8">
   
 
+
+ <div class="row">
+
 <!-- membuat form menjadi beberpa bagian -->
   <form enctype="multipart/form-data" role="form" action="formpenjualan.php" method="post ">
         
 
 
-<div class="form-group col-sm-6">
-    <label> Nomor Faktur </label>
-    <input type="text" name="no_faktur" id="nomor_faktur_penjualan" class="form-control" readonly="" value="<?php echo $nomor_faktur; ?>" required="" >
-</div>
 
 
-
-<div class="form-group  col-sm-6">
-      <label> Tanggal </label><br>
-      <input type="text" name="tanggal" id="tanggal"  value="<?php echo $ambil_tanggal['tanggal']; ?>" class="form-control tanggal" >
-</div>
-
-
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-3">
   <label> Kode Pelanggan </label>
   <select type="text" name="kode_pelanggan" id="kd_pelanggan" class="form-control chosen"  required="" autofocus="">
   <option value="<?php echo $kode_pelanggan; ?>"><?php echo $kode_pelanggan; ?></option>
@@ -125,7 +116,7 @@ include 'sanitasi.php';
   </select>
   </div>
 
-  <div class="form-group  col-sm-6">
+  <div class="form-group  col-sm-2">
           <label> Gudang </label><br>
           
           <select name="kode_gudang" id="kode_gudang" class="form-control chosen" required="" >
@@ -147,7 +138,7 @@ include 'sanitasi.php';
           </select>
 </div>
 
-<div class="form-group col-sm-3">
+<div class="form-group col-sm-2">
   <label> Level Harga </label><br>
   <select type="text" name="level_harga" id="level_harga" class="form-control" required="" >
   <option>Level 1</option>
@@ -159,7 +150,7 @@ include 'sanitasi.php';
 
 
 
-  <div class="form-group  col-sm-3">
+  <div class="form-group col-sm-2">
 <label>Sales</label>
 <select name="sales" id="sales" class="form-control" required="">
 
@@ -181,10 +172,7 @@ include 'sanitasi.php';
 </select>
 </div>
 
-
-
-
-<div class="form-group  col-sm-3">
+<div class="form-group col-sm-2">
           <label>PPN</label>
           <select name="ppn" id="ppn" class="form-control">
             <option value="<?php echo $ppn; ?>"><?php echo $ppn; ?></option>  
@@ -194,41 +182,7 @@ include 'sanitasi.php';
           </select>
 </div>
 
-<div class="form-group  col-sm-3">
-      <label> Cara Bayar </label><br>
-          <select type="text" name="cara_bayar" id="carabayar1" class="form-control" required=""  style="font-size: 16px" >
-          <option value=""> Silahkan Pilih </option>
-             <?php 
-             
-             
-             $sett_akun = $db->query("SELECT sa.kas, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.kas = da.kode_daftar_akun");
-             $data_sett = mysqli_fetch_array($sett_akun);
-             
-             
-             
-             echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
-             
-             $query = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
-             while($data = mysqli_fetch_array($query))
-             {
-             
-             
-             
-             
-             echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
-             
-             
-             
-             
-             }
-             
-             
-             ?>
-          
-          </select>
 </div>
-
-<input type="hidden" name="ppn_input" id="ppn_input" value="<?php echo $ppn; ?>" class="form-control" placeholder="ppn input">  
 
 
 <!--
@@ -238,10 +192,6 @@ include 'sanitasi.php';
         
 
   </form><!--tag penutup form-->
-
-
-<button type="button" id="cari_produk_penjualan" class="btn btn-info" data-toggle="modal" data-target="#myModal"><span class='glyphicon glyphicon-search'> </span> Cari </button>
-<br><br>
 
 
 <!--tampilan modal-->
@@ -497,34 +447,52 @@ include 'sanitasi.php';
   </div>
 </div>
 
+<div class="row">
+  
 
+<div class="form-group col-sm-2">
+    <label> Nomor Faktur </label>
+    <input type="text" name="no_faktur" id="nomor_faktur_penjualan" class="form-control" readonly="" value="<?php echo $nomor_faktur; ?>" required="" >
+</div>
+
+
+
+<div class="form-group  col-sm-2">
+      <label> Tanggal </label><br>
+      <input type="text" name="tanggal" id="tanggal"  value="<?php echo $ambil_tanggal['tanggal']; ?>" class="form-control tanggal" >
+</div>
+</div>
 <!-- membuat form prosestbspenjual -->
 <form class="form" action="proses_tambah_edit_penjualan.php" role="form" id="formtambahproduk">
-<div class="row 1">
-  <div class="col-sm-3">
-    <div class="form-group">
+<br>
+
+<div class="form-group">
+    <button type="button" id="cari_produk_penjualan" class="btn btn-info" data-toggle="modal" data-target="#myModal"> Cari </button>
+</div>
+
+
+<div class="row">
+
+
+<input type="hidden" name="ppn_input" id="ppn_input" value="<?php echo $ppn; ?>" class="form-control" placeholder="ppn input">  
+
+
+
+<div class="col-sm-2">
     <input type="text" class="form-control" name="kode_barang" id="kode_barang" autocomplete="off" placeholder="Kode Produk">
-    </div>
-  </div>
+</div>
 
-  <div class="col-sm-4">
-      <div class="form-group">
+<div class="col-sm-3">
       <input type="text" class="form-control" name="nama_barang" id="nama_barang" placeholder="Nama Barang" readonly="">
-      </div>
-  </div>
+</div>
 
-  <div class="col-sm-3">
-      <div class="form-group">
-        <input type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah Barang" required="">
-      </div>
-  </div>
+<div class="col-sm-1">
+    <input type="text" class="form-control" name="jumlah_barang" autocomplete="off" id="jumlah_barang" placeholder="Jumlah Barang" required="">
+</div>
 
-  <div class="col-sm-2">
+<div class="col-sm-2">
     <select type="text" name="satuan_konversi" id="satuan_konversi" class="form-control"  required="" style="height:50px;font-size:15px; width: 100px" >
-          
           <?php 
-          
-          
           $query = $db->query("SELECT id, nama  FROM satuan");
           while($data = mysqli_fetch_array($query))
           {
@@ -536,21 +504,15 @@ include 'sanitasi.php';
           
         </select>
   </div>
-
-</div><!--end div class="row 1"-->
-
-<div class="row">
   
-   <div class="form-group col-sm-3">
+<div class="form-group col-sm-1">
     <input type="text" class="form-control" name="potongan" autocomplete="off" id="potongan1" placeholder="Potongan" >
   </div>
 
 
-      <div class="form-group col-sm-3">
+      <div class="form-group col-sm-1">
       <input type="text" class="form-control" name="tax" autocomplete="off" id="tax1"  placeholder="Pajak (%)" >
       </div>
-
-
 
 
   <input type="hidden" class="form-control" name="jumlah_barang_tbs" id="jumlah_barang_tbs">
@@ -577,11 +539,15 @@ include 'sanitasi.php';
   <input type="hidden" name="no_faktur" id="no_faktur0" class="form-control" value="<?php echo $nomor_faktur; ?>" required="" >
 
   <br>
-  <div class="form-group">        
+  
+<div class="form-group col-sm-1">
   <button type="submit" id="submit_produk" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah</button>
 </div>
+
 </div>
-</form> <!-- tag penutup form --><br><br>
+</form> <!-- tag penutup form -->
+
+
 
 
 
@@ -694,44 +660,69 @@ else{
 
           <br>
 
-
+<div class="card card-block">
+<div class="row">
+          <div class="col-sm-6">
          <label> Subtotal </label><br>
          <input type="text" name="total" id="total2" class="form-control" style="height:15px;font-size:15px" placeholder="Total" readonly="" >
-
-<div class="row">
-  
-          <div class="form-group col-sm-6">
+         </div>
+           <div class="form-group col-sm-6">
 
 
           <label> Diskon ( Rp )</label><br>
           <input type="text" name="potongan" id="potongan_penjualan" value="<?php echo intval($potongan); ?>" style="height:15px;font-size:15px" class="form-control" placeholder="" autocomplete="off"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
 
           </div>
+         </div>
+
+
+<div class="row">
 
           <div class="form-group col-sm-6">      
           <label> Diskon ( % )</label><br>
           <input type="text" name="potongan_persen" id="potongan_persen" value="<?php echo intval($hasil_persen); ?>" style="height:15px;font-size:15px" class="form-control" placeholder="" autocomplete="off" >
           </div>
 
-</div>
-          
-
-
-
-         
-          
-<div class="row">
-  
           <div class="form-group col-sm-6">
-
-
           <label> Pajak </label><br>
           <input type="text" name="tax" id="tax" value="<?php echo $hasil_tax; ?>" style="height:15px;font-size:15px" class="form-control"  autocomplete="off" >
           </div>
 
+</div>
+          
+
+          
+<div class="row">
+  
+
+
           <div class="form-group col-sm-6">
           <label> Tanggal Jatuh Tempo </label><br>
           <input type="text" name="tanggal_jt" id="tanggal_jt" style="height:15px;font-size:15px"  value="" class="form-control tanggal" >
+          </div>
+
+           <div class="col-sm-6">
+
+      <label> Cara Bayar </label><br>
+          <select type="text" name="cara_bayar" id="carabayar1" class="form-control" required=""  style="font-size: 16px" >
+          <option value=""> Silahkan Pilih </option>
+             <?php 
+             
+             $sett_akun = $db->query("SELECT sa.kas, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.kas = da.kode_daftar_akun");
+             $data_sett = mysqli_fetch_array($sett_akun);
+             
+             echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
+             
+             $query = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
+             while($data = mysqli_fetch_array($query))
+             {
+             
+             echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
+             
+             }
+             ?>
+          
+          </select>
           </div>
 
 </div>
@@ -743,12 +734,22 @@ else{
           
           
 
+<div class="row">
           
+
+<div class="col-sm-6">
           <label style="font-size:15px"> Total Akhir</label><br>
           <b><input type="text" name="total" id="total1" class="form-control" value="<?php echo $total_akhir; ?>" style="height: 50px; width:90%; font-size:25px;" placeholder="Total" readonly="" ></b>
+          </div>
 
-          <label> Pembayaran </label><br>
+          <div class="col-sm-6">
+             <label> Pembayaran </label><br>
           <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 50px; width:90%; font-size:25px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"></b>
+          </div>
+                   
+</div>
+
+       
 
 
 <div class="row">
@@ -854,13 +855,8 @@ if ($_SESSION['otoritas'] == 'Pimpinan') {
  
     </form>
 
-
-
-
 </div>
  
-                
-
 </div><!-- end of row -->   
           
           <br>

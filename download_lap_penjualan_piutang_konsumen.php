@@ -1,17 +1,24 @@
 <?php 
-include 'header.php';
-include 'sanitasi.php';
+// Fungsi header dengan mengirimkan raw data excel
+header("Content-type: application/vnd-ms-excel");
+ 
+// Mendefinisikan nama file ekspor "hasil-export.xls"
+header("Content-Disposition: attachment; filename=laporan_penjualan_piutang.xls");
+
 include 'db.php';
+include 'sanitasi.php';
 
 
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
+$konsumen = stringdoang($_GET['konsumen']);
+$sales = stringdoang($_GET['sales']);
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
 
-$query02 = $db->query("SELECT SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 ");
+$query02 = $db->query("SELECT SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 AND kode_pelanggan = '$konsumen' AND sales = '$sales' ");
 $cek02 = mysqli_fetch_array($query02);
 $total_akhir = $cek02['total_akhir'];
 $total_kredit = $cek02['total_kredit'];
@@ -24,11 +31,6 @@ $total_bayar = 0;
  ?>
 <div class="container">
  <div class="row"><!--row1-->
-        <div class="col-sm-2">
-        <br><br>
-                <img src='save_picture/<?php echo $data1['foto']; ?>' class='img-rounded' alt='Cinque Terre' width='160' height='140`'> 
-        </div><!--penutup colsm2-->
-
         <div class="col-sm-6">
                  <h3> <b> LAPORAN PIUTANG NON KONSUMEN / SALES </b></h3>
                  <hr>
@@ -45,14 +47,16 @@ $total_bayar = 0;
 
       <tr><td  width="20%">PERIODE</td> <td> &nbsp;:&nbsp; </td> <td> <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?></td>
       </tr>
+       <tr><td  width="20%">KONSUMEN</td> <td> &nbsp;:&nbsp; </td> <td> <?php echo $konsumen; ?></td>
+      </tr>
+       <tr><td  width="20%">SALES</td> <td> &nbsp;:&nbsp; </td> <td> <?php echo $sales; ?></td>
+      </tr>
             
   </tbody>
 </table>           
                  
         </div><!--penutup colsm4-->
 
-
-        
     </div><!--penutup row1-->
     <br>
     <br>
@@ -74,7 +78,7 @@ $total_bayar = 0;
             <tbody>
             <?php
 
-          $perintah009 = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.sales,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0 ");
+          $perintah009 = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.sales,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0 AND dp.kode_pelanggan = '$konsumen' AND dp.sales = '$sales'");
                   while ($data11 = mysqli_fetch_array($perintah009))
 
                   {
@@ -91,7 +95,7 @@ $tot_bayar = $kel_bayar['total_bayar'];
                   <td>". $data11['tanggal'] ."</td>
                   <td>". $data11['no_faktur'] ."</td>
                   <td>". $data11['nama_pelanggan'] ."</td>
-                  <td>". $data11['user'] ."</td>
+                  <td>". $data11['sales'] ."</td>
                   <td>". rp($data11['total']) ."</td>";
                   if ($num_rows > 0)
                   {
@@ -141,11 +145,3 @@ mysqli_close($db);
 
 
      </div>
-
- <script>
-$(document).ready(function(){
-  window.print();
-});
-</script>
-
-<?php include 'footer.php'; ?>
