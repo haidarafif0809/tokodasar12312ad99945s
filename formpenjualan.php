@@ -40,7 +40,7 @@ include 'modal_reminder_jatuh_tempo_hutang.php';
   </script>
 
 <!--untuk membuat agar tampilan form terlihat rapih dalam satu tempat -->
- <div class="container">
+<div style="padding-left: 5%; padding-right: 2%">
   <h3> FORM PENJUALAN </h3>
 <div class="row">
 
