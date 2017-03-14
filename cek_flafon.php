@@ -13,7 +13,7 @@ $out = mysqli_fetch_array($select);
 $flafon = $out['flafon'];
 
 //cek jumlah total piutang yang sudah di lakukan
-$query = $db->query("SELECT SUM(total) AS jumlah_piutang FROM penjualan WHERE kode_pelanggan = '$kode_pelanggan' AND status = 'Piutang'");
+$query = $db->query("SELECT SUM(kredit) AS jumlah_piutang FROM penjualan WHERE kode_pelanggan = '$kode_pelanggan' AND status = 'Piutang'");
 $data = mysqli_fetch_array($query);
 $total_piutang = $data['jumlah_piutang'];
 
@@ -22,11 +22,11 @@ $hitung = $flafon - $hitungan_total_piutang;
 
 if($hitung < 0)
 {
-	echo "1";
+	echo 1;
 }
 else
 {
-	echo "0";
+	echo 0;
 }
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db); 

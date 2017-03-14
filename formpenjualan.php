@@ -1663,7 +1663,7 @@ alert("Silakan Bayar Piutang");
   if (data == 1) {
 
   //Cek Flafon sesuai dengan kode pelanggan / ID Pelanggannya
-   $.post("cek_flafon.php",{total:total,kode_pelanggan:kode_pelanggan},function(data) {
+   $.post("cek_flafon.php",{kredit:kredit,kode_pelanggan:kode_pelanggan},function(data) {
     if(data == 1)
     {
       alert("Anda Tidak Bisa Melakukan Transaksi Piutang, Cek Jumlah Maximum Piutang");
