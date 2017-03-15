@@ -43,26 +43,28 @@ tr:nth-child(even){background-color: #f2f2f2}
 	</div>
 
 	<div class="col-sm-3">
-    	<label> Sales </label><br>
-  			<select name="sales" id="sales" class="form-control chosen" required="" autofocus="">
+    	<label> Konsumen </label><br>
+  			<select name="kode_pelanggan" id="kode_pelanggan" class="form-control chosen" required="" autofocus="">
+  			<option value="semua">Seluruh Konsumen</option>
 				<?php 
-					$query = $db->query("SELECT nama FROM user WHERE status_sales = 'Iya' ");
+					$query = $db->query("SELECT kode_pelanggan, nama_pelanggan FROM pelanggan");
 					while($data = mysqli_fetch_array($query)){
 					
-						echo "<option value='".$data['nama'] ."'>".$data['nama'] ."</option>";
+						echo "<option value='".$data['kode_pelanggan'] ."'>".$data['kode_pelanggan'] ." - ".$data['nama_pelanggan'] ."</option>";
 					}
 				?>
 			</select>
 	</div>
 
 	<div class="col-sm-3">
-    	<label> Pelanggan </label><br>
-  			<select name="kode_pelanggan" id="kode_pelanggan" class="form-control chosen" required="" autofocus="">
+    	<label> Sales </label><br>
+  			<select name="sales" id="sales" class="form-control chosen" required="" autofocus="">
+  			<option value="semua">Seluruh Sales</option>
 				<?php 
-					$query = $db->query("SELECT kode_pelanggan, nama_pelanggan FROM pelanggan");
+					$query = $db->query("SELECT nama FROM user WHERE status_sales = 'Iya' ");
 					while($data = mysqli_fetch_array($query)){
 					
-						echo "<option value='".$data['kode_pelanggan'] ."'>".$data['kode_pelanggan'] ." - ".$data['nama_pelanggan'] ."</option>";
+						echo "<option value='".$data['nama'] ."'>".$data['nama'] ."</option>";
 					}
 				?>
 			</select>
@@ -84,10 +86,10 @@ tr:nth-child(even){background-color: #f2f2f2}
                           <thead> <!-- untuk memberikan nama pada kolom tabel -->                              
 								<th style="background-color: #4CAF50; color: white;"> Tanggal</th>
 								<th style="background-color: #4CAF50; color: white;"> No. Faktur</th>
-								<th style="background-color: #4CAF50; color: white;"> Nama Pelanggan</th>
+								<th style="background-color: #4CAF50; color: white;"> Nama Konsumen</th>
 								<th style="background-color: #4CAF50; color: white;"> Sales</th>
-								<th style="background-color: #4CAF50; color: white;"> <center>Total Penjualan</center> </th>
 								<th style="background-color: #4CAF50; color: white;"> <center>Total Omset</center> </th>
+								<th style="background-color: #4CAF50; color: white;"> <center>Terbayar</center> </th>
                           
                           </thead> <!-- tag penutup tabel -->
                     </table>
