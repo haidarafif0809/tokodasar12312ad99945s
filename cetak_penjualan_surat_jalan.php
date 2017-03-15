@@ -37,8 +37,9 @@ include 'db.php';
     $setting_bahasa0 = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
     $data200 = mysqli_fetch_array($setting_bahasa0);
 
-    $ubah_tanggal = tanggal($data_inner['tanggal']);
-    $tanggal = date('d F Y', strtotime($ubah_tanggal));
+     $ubah_tanggal = $data_inner['tanggal'];
+     $tanggal = date('d F Y', strtotime($ubah_tanggal));
+
 
  ?>
 <style type="text/css">
