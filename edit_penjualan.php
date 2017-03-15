@@ -1413,6 +1413,18 @@ else{
       else if (jumlah_bayar_lama == 0 || x <= total )
       {
 
+
+  //Cek Flafon sesuai dengan kode pelanggan / ID Pelanggannya
+   $.post("cek_flafon.php",{kredit:kredit,kode_pelanggan:kode_pelanggan},function(data) {
+    if(data == 1)
+    {
+      alert("Anda Tidak Bisa Melakukan Transaksi Piutang, Cek Jumlah Maximum Piutang");
+    }
+
+else
+{
+
+
         $("#penjualan").hide();
         $("#piutang").hide();
         $("#transaksi_baru").show(); 
@@ -1434,7 +1446,15 @@ else{
         });
 
 
-      }
+}// end else untuk cek plafon
+
+
+});// proses cek flafon 
+
+
+}// end else if(jumlah_bayar_lama == 0 || x <= total )
+
+
 
       else
       {

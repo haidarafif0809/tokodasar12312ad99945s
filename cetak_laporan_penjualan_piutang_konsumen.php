@@ -14,10 +14,13 @@ $sales = stringdoang($_GET['sales']);
     $data1 = mysqli_fetch_array($query1);
 
 
-$query02 = $db->query("SELECT SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 AND kode_pelanggan = '$konsumen' AND sales = '$sales' ");
+$query02 = $db->query("SELECT SUM(p.total) AS total_akhir, SUM(p.kredit) AS total_kredit, pl.nama_pelanggan FROM penjualan p LEFT JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan  WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kredit != 0 AND p.kode_pelanggan = '$konsumen' AND p.sales = '$sales' ");
 $cek02 = mysqli_fetch_array($query02);
+
+
 $total_akhir = $cek02['total_akhir'];
 $total_kredit = $cek02['total_kredit'];
+$nama_pelanggan = $cek02['nama_pelanggan'];
 
 $total_bayar = 0;
 
@@ -33,7 +36,7 @@ $total_bayar = 0;
         </div><!--penutup colsm2-->
 
         <div class="col-sm-6">
-                 <h3> <b> LAPORAN PIUTANG NON KONSUMEN / SALES </b></h3>
+                 <h3> <b> LAPORAN PIUTANG KONSUMEN / SALES </b></h3>
                  <hr>
                  <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
                  <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
@@ -48,7 +51,7 @@ $total_bayar = 0;
 
       <tr><td  width="20%">PERIODE</td> <td> &nbsp;:&nbsp; </td> <td> <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?></td>
       </tr>
-        <tr><td  width="20%">KONSUMEN</td> <td> &nbsp;:&nbsp; </td> <td> <?php echo $konsumen; ?></td>
+        <tr><td  width="20%">KONSUMEN</td> <td> &nbsp;:&nbsp; </td> <td> <?php echo $nama_pelanggan; ?></td>
       </tr>
        <tr><td  width="20%">SALES</td> <td> &nbsp;:&nbsp; </td> <td> <?php echo $sales; ?></td>
       </tr>
