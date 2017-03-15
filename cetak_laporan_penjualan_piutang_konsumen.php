@@ -73,7 +73,7 @@ $total_bayar = 0;
             <thead>
       <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
       <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
-      <th style="background-color: #4CAF50; color: white;"> Nama Costumer</th>
+      <th style="background-color: #4CAF50; color: white;"> Nama Konsumen</th>
       <th style="background-color: #4CAF50; color: white;"> Sales </th>
       <th style="background-color: #4CAF50; color: white;"> Nilai Faktur </th>
       <th style="background-color: #4CAF50; color: white;"> Dibayar </th>
