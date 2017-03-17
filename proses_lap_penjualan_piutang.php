@@ -72,7 +72,7 @@ $Dp = $data_sum['tunai_penjualan'];
 
 $num_rows = mysqli_num_rows($query0232);
 
-$tot_bayar = $kel_bayar['total_bayar'] ;
+$tot_bayar = $kel_bayar['total_bayar'] + $Dp;
 
 
 $total_bayar = $tot_bayar + $total_bayar;
