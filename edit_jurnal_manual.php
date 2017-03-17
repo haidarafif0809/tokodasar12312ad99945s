@@ -491,7 +491,7 @@ else{
     var id = $(this).attr("data-id");
     
     
-    $.post("hapus_jurnal_manual.php",{id:id,kode_akun_jurnal:kode_akun_jurnal},function(data){
+    $.post("hapus_tbs_jurnal_manual.php",{id:id,kode_akun_jurnal:kode_akun_jurnal},function(data){
     if (data == 'sukses') {
     
     
