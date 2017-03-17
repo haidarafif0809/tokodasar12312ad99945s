@@ -15,6 +15,15 @@ $total_kredit = $cek02['total_kredit'];
 
 $total_bayar = 0;
 
+$sum_total_bayar_piutang = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS total_bayar FROM detail_pembayaran_piutang WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
+$data_piutang = mysqli_fetch_array($sum_total_bayar_piutang);
+
+$sum_dp_penjualan = $db->query("SELECT SUM(tunai) AS tunai_penjualan FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 ");
+$data_sum_penjualan = mysqli_fetch_array($sum_dp_penjualan);
+$Dp_penjualan = $data_sum_penjualan['tunai_penjualan'];
+
+$subtotal_dibayar = $data_piutang['total_bayar'] + $Dp_penjualan;
+
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -65,9 +74,14 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 $query0232 = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS total_bayar FROM detail_pembayaran_piutang WHERE no_faktur_penjualan = '$row[no_faktur]' ");
 $kel_bayar = mysqli_fetch_array($query0232);
+
+$sum_dp = $db->query("SELECT SUM(tunai) AS tunai_penjualan FROM penjualan WHERE no_faktur = '$row[no_faktur]' ");
+$data_sum = mysqli_fetch_array($sum_dp);
+$Dp = $data_sum['tunai_penjualan'];
+
 $num_rows = mysqli_num_rows($query0232);
 
-$tot_bayar = $kel_bayar['total_bayar'];
+$tot_bayar = $kel_bayar['total_bayar'] + $Dp;
 
 
 $total_bayar = $tot_bayar + $total_bayar;
@@ -103,7 +117,7 @@ $nestedData=array();
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> ".rp($total_akhir)." </p>";
-      $nestedData[] = "<p style='color:red'> ".rp($total_bayar)." </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($subtotal_dibayar)." </p>";
       $nestedData[] = "<p style='color:red'> ".rp($total_kredit)." </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";

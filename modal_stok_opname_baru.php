@@ -27,10 +27,18 @@ include 'db.php';
         //menyimpan data sementara yang ada pada $perintah
         while ($data1 = mysqli_fetch_array($perintah))
         {
+
+             $select = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah_hpp_masuk FROM hpp_masuk WHERE kode_barang = '$data1[kode_barang]'");
+             $ambil_masuk = mysqli_fetch_array($select);
+             
+             $select_2 = $db->query("SELECT SUM(jumlah_kuantitas) AS jumlah_hpp_keluar FROM hpp_keluar WHERE kode_barang = '$data1[kode_barang]'");
+             $ambil_keluar = mysqli_fetch_array($select_2);
+             
+             $stok_barang = $ambil_masuk['jumlah_hpp_masuk'] - $ambil_keluar['jumlah_hpp_keluar'];
         
         // menampilkan data
         echo "<tr class='pilih' data-kode='". $data1['kode_barang'] ."' nama-barang='". $data1['nama_barang'] ."'
-        satuan='". $data1['satuan'] ."' harga='". $data1['harga_jual'] ."' jumlah-barang='". $data1['stok_barang'] ."'>
+        satuan='". $data1['satuan'] ."' harga='". $data1['harga_jual'] ."' jumlah-barang='". $stok_barang ."'>
         
             <td>". $data1['kode_barang'] ."</td>
             <td>". $data1['nama_barang'] ."</td> 

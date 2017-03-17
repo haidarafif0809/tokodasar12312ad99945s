@@ -219,7 +219,8 @@ if ($lihat['pembayaran_hutang_lihat'] > 0){
                             echo '<li><a href="stok_opname.php" class="waves-effect">Stok Opname</a></li>';
 }
 
-echo '<li><a href="kartu_stok.php" class="waves-effect" style="font-size: 16px">Kartu Stok</a></li>';
+echo '<li><a href="kartu_stok.php" class="waves-effect" style="font-size: 16px">Lap. Data Stok</a></li>';
+echo '<li><a href="kartu_stok_periode.php" class="waves-effect" style="font-size: 16px">Lap. Data Stok Periode</a></li>';
 
  if ($lihat['laporan_mutasi_stok_lihat'] > 0){
                             echo '<li><a href="lap_mutasi_stok.php" class="waves-effect">Lap. Mutasi Stok</a></li>';

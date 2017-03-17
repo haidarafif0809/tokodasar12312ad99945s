@@ -743,7 +743,6 @@ function myFunction(event) {
 
     });////penutup function(data)
 
-   $("#jumlah_barang").val(data);  
     });//penutup click(function()
   });//penutup ready(function()
 </script>   

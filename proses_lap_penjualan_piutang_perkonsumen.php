@@ -66,9 +66,14 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
 $query0232 = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS total_bayar FROM detail_pembayaran_piutang WHERE no_faktur_penjualan = '$row[no_faktur]' ");
 $kel_bayar = mysqli_fetch_array($query0232);
+
+$sum_dp = $db->query("SELECT SUM(tunai) AS tunai_penjualan FROM penjualan WHERE no_faktur = '$row[no_faktur]' ");
+$data_sum = mysqli_fetch_array($sum_dp);
+$Dp = $data_sum['tunai_penjualan'];
+
 $num_rows = mysqli_num_rows($query0232);
 
-$tot_bayar = $kel_bayar['total_bayar'];
+$tot_bayar = $kel_bayar['total_bayar'] + $Dp;
 
 
 $total_bayar = $tot_bayar + $total_bayar;
