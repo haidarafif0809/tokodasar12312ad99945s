@@ -31,8 +31,8 @@ include 'db.php';
              <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px"> Jenis Laporan <span class="caret"></span></button>
 
              <ul class="dropdown-menu">
-				<li><button type="button" class="btn btn-success" id="per_konsumen" >Rekap Konsumen / Sales </button></li> 
-				<li><button type="button" class="btn btn-success" id="non_konsumen" >Rekap Non Konsumen / Sales  </button></li>
+				<li><button type="button" class="btn btn-success" id="per_konsumen" style="width:98%;" align="left">Rekap Konsumen / Sales </button></li> 
+				<li><buttcenteron type="button" class="btn btn-success" id="non_konsumen" style="width:98%;" align="left">Rekap Semua Konsumen / Sales  </button></li>
              </ul>
 </div> <!--/ dropdown-->
 
@@ -136,7 +136,7 @@ include 'db.php';
 		<thead>
 			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 			<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
-			<th style="background-color: #4CAF50; color: white;"> Nama Costumer</th>
+			<th style="background-color: #4CAF50; color: white;"> Nama Konsumen</th>
 			<th style="background-color: #4CAF50; color: white;"> Sales </th>
 			<th style="background-color: #4CAF50; color: white;"> Nilai Faktur </th>
 			<th style="background-color: #4CAF50; color: white;"> Dibayar </th>
