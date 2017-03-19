@@ -599,7 +599,7 @@ else{
     $("#t_kredit").val(tandaPemisahTitik(total_kredit_akhir))
     $("#t_debit").val(tandaPemisahTitik(total_debit_akhir))
 
-    $.post("hapus_jurnal_manual.php",{id:id,kode_akun_jurnal:kode_akun_jurnal},function(data){
+    $.post("hapus_tbs_jurnal_manual.php",{id:id,kode_akun_jurnal:kode_akun_jurnal},function(data){
     if (data == 'sukses') {
     
     

@@ -35,6 +35,22 @@ tr:nth-child(even){background-color: #f2f2f2}
 <h3>LAPORAN PENJUALAN DETAIL </h3><hr>
 <form class="form-inline" role="form">
 				
+  					<div class="form-group"> 
+
+  				 <select type="text" name="kategori" id="kategori" class="form-control chosen" required="">
+     			  <option value="semua"> Semua Kategori </option>
+				<?php 
+
+				$ambil_kategori = $db->query("SELECT nama_kategori FROM kategori");
+  				  while($data_kategori = mysqli_fetch_array($ambil_kategori))
+  				  {  
+    			echo "<option value='".$data_kategori['nama_kategori'] ."' >".$data_kategori['nama_kategori'] ."</option>";
+   					 }
+
+ 				?>
+                 </select> 
+                  </div>
+
 				  <div class="form-group"> 
 
                   <input type="text" name="dari_tanggal" id="dari_tanggal" class="form-control" placeholder="Dari Tanggal" required="">
@@ -42,17 +58,19 @@ tr:nth-child(even){background-color: #f2f2f2}
 
                   <div class="form-group"> 
 
-                  <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control" placeholder="Sampai Tanggal" value="<?php echo date("Y-m-d"); ?>" required="">
+                  <input type="text" name="sampai_tanggal" id="sampai_tanggal" class="form-control" placeholder="Sampai Tanggal" required="">
                   </div>
 
                   <button type="submit" name="submit" id="submit" class="btn btn-primary" ><i class="fa fa-eye"> </i> Tampil </button>
 
 </form>
 
+<span id="ss"></span>
+
  <br>
  <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="result">
-<table id="tableuser" class="table table-bordered">
+<table id="tableuser" class="table table-bordered table-sm">
 					<thead>
 					<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
 					<th style="background-color: #4CAF50; color: white;"> Kode Barang </th>
@@ -100,11 +118,13 @@ tr:nth-child(even){background-color: #f2f2f2}
 		
 		var dari_tanggal = $("#dari_tanggal").val();
 		var sampai_tanggal = $("#sampai_tanggal").val();
+		var kategori = $("#kategori").val();
+
 		
-		
-		$.post("proses_lap_penjualan_detail.php", {dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal},function(info){
+		$.post("proses_lap_penjualan_detail.php", {dari_tanggal:dari_tanggal,sampai_tanggal:sampai_tanggal,kategori:kategori},function(info){
 		
 		$("#result").html(info);
+
 		
 		});
 		
@@ -118,6 +138,9 @@ tr:nth-child(even){background-color: #f2f2f2}
 		
 		</script>
 
+      <script type="text/javascript">     
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});      
+      </script>
 
 
 

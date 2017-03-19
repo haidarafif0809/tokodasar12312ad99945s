@@ -8,21 +8,12 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
 
 
-$query02 = $db->query("SELECT SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 ");
+$query02 = $db->query("SELECT SUM(pen.tunai) AS tunai_penjualan,SUM(pen.total) AS total_akhir, SUM(pen.kredit) AS total_kredit,SUM(dpp.jumlah_bayar) + SUM(dpp.potongan) AS ambil_total_bayar FROM penjualan pen LEFT JOIN detail_pembayaran_piutang dpp ON pen.no_faktur = dpp.no_faktur_penjualan WHERE pen.tanggal >= '$dari_tanggal' AND pen.tanggal <= '$sampai_tanggal' AND pen.kredit != 0 ");
 $cek02 = mysqli_fetch_array($query02);
 $total_akhir = $cek02['total_akhir'];
 $total_kredit = $cek02['total_kredit'];
 
-$total_bayar = 0;
-
-$sum_total_bayar_piutang = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS total_bayar FROM detail_pembayaran_piutang WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
-$data_piutang = mysqli_fetch_array($sum_total_bayar_piutang);
-
-$sum_dp_penjualan = $db->query("SELECT SUM(tunai) AS tunai_penjualan FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 ");
-$data_sum_penjualan = mysqli_fetch_array($sum_dp_penjualan);
-$Dp_penjualan = $data_sum_penjualan['tunai_penjualan'];
-
-$subtotal_dibayar = $data_piutang['total_bayar'] + $Dp_penjualan;
+$total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
 
 
 // storing  request (ie, get/post) global array to a variable  
@@ -84,8 +75,6 @@ $num_rows = mysqli_num_rows($query0232);
 $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
 
 
-$total_bayar = $tot_bayar + $total_bayar;
-
       $nestedData[] = $row['tanggal'];
       $nestedData[] = $row['no_faktur'];
       $nestedData[] = $row['nama_pelanggan'];
@@ -117,7 +106,7 @@ $nestedData=array();
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> ".rp($total_akhir)." </p>";
-      $nestedData[] = "<p style='color:red'> ".rp($subtotal_dibayar)." </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($total_bayar)." </p>";
       $nestedData[] = "<p style='color:red'> ".rp($total_kredit)." </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";

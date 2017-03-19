@@ -27,14 +27,16 @@ include 'db.php';
 <h3> LAPORAN PIUTANG </h3><hr>
 
 
-<div class="dropdown">
-             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px"> Jenis Laporan <span class="caret"></span></button>
+<div class="row">
+<div class="col-sm-4">
+				<button type="button" class="btn btn-primary" id="per_konsumen" style="width:98%;" align="left">Rekap Konsumen / Sales </button> 
+</div>	
+<div class="col-sm-4">
+      	<button type="button" class="btn btn-primary" id="non_konsumen" style="width:98%;" align="left">Rekap Semua Konsumen / Sales  </button>
+</div>
 
-             <ul class="dropdown-menu">
-				<li><button type="button" class="btn btn-success" id="per_konsumen" style="width:98%;" align="left">Rekap Konsumen / Sales </button></li> 
-				<li><buttcenteron type="button" class="btn btn-success" id="non_konsumen" style="width:98%;" align="left">Rekap Semua Konsumen / Sales  </button></li>
-             </ul>
-</div> <!--/ dropdown-->
+</div> 
+
 
 <span id="rekap_non_konsumen" style="display:none">
 <form class="form-inline" role="form">
@@ -58,7 +60,8 @@ include 'db.php';
 <form class="form-inline" role="form">
 				
 			<div class="form-group"> 
- 				<select name="kode_pelanggan" id="kd_pelanggan" class="form-control" required="" >      
+ 				<select name="kode_pelanggan" id="kd_pelanggan" class="form-control" required="" >
+              <option value='semua' >Semua Konsumen</option>
 				  <?php 
 				    
 				    //untuk menampilkan semua data pada tabel pelanggan dalam DB
