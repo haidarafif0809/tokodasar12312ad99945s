@@ -13,7 +13,7 @@ include 'db.php';
 <h3>SETTING FOOTER CETAK</h3> <hr>
 <!-- Trigger the modal with a button -->
 
-  <button id="tambah" type="submit" class="btn btn-primary" data-toggle="collapse"  accesskey="r" ><i class='fa fa-plus'> </i>&nbsp;Tambah</button>
+  <button id="tambah" type="submit" class="btn btn-primary" data-toggle="collapse"  accesskey="r" ><i class='fa fa-plus'> </i>&nbsp;Edit</button>
 
 <button style="display:none" data-toggle="collapse tooltip" accesskey="k" id="kembali" class="btn btn-primary" data-placement='top' title='Klik untuk kembali ke utama.'><i class="fa fa-reply"></i> <u>K</u>embali </button>
 
@@ -114,6 +114,8 @@ $(document).ready(function(){
       } );
     </script>
 <!--/DATA TABLE MENGGUNAKAN AJAX-->
+
+
 
 
     

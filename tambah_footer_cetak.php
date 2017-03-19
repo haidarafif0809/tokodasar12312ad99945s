@@ -6,8 +6,7 @@ include 'sanitasi.php';
 	//mengirim data sesuai dengan variabel dengan metode POST
 
 // menambah data yang ada pada tabel satuan berdasarka id dan nama
-$perintah = $db->prepare("INSERT INTO setting_footer_cetak (keterangan)
-			VALUES (?)");
+$perintah = $db->prepare("UPDATE setting_footer_cetak SET keterangan = ?");
 
 $perintah->bind_param("s",$keterangan_footer);
 
