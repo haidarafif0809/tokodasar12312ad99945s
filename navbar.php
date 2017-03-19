@@ -373,6 +373,7 @@ echo '<li><a class="collapsible-header waves-effect arrow-r"><i class="fa fa-cog
             if ($lihat['daftar_pajak_lihat'] > 0){
                     echo '<li><a href="daftar_pajak.php" class="waves-effect">Daftar Pajak</a></li>';
             }
+        echo '<li><a href="footer_cetak_penjualan_besar.php" class="waves-effect">Setting Footer Cetak</a></li>';
 
 if ($lihat['menu_setting_lihat'] > 0){
 echo '</ul>

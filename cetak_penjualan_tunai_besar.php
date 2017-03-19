@@ -8,16 +8,13 @@ include 'db.php';
 
   $no_faktur = $_GET['no_faktur'];
 
-    $query0 = $db->query("SELECT s.nama,p.id,p.no_faktur,p.total,p.kode_pelanggan,p.keterangan,p.cara_bayar,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.kode_gudang,p.tunai,pl.nama_pelanggan,pl.wilayah,dp.satuan,dp.jumlah_barang,dp.subtotal,dp.nama_barang,dp.harga, da.nama_daftar_akun FROM penjualan p INNER JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan INNER JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun INNER JOIN satuan s ON dp.satuan = s.id WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
-     $data_inner = mysqli_fetch_array($query0);
+    $query0 = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.keterangan,p.cara_bayar,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.kode_gudang,p.tunai,pl.nama_pelanggan,pl.wilayah,dp.satuan,dp.jumlah_barang,dp.subtotal,dp.nama_barang,dp.harga, da.nama_daftar_akun, s.nama AS nama_satuan FROM penjualan p INNER JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan INNER JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun INNER JOIN satuan s ON dp.satuan = s.id WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
+     $data0 = mysqli_fetch_array($query0);
 
-     $potongan = $data_inner['potongan'];
+     $potongan = $data0['potongan'];
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
-
-    $query2 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
-    $data2 = mysqli_fetch_array($query2);
 
     $query3 = $db->query("SELECT SUM(jumlah_barang) as total_item, SUM(subtotal) as sub_total FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
     $data3 = mysqli_fetch_array($query3);
@@ -26,21 +23,16 @@ include 'db.php';
 
     $potongan_persen = $potongan / $sub_total * 100;
 
-    $query04 = $db->query("SELECT SUM(kredit) as total_kredit FROM penjualan WHERE no_faktur = '$no_faktur'");
-    $data04 = mysqli_fetch_array($query04);
-    $total_kredit = $data04['total_kredit'];
 
     $query05 = $db->query("SELECT SUM(subtotal) as t_subtotal FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
     $data05 = mysqli_fetch_array($query05);
     $t_subtotal = $data05['t_subtotal'];
 
-    $setting_bahasa = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Sales' ");
-    $data20 = mysqli_fetch_array($setting_bahasa);
+    $ambil_footer = $db->query("SELECT keterangan FROM setting_footer_cetak");
+    $data_footer = mysqli_fetch_array($ambil_footer);
 
-    $setting_bahasa0 = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
-    $data200 = mysqli_fetch_array($setting_bahasa0);
-
-    
+    $ubah_tanggal = $data0['tanggal'];
+    $tanggal = date('d F Y', strtotime($ubah_tanggal));
 
 
  ?>
@@ -80,11 +72,11 @@ include 'db.php';
 
  <table>
   <tbody>
-      <tr><td width="25%"><font class="satu">No Faktur</font></td> <td> :&nbsp;</td> <td><font class="satu"><?php echo $data_inner['no_faktur']; ?></font> </tr>
-      <tr><td  width="25%"><font class="satu"><?php echo $data200['kata_ubah']; ?></font></td> <td> :&nbsp;</td> <td> <font class="satu"><?php echo $data_inner['nama_pelanggan']; ?></font> </td></tr>
-      <tr><td  width="25%"><font class="satu">Alamat</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_inner['wilayah']; ?> </font></td></tr>
-      <tr><td  width="25%"><font class="satu">Ket.</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_inner['keterangan']; ?> </font></td></tr>
+      
+      <tr><td><font class="satu">  Kepada Yth</td> <td>  :&nbsp;&nbsp;</td> <td>  <?php echo $data0['nama_pelanggan']; ?> </td></tr> 
 
+      <tr><td><font class="satu"><br>No Invoice</font></td> <td> <br>:</td> <td><font class="satu"> <br> <?php echo $no_faktur; ?></font> </tr>
+      <tr><td><font class="satu"> Tanggal</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $tanggal; ?></font> </td></tr>
             
 
   </tbody>
@@ -97,10 +89,7 @@ include 'db.php';
  <table>
   <tbody>
 
-       <tr><td width="50%"><font class="satu"> Tanggal</td> <td> :&nbsp;&nbsp;</td> <td><?php echo tanggal($data_inner['tanggal']);?></font> </td></tr> 
-       <tr><td width="50%"><font class="satu"> Tanggal JT</td> <td> :&nbsp;&nbsp;</td> <td>-</font> </td></tr> 
-       <tr><td width="50%"><font class="satu"> Kasir</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $_SESSION['nama']; ?></font></td></tr> 
-       <tr><td width="50%"><font class="satu"> Status </td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data_inner['status']; ?></font></td></tr> 
+       <tr><td width="50%"><font class="satu"> Alamat</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data0['wilayah'];?></font> </td></tr>
 
       </tbody>
 </table>
@@ -116,7 +105,6 @@ include 'db.php';
     padding: 1px;
   }
 
-
 .table1, .th, .td {
     border: 1px solid black;
     font-size: 15px;
@@ -130,12 +118,10 @@ include 'db.php';
         <thead>
             <th class="table1" style="width: 3%"> <center> No. </center> </th>
             <th class="table1" style="width: 50%"> <center> Nama Barang </center> </th>
-            <th class="table1" style="width: 5%"> <center> Qty </center> </th>
+            <th class="table1" style="width: 5%"> <center> Jumlah </center> </th>
             <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
-            <th class="table1" style="width: 15%"> <center> Harga </center> </th>
-            <th class="table1" style="width: 5%"> <center> Disc. </center> </th>
-            <th class="table1" style="width: 5%"> <center> Pajak </center> </th>
-            <th class="table1" style="width: 12%"> <center> Subtotal </center> </th>
+            <th class="table1" style="width: 10%"> <center> Harga Satuan </center> </th>
+            <th class="table1" style="width: 10%"> <center> Harga Jual </center> </th>
         
             
         </thead>
@@ -150,18 +136,13 @@ include 'db.php';
             {
 
               $no_urut ++;
-              $kode = $db->query("SELECT satuan FROM barang WHERE kode_barang = '$data5[kode_barang]' ");
-              $satuan_b = mysqli_fetch_array($kode);
-              $satuan = $satuan_b['satuan'];
 
             echo "<tr>
             <td class='table1' align='center'>".$no_urut."</td>
             <td class='table1'>". $data5['nama_barang'] ."</td>
             <td class='table1' align='right'>". rp($data5['jumlah_barang']) ."</td>
-            <td class='table1'>". $data_inner['nama'] ."</td>
+            <td class='table1'>". $data0['nama_satuan'] ."</td>
             <td class='table1' align='right'>". rp($data5['harga']) ."</td>
-            <td class='table1' align='right'>". rp($data5['potongan']) ."</td>
-            <td class='table1' align='right'>". rp($data5['tax']) ."</td>
             <td class='table1' align='right'>". rp($data5['subtotal']) ."</td>
             <tr>";
 
@@ -175,72 +156,61 @@ mysqli_close($db);
         </tbody>
 
     </table>
+    <table class="table table-bordered table-sm">
+      <tbody>
+
+        <tr>
+            <td class='table1' style="width: 3%"></td>
+            <td class='table1' style="width: 50%">Jumlah Harga Jual</td>
+            <td class='table1' style="width: 5%" align='right'></td>
+            <td class='table1' style="width: 5%"></td>
+            <td class='table1' style="width: 10%" align='right'></td>
+            <td class='table1' style="width: 10%" align='right'><?php echo rp($t_subtotal); ?></td>
+        </tr>
+
+        <tr>
+            <td class='table1' style="width: 3%"></td>
+            <td class='table1' style="width: 50%">Dikurangi Potongan Harga</td>
+            <td class='table1' style="width: 5%" align='right'></td>
+            <td class='table1' style="width: 5%">Disc</td>
+            <td class='table1' style="width: 10%" align='right'><?php echo persen(round($potongan_persen)); ?></td>
+            <td class='table1' style="width: 10%" align='right'><?php echo rp($data0['potongan']); ?></td>
+        </tr>
+
+        <tr>
+            <td class='table1' style="width: 3%"></td>
+            <td class='table1' style="width: 50%">Jumlah Potongan Harga</td>
+            <td class='table1' style="width: 5%" align='right'></td>
+            <td class='table1' style="width: 5%"></td>
+            <td class='table1' style="width: 10%" align='right'></td>
+            <td class='table1' style="width: 10%" align='right'><?php echo rp($data0['potongan']); ?></td>
+        </tr>
+
+        <tr>
+            <td class='table1' style="width: 3%"></td>
+            <td class='table1' style="width: 50%">Jumlah Yang Harus Dibayar</td>
+            <td class='table1' style="width: 5%" align='right'></td>
+            <td class='table1' style="width: 5%"></td>
+            <td class='table1' style="width: 10%" align='right'></td>
+            <td class='table1' style="width: 10%" align='right'><?php echo rp($data0['total']); ?></td>
+        </tr>
 
 
-        <div class="col-sm-6">
-            
-            <i><b><font class="satu">Terbilang :</font></b> <?php echo kekata($data_inner['total']); ?> </i> <br>
-            <!DOCTYPE html>
-
-<style>
-div.dotted {border-style: dotted;}
-div.dashed {border-style: dashed;}
-div.solid {border-style: solid;}
-div.double {border-style: double;}
-div.groove {border-style: groove;}
-div.ridge {border-style: ridge;}
-div.inset {border-style: inset;}
-div.outset {border-style: outset;}
-div.none {border-style: none;}
-div.hidden {border-style: hidden;}
-div.mix {border-style: dotted dashed solid double;}
-</style>
+      </tbody>
+    </table>
 
 
+ <div class="col-sm-9">
+   <font class="satu">
+   <?php echo $data_footer['keterangan'] ?>
+   </font>
+ </div>
+
+ <div class="col-sm-3">
+    
+    <font class="satu"><b> <center>Hormat Kami,</center> <br><br><br> <font class="satu"> <center>(<?php echo $_SESSION['nama']; ?>)</center></font></b></font>
 
 </div>
- <div class="col-sm-3">
-
- <table>
-  <tbody>
-
-      <tr><td width="50%"><font class="satu">Sub Total</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($t_subtotal); ?> </font></tr>
-      <tr><td width="50%"><font class="satu">Diskon</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['potongan']); ?></font></tr>
-      <tr><td width="50%"><font class="satu">Diskon</font></td> <td> :&nbsp;</td> <td><font class="satu"><?php echo persen(round($potongan_persen)); ?></font></tr>
-      <tr><td  width="50%"><font class="satu">Tax</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['tax']); ?> </font></td></tr>
-      <tr><td  width="50%"><font class="satu">Total Akhir</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['total']); ?></font>  </td></tr>
-
-  </tbody>
-</table>
-
-        </div>
-
-        <div class="col-sm-3">
-
- <table>
-  <tbody>
-
-      <tr><td  width="40%"><font class="satu">Bayar</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['tunai']); ?></font> </td></tr>
-      <tr><td  width="40%"><font class="satu">Kembali</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo rp($data_inner['sisa']); ?></font> </td></tr>
-      <tr><td  width="40%"><font class="satu">Jenis Bayar</font></td> <td> :&nbsp;</td> <td><font class="satu"> <?php echo $data_inner['nama_daftar_akun']; ?></font> </td></tr>   
-
-  </tbody>
-</table>
-
-        </div>
-
-
-    <div class="col-sm-9">
-    
-    <font class="satu"><b>Nama <?php echo $data200['kata_ubah']; ?> <br><br><br> <font class="satu"><?php echo $data_inner['nama_pelanggan']; ?></font> </b></font>
-    
-    </div> <!--/ col-sm-6-->
-    
-    <div class="col-sm-3">
-    
-    <font class="satu"><b>Petugas <br><br><br> <font class="satu"><?php echo $_SESSION['nama']; ?></font></b></font>
-
-    </div> <!--/ col-sm-6-->
 
 
 
