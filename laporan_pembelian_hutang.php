@@ -84,9 +84,9 @@ include 'db.php';
  <table id="table_laporan_pembelian_hutang" class="table table-bordered table-sm">
             <thead>
 			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
-			<th style="background-color: #4CAF50; color: white;"> Jam </th>
 			<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
 			<th style="background-color: #4CAF50; color: white;"> Suplier </th>
+      <th style="background-color: #4CAF50; color: white;"> Jumlah Barang </th>
 			<th style="background-color: #4CAF50; color: white;"> Total </th>
 			<th style="background-color: #4CAF50; color: white;"> Petugas </th>
 			<th style="background-color: #4CAF50; color: white;"> Status </th>
@@ -104,7 +104,7 @@ include 'db.php';
 <br>
 
        <a href='cetak_laporan_pembelian_hutang.php' id="cetak_lap" class='btn btn-success' target='blank'><span class='glyphicon glyphicon-print'> </span> Cetak Pembelian Hutang</a>
-
+       <a href='download_lap_pembelian_hutang.php' id="download_lap" type='submit' target="blank" id="btn-download" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
 </div>
 
 <h3> Subtotal Hutang :  Rp. <span id="total_hutang"></span></h3>
@@ -170,6 +170,7 @@ include 'db.php';
         
 
     	$("#cetak_lap").attr("href", "cetak_laporan_pembelian_hutang.php?&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+      $("#download_lap").attr("href", "download_lap_pembelian_hutang.php?&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
         }//end else
         $("form").submit(function(){
         return false;

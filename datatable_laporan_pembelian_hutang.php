@@ -7,12 +7,18 @@ include 'sanitasi.php';
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
-$query02 = $db->query("SELECT SUM(pem.tunai) AS tunai_penjualan,SUM(pem.total) AS total_akhir, SUM(pem.kredit) AS total_kredit,SUM(pem.nilai_kredit) AS total_nilai_kredit,SUM(dph.jumlah_bayar) + SUM(dph.potongan) AS ambil_total_bayar,sum(pem.potongan) as total_potongan FROM pembelian pem LEFT JOIN detail_pembayaran_hutang dph ON pem.no_faktur = dph.no_faktur_pembelian WHERE pem.tanggal >= '$dari_tanggal' AND pem.tanggal <= '$sampai_tanggal' AND pem.kredit != 0 ");
+$query011 = $db->query("SELECT SUM(dp.jumlah_barang) AS total_barang FROM detail_pembelian dp LEFT JOIN pembelian p ON dp.no_faktur = p.no_faktur WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND p.kredit != 0");
+$cek011 = mysqli_fetch_array($query011);
+$t_barang = $cek011['total_barang'];
+
+$query02 = $db->query("SELECT SUM(pem.tunai) AS tunai_penjualan,SUM(pem.total) AS total_akhir, SUM(pem.kredit) AS total_kredit,SUM(pem.nilai_kredit) AS total_nilai_kredit,SUM(dph.jumlah_bayar) + SUM(dph.potongan) AS ambil_total_bayar,sum(pem.potongan) as total_potongan, sum(pem.sisa) as total_kembalian, sum(pem.tax) as total_tax  FROM pembelian pem LEFT JOIN detail_pembayaran_hutang dph ON pem.no_faktur = dph.no_faktur_pembelian WHERE pem.tanggal >= '$dari_tanggal' AND pem.tanggal <= '$sampai_tanggal' AND pem.kredit != 0 ");
 $cek02 = mysqli_fetch_array($query02);
 $total_akhir = $cek02['total_akhir'];
 $total_kredit = $cek02['total_kredit'];
 $total_nilai_kredit = $cek02['total_nilai_kredit'];
 $total_potongan = $cek02['total_potongan'];
+$total_tax = $cek02['total_tax'];
+$total_kembalian = $cek02['total_kembalian'];
 $total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
 
 
@@ -41,14 +47,14 @@ $columns = array(
 
 // getting total number records without any search
 $sql ="SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.nilai_kredit,s.nama,g.nama_gudang ";
-$sql.="FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND kredit != 0 ";
+$sql.="FROM pembelian p LEFT JOIN suplier s ON p.suplier = s.id LEFT JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND kredit != 0 ";
 $query=mysqli_query($conn, $sql) or die("datatable_lap_pembelian.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
 $sql ="SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.nilai_kredit,s.nama,g.nama_gudang ";
-$sql.="FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND kredit != 0 AND 1=1";
+$sql.="FROM pembelian p LEFT JOIN suplier s ON p.suplier = s.id LEFT JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND kredit != 0 AND 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
 	$sql.=" AND ( p.no_faktur LIKE '".$requestData['search']['value']."%' ";
@@ -72,11 +78,15 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
+	$query0 = $db->query("SELECT SUM(jumlah_barang) AS total_barang FROM detail_pembelian WHERE no_faktur = '$row[no_faktur]'");
+                        $cek0 = mysqli_fetch_array($query0);
+                        $total_barang = $cek0['total_barang'];
+
 			//menampilkan data
-			$nestedData[] = $row['tanggal'];
-			$nestedData[] = $row['jam'];
+			$nestedData[] = $row['tanggal'] ." ". $row['jam'];
 			$nestedData[] = $row['no_faktur'];
 			$nestedData[] = $row['nama'];
+			$nestedData[] = rp($total_barang);
 			$nestedData[] = rp($row['total']);
 			$nestedData[] = $row['user'];
 			$nestedData[] = $row['status'];
@@ -95,13 +105,13 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 			$nestedData[] = "<p style='color:red'> <b>Jumlah Total</b> </p>";
 			$nestedData[] = "";
 			$nestedData[] = "";
-			$nestedData[] = "";
+			$nestedData[] = "<p style='color:red'><b>".rp($t_barang)."</b></p>";
 			$nestedData[] = "<p style='color:red'><b>".rp($total_akhir)."</b></p>";
 			$nestedData[] = "";
 			$nestedData[] = "";
 			$nestedData[] = "<p style='color:red'><b>".rp($total_potongan)."</b></p>";
-			$nestedData[] = "";
-			$nestedData[] = "";
+			$nestedData[] = "<p style='color:red'><b>".rp($total_tax)."</b></p>";
+			$nestedData[] = "<p style='color:red'><b>".rp($total_kembalian)."</b></p>";
 			$nestedData[] = "<p style='color:red'><b>".rp($total_kredit)."</b></p>";
 			$nestedData[] = "<p style='color:red'><b>".rp($total_nilai_kredit)."</b></p>";
 			$nestedData[] = "";
