@@ -41,6 +41,7 @@
 		
 
 		<script src="chosen/chosen.jquery.js"></script>
+		<script src="ckeditor/ckeditor.js"></script>
 
 		<script src="jquery-ui/jquery-ui.js"></script>
 
