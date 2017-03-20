@@ -195,6 +195,15 @@ mysqli_close($db);
 
         <tr>
             <td class='table1' style="width: 3%"></td>
+            <td class='table1' style="width: 50%">Jumlah Pembayaran Awal (DP)</td>
+            <td class='table1' style="width: 5%" align='right'></td>
+            <td class='table1' style="width: 5%"></td>
+            <td class='table1' style="width: 10%" align='right'></td>
+            <td class='table1' style="width: 10%" align='right'><b><?php echo rp($data0['tunai']); ?></b></td>
+        </tr>
+
+        <tr>
+            <td class='table1' style="width: 3%"></td>
             <td class='table1' style="width: 50%">Jumlah Yang Harus Dibayar</td>
             <td class='table1' style="width: 5%" align='right'></td>
             <td class='table1' style="width: 5%"></td>
