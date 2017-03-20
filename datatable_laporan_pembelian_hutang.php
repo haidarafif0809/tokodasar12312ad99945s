@@ -18,6 +18,7 @@ $total_kredit = $cek02['total_kredit'];
 $total_nilai_kredit = $cek02['total_nilai_kredit'];
 $total_potongan = $cek02['total_potongan'];
 $total_tax = $cek02['total_tax'];
+$total_tunai = $cek02['tunai_penjualan'];
 $total_kembalian = $cek02['total_kembalian'];
 $total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
 
@@ -46,14 +47,14 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql ="SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.nilai_kredit,s.nama,g.nama_gudang ";
+$sql ="SELECT p.id,p.no_faktur,p.total,p.suplier,p.tunai,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.nilai_kredit,s.nama,g.nama_gudang ";
 $sql.="FROM pembelian p LEFT JOIN suplier s ON p.suplier = s.id LEFT JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND kredit != 0 ";
 $query=mysqli_query($conn, $sql) or die("datatable_lap_pembelian.php: get employees");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 
-$sql ="SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.nilai_kredit,s.nama,g.nama_gudang ";
+$sql ="SELECT p.id,p.no_faktur,p.total,p.suplier,p.tunai,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.nilai_kredit,s.nama,g.nama_gudang ";
 $sql.="FROM pembelian p LEFT JOIN suplier s ON p.suplier = s.id LEFT JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND kredit != 0 AND 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
@@ -92,6 +93,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 			$nestedData[] = $row['status'];
 			$nestedData[] = rp($row['potongan']);
 			$nestedData[] = rp($row['tax']);
+			$nestedData[] = rp($row['tunai']);
 			$nestedData[] = rp($row['sisa']);
 			$nestedData[] = rp($row['kredit']);
 			$nestedData[] = rp($row['nilai_kredit']);
@@ -109,6 +111,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 			$nestedData[] = "<p style='color:red'><b>".rp($total_akhir)."</b></p>";
 			$nestedData[] = "";
 			$nestedData[] = "";
+			$nestedData[] = "<p style='color:red'><b>".rp($total_tunai)."</b></p>";
 			$nestedData[] = "<p style='color:red'><b>".rp($total_potongan)."</b></p>";
 			$nestedData[] = "<p style='color:red'><b>".rp($total_tax)."</b></p>";
 			$nestedData[] = "<p style='color:red'><b>".rp($total_kembalian)."</b></p>";

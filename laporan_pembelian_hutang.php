@@ -45,6 +45,7 @@ include 'db.php';
 			<th style="background-color: #4CAF50; color: white;"> Status </th>
 			<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 			<th style="background-color: #4CAF50; color: white;"> Tax </th>
+      <th style="background-color: #4CAF50; color: white;"> Tunai </th>
 			<th style="background-color: #4CAF50; color: white;"> Kembalian</th>
 			<th style="background-color: #4CAF50; color: white;"> Sisa Kredit </th>
 			<th style="background-color: #4CAF50; color: white;"> Nilai Kredit </th>
@@ -92,6 +93,7 @@ include 'db.php';
 			<th style="background-color: #4CAF50; color: white;"> Status </th>
 			<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 			<th style="background-color: #4CAF50; color: white;"> Tax </th>
+      <th style="background-color: #4CAF50; color: white;"> Tunai </th>
 			<th style="background-color: #4CAF50; color: white;"> Kembalian</th>
 			<th style="background-color: #4CAF50; color: white;"> Sisa Kredit </th>
 			<th style="background-color: #4CAF50; color: white;"> Nilai Kredit </th>
@@ -107,7 +109,7 @@ include 'db.php';
        <a href='download_lap_pembelian_hutang.php' id="download_lap" type='submit' target="blank" id="btn-download" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel</a>
 </div>
 
-<h3> Subtotal Hutang :  Rp. <span id="total_hutang"></span></h3>
+<!--h3> Subtotal Hutang :  Rp. <span id="total_hutang"></span></h3-->
 </span>
 
 </div> <!--/ container-->
