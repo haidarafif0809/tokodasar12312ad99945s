@@ -13,6 +13,8 @@ include 'db.php';
 
      $potongan = $data0['potongan'];
 
+     $jml_dibayar = $data0['total'] - $data0['tunai'];
+
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
@@ -197,7 +199,7 @@ mysqli_close($db);
             <td class='table1' style="width: 5%" align='right'></td>
             <td class='table1' style="width: 5%"></td>
             <td class='table1' style="width: 10%" align='right'></td>
-            <td class='table1' style="width: 10%" align='right'><?php echo rp($data0['total']); ?></td>
+            <td class='table1' style="width: 10%" align='right'><b><?php echo rp($jml_dibayar); ?></b></td>
         </tr>
 
 
