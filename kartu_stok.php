@@ -30,8 +30,9 @@ include 'db.php';
       <div class="modal-body">
 
       <center>
-      <div class="table-resposive">
+      <div class="table-responsive">
            <table id="table_modal_kartu_stok" class="table table-bordered table-sm">
+
            <thead> <!-- untuk memberikan nama pada kolom tabel -->
                               
             <th> Kode Barang </th>
@@ -148,11 +149,11 @@ include 'db.php';
         <thead>
 
       <th style='background-color: #4CAF50; color:white'> No Faktur </th>
-      <th style='background-color: #4CAF50; color:white'> Transaksi </th>
+      <th style='background-color: #4CAF50; color:white'> Jenis Transaksi </th>
+      <th style='background-color: #4CAF50; color:white'> Harga </th>
       <th style='background-color: #4CAF50; color:white'> Tanggal </th>
       <th style='background-color: #4CAF50; color:white'> Jumlah Masuk </th>
       <th style='background-color: #4CAF50; color:white'> Jumlah Keluar </th>
-      <th style='background-color: #4CAF50; color:white'> Harga </th>
       <th style='background-color: #4CAF50; color:white'> Saldo</th>
 
         </thead>
@@ -346,7 +347,7 @@ include 'db.php';
 
 <script type="text/javascript">
   //SELECT CHOSSESN    
-$(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});    
+$(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});    
 </script>
 
 <script>

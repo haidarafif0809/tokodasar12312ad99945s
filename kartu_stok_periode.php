@@ -30,24 +30,21 @@ include 'db.php';
         <h4 class="modal-title"><center><b>Data Barang</b></center></h4>
       </div>
       <div class="modal-body">
-
-        <div class="table-resposive">
-            <span class="modal_baru">
-              <table id="table-modal" class="table table-bordered">
-                  <thead> <!-- untuk memberikan nama pada kolom tabel -->
-          
-                        <th> Kode Barang </th>
-                        <th> Nama Barang </th>
-                        <th> Jumlah Barang </th>
-                        <th> Satuan </th>
-                        <th> Kategori </th>
-                        <th> Status </th>
-          
-                  </thead> <!-- tag penutup tabel -->
-                </table> <!-- tag penutup table-->
-              </span>
+      <center>
+          <div class="table-responsive">    
+            <table id="table-modal" class="table table-bordered table-sm">
+              <thead>
+                <th> Kode Barang </th>
+                <th> Nama Barang </th>
+                <th> Jumlah Barang </th>
+                <th> Satuan </th>
+                <th> Kategori </th>
+                <th> Status </th>
+              </thead>
+            </table>
           </div>
-</div> <!-- tag penutup modal-body-->
+      </center>
+      </div> <!-- tag penutup modal-body-->
       <div class="modal-footer">
         <center><b><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
       </div></b></center>
@@ -130,10 +127,10 @@ include 'db.php';
 
       <th style='background-color: #4CAF50; color:white'> No Faktur </th>
       <th style='background-color: #4CAF50; color:white'> Jenis Transaksi </th>
+      <th style='background-color: #4CAF50; color:white'> Harga</th>
       <th style='background-color: #4CAF50; color:white'> Tanggal </th>
       <th style='background-color: #4CAF50; color:white'> Jumlah Masuk</th>
       <th style='background-color: #4CAF50; color:white'> Jumlah Keluar</th>
-      <th style='background-color: #4CAF50; color:white'> Harga</th>
       <th style='background-color: #4CAF50; color:white'> Saldo</th>
             
            </thead>
@@ -408,7 +405,7 @@ $(document).on('click','#lihat_kartu_stok',function(e) {
 
 <script type="text/javascript">
   //SELECT CHOSSESN    
-$(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});    
+$(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});   
 </script>
 
 <script>
