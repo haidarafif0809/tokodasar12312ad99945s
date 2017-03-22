@@ -11,7 +11,7 @@ include 'db.php';
  ?>
 
 
- <div class="container">
+ <div  style="padding-top: 2%; padding-left: 5%; padding-right: 5%">
 
 <h3> LAPORAN PEMBELIAN HUTANG </h3><hr>
 
@@ -37,19 +37,15 @@ include 'db.php';
 <table id="tableuser" class="table table-bordered table-sm">
 		<thead>
 			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
-			<th style="background-color: #4CAF50; color: white;"> Jam </th>
-			<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
-			<th style="background-color: #4CAF50; color: white;"> Suplier </th>
-			<th style="background-color: #4CAF50; color: white;"> Total </th>
-			<th style="background-color: #4CAF50; color: white;"> Petugas </th>
-			<th style="background-color: #4CAF50; color: white;"> Status </th>
-			<th style="background-color: #4CAF50; color: white;"> Potongan </th>
-			<th style="background-color: #4CAF50; color: white;"> Tax </th>
-      <th style="background-color: #4CAF50; color: white;"> Tunai </th>
-			<th style="background-color: #4CAF50; color: white;"> Kembalian</th>
-			<th style="background-color: #4CAF50; color: white;"> Sisa Kredit </th>
-			<th style="background-color: #4CAF50; color: white;"> Nilai Kredit </th>
-			<th style="background-color: #4CAF50; color: white;"> Tanggal Jatuh Tempo </th>
+      <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
+      <th style="background-color: #4CAF50; color: white;"> Suplier </th>
+      <th style="background-color: #4CAF50; color: white;"> Nilai Faktur </th>
+      <th style="background-color: #4CAF50; color: white;"> Potongan </th>
+      <th style="background-color: #4CAF50; color: white;"> Dibayar </th>
+      <th style="background-color: #4CAF50; color: white;"> Nilai Hutang </th>
+      <th style="background-color: #4CAF50; color: white;"> Status </th>
+      <th style="background-color: #4CAF50; color: white;"> Jatuh Tempo </th>
+      <th style="background-color: #4CAF50; color: white;"> Petugas </th>
 						
 		</thead>
 		<tbody>
@@ -87,17 +83,13 @@ include 'db.php';
 			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 			<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
 			<th style="background-color: #4CAF50; color: white;"> Suplier </th>
-      <th style="background-color: #4CAF50; color: white;"> Jumlah Barang </th>
-			<th style="background-color: #4CAF50; color: white;"> Total </th>
-			<th style="background-color: #4CAF50; color: white;"> Petugas </th>
-			<th style="background-color: #4CAF50; color: white;"> Status </th>
+			<th style="background-color: #4CAF50; color: white;"> Nilai Faktur </th>
 			<th style="background-color: #4CAF50; color: white;"> Potongan </th>
-			<th style="background-color: #4CAF50; color: white;"> Tax </th>
-      <th style="background-color: #4CAF50; color: white;"> Tunai </th>
-			<th style="background-color: #4CAF50; color: white;"> Kembalian</th>
-			<th style="background-color: #4CAF50; color: white;"> Sisa Kredit </th>
-			<th style="background-color: #4CAF50; color: white;"> Nilai Kredit </th>
-			<th style="background-color: #4CAF50; color: white;"> Tanggal Jatuh Tempo </th>
+      <th style="background-color: #4CAF50; color: white;"> Dibayar </th>
+			<th style="background-color: #4CAF50; color: white;"> Nilai Hutang </th>
+      <th style="background-color: #4CAF50; color: white;"> Status </th>
+			<th style="background-color: #4CAF50; color: white;"> Jatuh Tempo </th>
+      <th style="background-color: #4CAF50; color: white;"> Petugas </th>
 			
 		</thead>
 		

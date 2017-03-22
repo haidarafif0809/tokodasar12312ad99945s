@@ -70,7 +70,7 @@ tr:nth-child(even){background-color: #f2f2f2}
  <br>
  <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="result">
-<table id="tableuser" class="table table-bordered table-sm">
+<table id="table_lap_penjualan_detail" class="table table-bordered table-sm">
 					<thead>
 					<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
 					<th style="background-color: #4CAF50; color: white;"> Kode Barang </th>
@@ -105,7 +105,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 </div> <!--/ responsive-->
 </div> <!--/ container-->
 
-		<script>
+		<!--script>
 		
 		$(document).ready(function(){
 		$('#tableuser').DataTable();
@@ -140,7 +140,65 @@ tr:nth-child(even){background-color: #f2f2f2}
 
       <script type="text/javascript">     
       $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});      
-      </script>
+      </script-->
+
+      <script type="text/javascript">
+		$(document).on('click','#submit',function(e){
+			$('#table_lap_penjualan_detail').DataTable().destroy();
+			var kategori = $("#kategori").val();
+			var dari_tanggal = $("#dari_tanggal").val();
+      		var sampai_tanggal = $("#sampai_tanggal").val();
+
+      		if (kategori == '') {
+            alert("Silakan Pilih kategori terlebih dahulu.");
+            $("#kategori").focus();
+          }
+
+      	else if (dari_tanggal == '') {
+            alert("Silakan dari tanggal diisi terlebih dahulu.");
+            $("#dari_tanggal").focus();
+          }
+          else if (sampai_tanggal == '') {
+            alert("Silakan sampai tanggal diisi terlebih dahulu.");
+            $("#sampai_tanggal").focus();
+          }
+            else{
+          var dataTable = $('#table_lap_penjualan_detail').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_lap_penjualan_detail.php", // json datasource
+           	"data": function ( d ) {
+                      d.kategori = $("#kategori").val();
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_lap_penjualan_detail").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[12]+'');
+            },
+
+        });
+
+        $("#cetak").show();
+    	$("#cetak_lap").attr("href", "cetak_lap_penjualan_detail.php?&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+        }//end else
+        $("form").submit(function(){
+        return false;
+        });
+		
+		});
+		
+		</script>
 
 
 

@@ -87,17 +87,13 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 			$nestedData[] = $row['tanggal'] ." ". $row['jam'];
 			$nestedData[] = $row['no_faktur'];
 			$nestedData[] = $row['nama'];
-			$nestedData[] = rp($total_barang);
 			$nestedData[] = rp($row['total']);
-			$nestedData[] = $row['user'];
-			$nestedData[] = $row['status'];
 			$nestedData[] = rp($row['potongan']);
-			$nestedData[] = rp($row['tax']);
 			$nestedData[] = rp($row['tunai']);
-			$nestedData[] = rp($row['sisa']);
 			$nestedData[] = rp($row['kredit']);
-			$nestedData[] = rp($row['nilai_kredit']);
+			$nestedData[] = $row['status'];
 			$nestedData[] = $row['tanggal_jt'];
+			$nestedData[] = $row['user'];
 				$nestedData[] = $row["id"];
 				$data[] = $nestedData;
 			}
@@ -107,16 +103,12 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 			$nestedData[] = "<p style='color:red'> <b>Jumlah Total</b> </p>";
 			$nestedData[] = "";
 			$nestedData[] = "";
-			$nestedData[] = "<p style='color:red'><b>".rp($t_barang)."</b></p>";
 			$nestedData[] = "<p style='color:red'><b>".rp($total_akhir)."</b></p>";
-			$nestedData[] = "";
-			$nestedData[] = "";
-			$nestedData[] = "<p style='color:red'><b>".rp($total_tunai)."</b></p>";
 			$nestedData[] = "<p style='color:red'><b>".rp($total_potongan)."</b></p>";
-			$nestedData[] = "<p style='color:red'><b>".rp($total_tax)."</b></p>";
-			$nestedData[] = "<p style='color:red'><b>".rp($total_kembalian)."</b></p>";
+			$nestedData[] = "<p style='color:red'><b>".rp($total_tunai)."</b></p>";
 			$nestedData[] = "<p style='color:red'><b>".rp($total_kredit)."</b></p>";
-			$nestedData[] = "<p style='color:red'><b>".rp($total_nilai_kredit)."</b></p>";
+			$nestedData[] = "";
+			$nestedData[] = "";
 			$nestedData[] = "";
 		$data[] = $nestedData;
 

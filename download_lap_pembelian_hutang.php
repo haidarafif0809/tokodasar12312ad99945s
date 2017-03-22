@@ -32,10 +32,11 @@ $cek01 = mysqli_fetch_array($query01);
 $total_potongan = $cek01['total_potongan'];
 $total_akhir = $cek01['total_akhir'];*/
 
-$query20 = $db->query("SELECT SUM(tax) AS total_tax,sum(tunai) as total_bayar,sum(sisa) as total_sisa,SUM(potongan) AS total_potongan,sum(total) as total_akhir  FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0");
+$query20 = $db->query("SELECT SUM(tax) AS total_tax,sum(tunai) as total_bayar,sum(sisa) as total_sisa,SUM(potongan) AS total_potongan,sum(total) as total_akhir, sum(tunai) as total_tunai  FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0");
 $cek20 = mysqli_fetch_array($query20);
 $total_tax = $cek20['total_tax'];
 $total_bayar = $cek20['total_bayar'];
+$total_tunai = $cek20['total_tunai'];
 $total_sisa = $cek20['total_sisa'];
 $total_akhir = $cek20['total_akhir'];
 $total_potongan = $cek20['total_potongan'];
@@ -78,6 +79,7 @@ $t_barang = $cek011['total_barang'];
       <th style="background-color: #4CAF50; color: white;"> Status </th>
       <th style="background-color: #4CAF50; color: white;"> Potongan </th>
       <th style="background-color: #4CAF50; color: white;"> Tax </th>
+      <th style="background-color: #4CAF50; color: white;"> Tunai </th>
       <th style="background-color: #4CAF50; color: white;"> Kembalian</th>
       <th style="background-color: #4CAF50; color: white;"> Sisa Kredit </th>
       <th style="background-color: #4CAF50; color: white;"> Nilai Kredit </th>
@@ -106,6 +108,7 @@ $t_barang = $cek011['total_barang'];
       <td>". $data1['status'] ."</td>
       <td>". $data1['potongan'] ."</td>
       <td>". $data1['tax'] ."</td>
+      <td>". $data1['tunai'] ."</td>
       <td>". $data1['sisa'] ."</td>
       <td>". $data1['kredit'] ."</td>
       <td>". $data1['nilai_kredit'] ."</td>
@@ -122,6 +125,7 @@ $t_barang = $cek011['total_barang'];
       <td></td>
       <td><p style='color:red'><b>".$total_potongan."</b></p></td>
       <td><p style='color:red'><b>".$total_tax."</b></p></td>
+      <td><p style='color:red'><b>".$total_tunai."</b></p></td>
       <td><p style='color:red'><b>".$total_sisa."</b></p></td>
       <td><p style='color:red'><b>".$total_kredit."</b></p></td>
       <td><p style='color:red'><b>".$total_nilai_kredit."</b></p></td>
