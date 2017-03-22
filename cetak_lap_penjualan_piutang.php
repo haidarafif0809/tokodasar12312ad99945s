@@ -13,7 +13,6 @@ include 'db.php';
 
      $potongan = $data0['potongan'];
 
-     $jml_dibayar = $data0['total'] - $data0['tunai'];
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
@@ -30,7 +29,10 @@ include 'db.php';
     $data05 = mysqli_fetch_array($query05);
     $t_subtotal = $data05['t_subtotal'];
 
-    $ambil_footer = $db->query("SELECT keterangan FROM setting_footer_cetak");
+
+     $jml_dibayar = $t_subtotal - $data0['potongan'] - $data0['tunai'];
+
+    $ambil_footer = $db->query("SELECT keterangan, petugas FROM setting_footer_cetak");
     $data_footer = mysqli_fetch_array($ambil_footer);
 
     $ubah_tanggal = $data0['tanggal'];
@@ -73,7 +75,7 @@ include 'db.php';
 
 
   <div class="row">
-    <div class="col-sm-9">
+    <div class="col-sm-6">
         
 
  <table>
@@ -91,17 +93,19 @@ include 'db.php';
 
     </div>
 
-    <div class="col-sm-3">
- <table>
-  <tbody>
 
-       <tr><td width="50%"><font class="satu"> Alamat</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data0['wilayah'];?></font> </td></tr>
-       <tr><td width="50%"><font class="satu"> Tanggal JT</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $tanggal_jt;?></font> </td></tr>
+    <div class="col-sm-6">
+       <table>
+        <tbody>
 
-      </tbody>
-</table>
+             <tr> <td width="5%"><font class="satu"> Alamat</td> <td> :&nbsp;&nbsp;</td> </font> </td><td><?php echo $data0['wilayah'];?> </td></tr>
+             <tr><td width="19%"><font class="satu"> Tanggal JT</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $tanggal_jt;?></font> </td></tr>
+
+            </tbody>
+      </table>
 
     </div> <!--end col-sm-2-->
+
    </div> <!--end row-->  
 
 
@@ -195,7 +199,7 @@ mysqli_close($db);
 
         <tr>
             <td class='table1' style="width: 3%"></td>
-            <td class='table1' style="width: 50%">Jumlah Pembayaran Awal (DP)</td>
+            <td class='table1' style="width: 50%">Jumlah Pembayaran</td>
             <td class='table1' style="width: 5%" align='right'></td>
             <td class='table1' style="width: 5%"></td>
             <td class='table1' style="width: 10%" align='right'></td>
@@ -224,7 +228,7 @@ mysqli_close($db);
 
  <div class="col-sm-3">
     
-    <font class="satu"><b> <center>Hormat Kami,</center> <br><br><br> <font class="satu"> <center>(<?php echo $_SESSION['nama']; ?>)</center></font></b></font>
+    <font class="satu"><b> <center>Hormat Kami,</center> <br><br><br> <font class="satu"> <center>(<?php echo $data_footer['petugas']; ?>)</center></font></b></font>
 
 </div>
 
