@@ -13,7 +13,7 @@ include 'db.php';
 
  <div  style="padding-top: 2%; padding-left: 5%; padding-right: 5%">
 
-<h3> LAPORAN PEMBELIAN HUTANG </h3><hr>
+<h3> LAPORAN HUTANG BEREDAR</h3><hr>
 
 <form class="form-inline" role="form">
 				
@@ -78,7 +78,7 @@ include 'db.php';
 <div class="card card-block">
 
 <div class="table-responsive">
- <table id="table_laporan_pembelian_hutang" class="table table-bordered table-sm">
+ <table id="table_laporan_pembelian_hutang" class="table table-bordered table-sm" style="padding-left: 0%; padding-right: 0%;">
             <thead>
 			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 			<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>

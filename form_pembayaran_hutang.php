@@ -235,15 +235,14 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
       <th> Nomor Faktur </th>
       <th> Suplier </th>
       <th> Total Beli</th>
-      <th> Tanggal </th>
-      <th> Tanggal Jatuh Tempo </th>
-      <th> Jam </th>
-      <th> User </th>
-      <th> Status </th>
-      <th> Potongan </th>
       <th> Tax </th>
       <th> Sisa </th>
       <th> Kredit </th>
+      <th> Tanggal </th>
+      <th> Tanggal Jatuh Tempo </th>
+      <th> User </th>
+      <th> Status </th>
+      <th> Potongan </th>
       
     </thead> <!-- tag penutup tabel -->
     
@@ -263,15 +262,14 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
       <td>". $data1['no_faktur'] ."</td>
       <td>". $data1['nama'] ."</td>
       <td>". $data1['total'] ."</td>
-      <td>". $data1['tanggal'] ."</td>
-      <td>". $data1['tanggal_jt'] ."</td>
-      <td>". $data1['jam'] ."</td>
-      <td>". $data1['user'] ."</td>
-      <td>". $data1['status'] ."</td>
       <td>". $data1['potongan'] ."</td>
       <td>". $data1['tax'] ."</td>
       <td>". $data1['sisa'] ."</td>
       <td>". $data1['kredit'] ."</td>
+      <td>". $data1['tanggal'] ." ". $data1['jam'] ."</td>
+      <td>". $data1['tanggal_jt'] ."</td>
+      <td>". $data1['user'] ."</td>
+      <td>". $data1['status'] ."</td>
       </tr>";
       
        }
@@ -376,8 +374,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
     <?php
 
     //untuk menampilkan semua data yang ada pada tabel tbs pembelian dalam DB
-    $perintah = $db->query("SELECT * FROM tbs_pembayaran_hutang 
-                WHERE session_id = '$session_id'");
+    $perintah = $db->query("SELECT * FROM tbs_pembayaran_hutang  WHERE session_id = '$session_id'");
 
     //menyimpan data sementara yang ada pada $perintah
       while ($data1 = mysqli_fetch_array($perintah))

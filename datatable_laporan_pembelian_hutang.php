@@ -7,11 +7,8 @@ include 'sanitasi.php';
 $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
-$query011 = $db->query("SELECT SUM(dp.jumlah_barang) AS total_barang FROM detail_pembelian dp LEFT JOIN pembelian p ON dp.no_faktur = p.no_faktur WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND p.kredit != 0");
-$cek011 = mysqli_fetch_array($query011);
-$t_barang = $cek011['total_barang'];
 
-$query02 = $db->query("SELECT SUM(pem.tunai) AS tunai_penjualan,SUM(pem.total) AS total_akhir, SUM(pem.kredit) AS total_kredit,SUM(pem.nilai_kredit) AS total_nilai_kredit,SUM(dph.jumlah_bayar) + SUM(dph.potongan) AS ambil_total_bayar,sum(pem.potongan) as total_potongan, sum(pem.sisa) as total_kembalian, sum(pem.tax) as total_tax  FROM pembelian pem LEFT JOIN detail_pembayaran_hutang dph ON pem.no_faktur = dph.no_faktur_pembelian WHERE pem.tanggal >= '$dari_tanggal' AND pem.tanggal <= '$sampai_tanggal' AND pem.kredit != 0 ");
+$query02 = $db->query("SELECT SUM(pem.tunai) AS tunai_penjualan,SUM(pem.total) AS total_akhir, SUM(pem.kredit) AS total_kredit,SUM(pem.nilai_kredit) AS total_nilai_kredit,sum(pem.potongan) as total_potongan, sum(pem.sisa) as total_kembalian, sum(pem.tax) as total_tax  FROM pembelian pem  WHERE pem.tanggal >= '$dari_tanggal' AND pem.tanggal <= '$sampai_tanggal' AND pem.kredit != 0 ");
 $cek02 = mysqli_fetch_array($query02);
 $total_akhir = $cek02['total_akhir'];
 $total_kredit = $cek02['total_kredit'];
@@ -20,7 +17,6 @@ $total_potongan = $cek02['total_potongan'];
 $total_tax = $cek02['total_tax'];
 $total_tunai = $cek02['tunai_penjualan'];
 $total_kembalian = $cek02['total_kembalian'];
-$total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
 
 
 // storing  request (ie, get/post) global array to a variable  
@@ -79,9 +75,6 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
-	$query0 = $db->query("SELECT SUM(jumlah_barang) AS total_barang FROM detail_pembelian WHERE no_faktur = '$row[no_faktur]'");
-                        $cek0 = mysqli_fetch_array($query0);
-                        $total_barang = $cek0['total_barang'];
 
 			//menampilkan data
 			$nestedData[] = $row['tanggal'] ." ". $row['jam'];
