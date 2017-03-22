@@ -81,19 +81,9 @@ tr:nth-child(even){background-color: #f2f2f2}
 					<th style="background-color: #4CAF50; color: white;"> Subtotal </th>
 					<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 					<th style="background-color: #4CAF50; color: white;"> Tax </th>
-      <?php 
-             if ($_SESSION['otoritas'] == 'Pimpinan')
-             {
-             
-             
-             echo "<th style='background-color: #4CAF50; color: white;'> Hpp </th>";
-             }
-      ?>
+          <th style="background-color: #4CAF50; color: white;"> Total </th>
 
-					
-					<th style="background-color: #4CAF50; color: white;"> Sisa Barang </th>
-					
-					
+
 					</thead>
 					
 					<tbody>
@@ -103,6 +93,12 @@ tr:nth-child(even){background-color: #f2f2f2}
 					</table>
 </span>
 </div> <!--/ responsive-->
+
+       <a href='cetak_laporan_penjualan_piutang.php' style="display: none" class='btn btn-success'  id="cetak_non" target='blank'><i class='fa fa-print'> </i> Cetak Penjualan Detail</a>  
+
+       <a href='download_lap_penjualan_piutang.php' style="display: none" type='submit' target="blank" id="btn-download-non" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel Penjualan Detail</a>
+
+
 </div> <!--/ container-->
 
 		<!--script>
@@ -136,14 +132,15 @@ tr:nth-child(even){background-color: #f2f2f2}
 		
 		});
 		
-		</script>
+		</script>-->
 
       <script type="text/javascript">     
       $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});      
-      </script-->
+      </script>
 
       <script type="text/javascript">
 		$(document).on('click','#submit',function(e){
+
 			$('#table_lap_penjualan_detail').DataTable().destroy();
 			var kategori = $("#kategori").val();
 			var dari_tanggal = $("#dari_tanggal").val();
@@ -182,15 +179,15 @@ tr:nth-child(even){background-color: #f2f2f2}
               $("#employee-grid_processing").css("display","none");
             }
         },
-            
-            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-                $(nRow).attr('class','tr-id-'+aData[12]+'');
-            },
+    });
 
-        });
 
-        $("#cetak").show();
-    	$("#cetak_lap").attr("href", "cetak_lap_penjualan_detail.php?&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+    $("#cetak_non").show();
+    $("#btn-download-non").show();
+$("#cetak_non").attr("href", "cetak_lap_penjualan_detail.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&kategori="+kategori+"");
+$("#btn-download-non").attr("href", "download_lap_penjualan_detail.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&kategori="+kategori+"");
+
+
         }//end else
         $("form").submit(function(){
         return false;

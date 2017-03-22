@@ -18,28 +18,28 @@ $kategori = stringdoang($_GET['kategori']);
 
 if ($kategori == 'semua')
 {
-  //menampilkan seluruh data yang ada pada tabel penjualan
-$perintah = $db->query("SELECT SUM(dp.jumlah_barang) AS total_barang,SUM(dp.subtotal) AS total_subtotal,SUM(pp.kredit) AS total_kredit,SUM(dp.tax) AS total_tax,SUM(dp.potongan) AS total_potongan,s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id  LEFT JOIN penjualan pp ON dp.no_faktur = pp.no_faktur  WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ");
+  $query02 = $db->query("SELECT SUM(dp.jumlah_barang) as tot_jumlah ,SUM(dp.harga) AS tot_harga ,SUM(dp.harga * dp.jumlah_barang) as tot_subtotal ,SUM(dp.potongan) as tot_potongan ,SUM(dp.tax) as tot_tax, SUM(dp.subtotal + dp.tax) as tot_akhir FROM detail_penjualan dp WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ");
+
 }
 else
 {
-  $perintah = $db->query("SELECT SUM(dp.jumlah_barang) AS total_barang,SUM(dp.subtotal) AS total_subtotal,SUM(pp.kredit) AS total_kredit,SUM(dp.tax) AS total_tax,SUM(dp.potongan) AS total_potongan,s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id  LEFT JOIN penjualan pp ON dp.no_faktur = pp.no_faktur LEFT JOIN barang br ON dp.kode_barang = br.kode_barang WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'  AND br.kategori = '$kategori' ");
+
+    $query02 = $db->query("SELECT SUM(dp.jumlah_barang) as tot_jumlah ,SUM(dp.harga) AS tot_harga ,SUM(dp.harga * dp.jumlah_barang) as tot_subtotal ,SUM(dp.potongan) as tot_potongan ,SUM(dp.tax) as tot_tax, SUM(dp.subtotal + dp.tax) as tot_akhir FROM detail_penjualan dp  LEFT JOIN barang br ON dp.kode_barang = br.kode_barang WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'  AND br.kategori = '$kategori'");
 }
 
-
-
-$cek01 = mysqli_fetch_array($perintah);
-$total_potongan = $cek01['total_potongan'];
-$total_tax = $cek01['total_tax'];
-$total_kredit = $cek01['total_kredit'];
-$t_subtotal = $cek01['total_subtotal'];
-$t_barang = $cek01['total_barang'];
+$cek02 = mysqli_fetch_array($query02);
+$tot_jumlah = $cek02['tot_jumlah'];
+$tot_harga = $cek02['tot_harga'];
+$tot_subtotal = $cek02['tot_subtotal'];
+$tot_potongan = $cek02['tot_potongan'];
+$tot_tax = $cek02['tot_tax'];
+$tot_akhir = $cek02['tot_akhir'];
 
 ?>
 
 <div class="container">
-<center><h3><b>Data Laporan Penjualan Detail</b></h3></center>
-<table id="tableuser" class="table table-bordered">
+                 <h3> <b> LAPORAN PENJUALAN DETAIL </b></h3>
+<table id="table_lap_penjualan_detail" class="table table-bordered table-sm">
           <thead>
           <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
           <th style="background-color: #4CAF50; color: white;"> Kode Barang </th>
@@ -50,110 +50,96 @@ $t_barang = $cek01['total_barang'];
           <th style="background-color: #4CAF50; color: white;"> Subtotal </th>
           <th style="background-color: #4CAF50; color: white;"> Potongan </th>
           <th style="background-color: #4CAF50; color: white;"> Tax </th>
-    
-             
-             
-             echo "<th style='background-color: #4CAF50; color: white;'> Hpp </th>";
-        
+          <th style="background-color: #4CAF50; color: white;"> Total </th>
 
-          
-          <th style="background-color: #4CAF50; color: white;"> Sisa Barang </th>
-          
-          
+
           </thead>
           
           <tbody>
-          <?php
-          if ($kategori == 'semua')
+            <?php
+
+if ($kategori == 'semua')
 {
-  $perintah1 = $db->query("SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ");
+  $perintah1 = $db->query("SELECT dp.tanggal,s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ");
 }
 else
 {
 
-  $perintah1 = $db->query("SELECT s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id LEFT JOIN barang br ON dp.kode_barang = br.kode_barang WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'  AND br.kategori = '$kategori' ");
+  $perintah1 = $db->query("SELECT dp.tanggal,s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id LEFT JOIN barang br ON dp.kode_barang = br.kode_barang WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'  AND br.kategori = '$kategori' ");
 
 }
-          //menyimpan data sementara yang ada pada $perintah
-          while ($data1 = mysqli_fetch_array($perintah1))
-          {
+              while( $row=mysqli_fetch_array($perintah1) ) {  // preparing an array
 
-
-
-            $pilih_konversi = $db->query("SELECT $data1[jumlah_barang] / sk.konversi AS jumlah_konversi, sk.harga_pokok / sk.konversi AS harga_konversi, sk.id_satuan, b.satuan FROM satuan_konversi sk LEFT JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$data1[satuan]' AND sk.kode_produk = '$data1[kode_barang]'");
+    $pilih_konversi = $db->query("SELECT $row[jumlah_barang] / sk.konversi AS jumlah_konversi, sk.harga_pokok / sk.konversi AS harga_konversi, sk.id_satuan, b.satuan,sk.konversi FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$row[satuan]' AND sk.kode_produk = '$row[kode_barang]'");
                 $data_konversi = mysqli_fetch_array($pilih_konversi);
 
-                if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") {
-                  
+          $query900 = $db->query("SELECT nama FROM satuan WHERE id = '$data_konversi[satuan]'");
+           $cek011 = mysqli_fetch_array($query900);
+
+
+                if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") 
+                {             
                    $jumlah_barang = $data_konversi['jumlah_konversi'];
+                   $konver = $jumlah_barang * $data_konversi['konversi'];
                 }
                 else{
-                  $jumlah_barang = $data1['jumlah_barang'];
+                  $jumlah_barang = $row['jumlah_barang'];
+                  $konver = "";
                 }
 
-          //menampilkan data
-          echo "<tr>
-          <td>". $data1['no_faktur'] ."</td>
-          <td>". $data1['kode_barang'] ."</td>
-          <td>". $data1['nama_barang'] ."</td>
-          <td>". $jumlah_barang ."</td>
-          <td>". $data1['nama'] ."</td>
-          <td>". $data1['harga'] ."</td>
-          <td>". $data1['subtotal'] ."</td>
-          <td>". $data1['potongan'] ."</td>
-          <td>". $data1['tax'] ."</td>";
 
-        
+          $subtotal = $row['harga'] * $row['jumlah_barang'];
 
-          echo "<td>". $data1['hpp'] ."</td>";
-        
-
-          echo "<td>". $data1['sisa'] ."</td>
-          </tr>";
-          }
-
-          //Untuk Memutuskan Koneksi Ke Database
-          mysqli_close($db);   
-          ?>
-          </tbody>
-          
-          </table>
-<br>
-
+   echo "<tr>       
+    <td>".$row['no_faktur']."</td>
+    <td>". $row['kode_barang']."</td>
+    <td>". $row['nama_barang']."</td>";
     
-<hr>
- <div class="row">
-     
-     <div class="col-sm-3"></div>
-     <div class="col-sm-3"></div>
-     <div class="col-sm-3"></div>
+    if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") 
+               {  
+    echo "<td>". $jumlah_barang." ( ".$konver." ".$cek011['nama']." ) </td>";
+            }
+          else
+            {
+      echo "<td>".$jumlah_barang."</td>";
+            }
+
+echo "<td>".$row['nama']."</td>
+<td>".  rp($row['harga'])."</td>
+<td>". rp($subtotal)."</td>
+<td>". rp($row['potongan'])."</td>
+<td>". rp($row['tax'])."</td>
+<td>". rp($row['subtotal'] + $row['tax'])."</td>
+</tr>";
+
+      }
+
+echo "<tr>"; 
+      echo " <td><p style='color:red'> TOTAL </td>";
+      echo " <td><p style='color:red'> - </td>";
+      echo " <td><p style='color:red'> - </td>";
+      echo " <td><p style='color:red'> ".rp($tot_jumlah)." </td>";
+      echo " <td><p style='color:red'>  </td>";
+      echo " <td><p style='color:red'> ".rp($tot_harga)." </td>";
+      echo " <td><p style='color:red'> ".rp($tot_subtotal)." </td>";
+      echo " <td><p style='color:red'> ".rp($tot_potongan)." </td>";
+      echo " <td><p style='color:red'> ".rp($tot_tax)." </td>";
+      echo " <td><p style='color:red'> ".rp($tot_akhir)." </td>
+
+
+      </tr>"; 
+
+                          //Untuk Memutuskan Koneksi Ke Database
+                          
+                          mysqli_close($db); 
         
-  <table>
-  <tbody>
+        
+            ?>
+            </tbody>
 
-      <tr><td width="70%">Jumlah Item</td> <td> :&nbsp; </td> <td> <?php echo $t_barang; ?> </td></tr>
-      <tr><td  width="70%">Total Subtotal</td> <td> :&nbsp;Rp. </td> <td> <?php echo rp($t_subtotal); ?> </td>
-      </tr>
-      <tr><td  width="70%">Total Potongan</td> <td> :&nbsp;Rp. </td> <td> <?php echo rp($total_potongan); ?></td></tr>
-      <tr><td width="70%">Total Pajak</td> <td> :&nbsp;Rp. </td> <td> <?php echo rp($total_tax); ?> </td></tr>
-      <tr><td  width="70%">Total Akhir</td> <td> :&nbsp;Rp. </td> <td> <?php echo rp($t_subtotal); ?> </td>
-      </tr>
-      <tr><td  width="70%">Total Kredit</td> <td> :&nbsp;Rp. </td> <td> <?php echo rp($total_kredit); ?></td></tr>
-            
-  </tbody>
-  </table>
-
-
-   
-
-     <div class="col-sm-3">
-
- <b>&nbsp;&nbsp;&nbsp;&nbsp;Petugas<br><br><br><br>( ................... )</b>
-
-    </div>
-
+      </table>
 
 </div>
-        
+</div>
 
-</div> <!--end container-->
+     </div>
