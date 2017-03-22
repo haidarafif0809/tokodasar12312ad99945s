@@ -56,6 +56,7 @@ tr:nth-child(even){background-color: #f2f2f2}
     <thead>
       <th style='background-color: #4CAF50; color: white'> No.</th>
       <th style='background-color: #4CAF50; color: white'> Keterangan Footer</th>
+      <th style='background-color: #4CAF50; color: white'> Petugas</th>
     </thead>
     
   </table>
@@ -115,9 +116,35 @@ $(document).ready(function(){
     </script>
 <!--/DATA TABLE MENGGUNAKAN AJAX-->
 
+<!-- PERINTAH U/ EDIT PETUGAS DEFAULT DI CETAK PENJUALAN -->
+<script type="text/javascript">
+$(document).on("dblclick",".edit-nama",function(){
+
+  var id = $(this).attr("data-id");
+
+  $("#text-nama-"+id+"").hide();
+  $("#input-nama-"+id+"").attr("type", "text");
+});
 
 
+$(document).on("blur",".input_nama",function(){
 
+  var id = $(this).attr("data-id");
+  var input_nama = $(this).val();
+
+
+  $.post("update_default_petugas_cetak.php",{id:id, input_nama:input_nama},function(data){
+
+    $("#text-nama-"+id+"").show();
+    $("#text-nama-"+id+"").text(input_nama);
+    $("#input-nama-"+id+"").attr("type", "hidden");           
+
+  });
+});
+
+</script>
+
+<!-- PERINTAH U/ EDIT PETUGAS DEFAULT DI CETAK PENJUALAN -->
     
            <script>
                 // Replace the <textarea id="editor1"> with a CKEditor

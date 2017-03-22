@@ -28,7 +28,9 @@ include 'db.php';
     $data05 = mysqli_fetch_array($query05);
     $t_subtotal = $data05['t_subtotal'];
 
-    $ambil_footer = $db->query("SELECT keterangan FROM setting_footer_cetak");
+    $jml_dibayar = $t_subtotal - $data0['potongan'];
+
+    $ambil_footer = $db->query("SELECT keterangan, petugas FROM setting_footer_cetak");
     $data_footer = mysqli_fetch_array($ambil_footer);
 
     $ubah_tanggal = $data0['tanggal'];
@@ -68,7 +70,7 @@ include 'db.php';
 
 
   <div class="row">
-    <div class="col-sm-9">
+    <div class="col-sm-6">
         
 
  <table>
@@ -86,11 +88,11 @@ include 'db.php';
 
     </div>
 
-    <div class="col-sm-3">
+    <div class="col-sm-6">
  <table>
   <tbody>
 
-       <tr><td width="50%"><font class="satu"> Alamat</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data0['wilayah'];?></font> </td></tr>
+       <tr><td width="5%"><font class="satu"> Alamat</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data0['wilayah'];?></font> </td></tr>
 
       </tbody>
 </table>
@@ -193,7 +195,7 @@ mysqli_close($db);
             <td class='table1' style="width: 5%" align='right'></td>
             <td class='table1' style="width: 5%"></td>
             <td class='table1' style="width: 10%" align='right'></td>
-            <td class='table1' style="width: 10%" align='right'><?php echo rp($data0['total']); ?></td>
+            <td class='table1' style="width: 10%" align='right'><b><?php echo rp($jml_dibayar); ?></b></td>
         </tr>
 
 
@@ -209,7 +211,7 @@ mysqli_close($db);
 
  <div class="col-sm-3">
     
-    <font class="satu"><b> <center>Hormat Kami,</center> <br><br><br> <font class="satu"> <center>(<?php echo $_SESSION['nama']; ?>)</center></font></b></font>
+    <font class="satu"><b> <center>Hormat Kami,</center> <br><br><br> <font class="satu"> <center>(<?php echo $data_footer['petugas']; ?>)</center></font></b></font>
 
 </div>
 

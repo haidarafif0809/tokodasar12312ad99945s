@@ -18,7 +18,7 @@ $columns = array(
 
 
 // getting total number records without any search
-$sql = "SELECT id,keterangan ";
+$sql = "SELECT id,keterangan,petugas ";
 $sql.="FROM setting_footer_cetak ";
 $query=mysqli_query($conn, $sql) or die("datatabsetting: get employees");
 $totalData = mysqli_num_rows($query);
@@ -26,7 +26,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 
 
-$sql = "SELECT id,keterangan ";
+$sql = "SELECT id,keterangan,petugas ";
 $sql.="FROM setting_footer_cetak WHERE 1=1";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
@@ -48,6 +48,10 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 		$nestedData[] = $no_urut ++;
 		$nestedData[] = $row['keterangan'];
+
+		$nestedData[] = "<p class='edit-nama' data-id='".$row['id']."'><span id='text-nama-". $row['id'] ."'>". $row['petugas'] ."</span>
+			<input type='hidden' id='input-nama-".$row['id']."' value='".$row['petugas']."' class='input_nama' data-id='".$row['id']."' autofocus=''></p>";
+
 		$nestedData[] = $row["id"];
 	$data[] = $nestedData;
 	}
