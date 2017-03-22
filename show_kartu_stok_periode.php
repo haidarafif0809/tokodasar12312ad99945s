@@ -135,15 +135,6 @@ if ($row['jenis_hpp'] == '1')
 
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
 
-		$nestedData[] = $row['tanggal'];
-
-		$masuk = $row['jumlah_kuantitas'];
-		$total_saldo = ($total_saldo + $masuk);
-
-		$nestedData[] = rp($masuk);
-		$nestedData[] = "0";
-
-
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
 			if ($row['jenis_transaksi'] == 'Pembelian') {
 
@@ -192,7 +183,14 @@ if ($row['jenis_hpp'] == '1')
 			}
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
+//
+		$nestedData[] = $row['tanggal'];
 
+		$masuk = $row['jumlah_kuantitas'];
+		$total_saldo = ($total_saldo + $masuk);
+
+		$nestedData[] = rp($masuk);
+		$nestedData[] = "0";
 		$nestedData[] =  rp($total_saldo);
 		$data[] = $nestedData;
 	
@@ -224,15 +222,7 @@ else
 				$nestedData[] = $row['jenis_transaksi'];
 			}
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
-
-		$nestedData[] = $row['tanggal'];
-
-		$keluar = $row['jumlah_kuantitas'];
-		$total_saldo = $total_saldo - $keluar;
-
-		$nestedData[] =	"0";
-		$nestedData[] = rp($keluar);
-
+//
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
@@ -275,6 +265,13 @@ else
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
+		$nestedData[] = $row['tanggal'];
+
+		$keluar = $row['jumlah_kuantitas'];
+		$total_saldo = $total_saldo - $keluar;
+
+		$nestedData[] =	"0";
+		$nestedData[] = rp($keluar);
 		$nestedData[] =  rp($total_saldo);	
 		$data[] = $nestedData;	
 

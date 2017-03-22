@@ -59,7 +59,7 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 
 
     <center> <h4> <b> KARTU STOK </b> </h4> </center>
-    <center> <h4> <b> PERIODE <?php echo $moon; ?>   <?php echo $tahun; ?></b> </h4> </center><br>
+    <center> <h4> <b> PERIODE <?php echo $moon; ?>   <?php echo $tahun; ?></b> </h4> </center><hr>
 
 
 
@@ -117,11 +117,11 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 <table id="tableuser" class="table table-bordered table-sm">
         <thead>
             <th class="table1" style="width: 3%"> No Faktur</th>
-            <th class="table1" style="width: 50%"> Transaksi </th>
+            <th class="table1" style="width: 50%"> Jenis Transaksi </th>
+            <th class="table1" style="width: 10%"> Harga</th>
             <th class="table1" style="width: 5%"> Tanggal</th>
             <th class="table1" style="width: 5%"> Jumlah Masuk</th>
-            <th class="table1" style="width: 15%"> Jumlah Keluar</th>
-            <th class="table1" style="width: 15%"> Harga</th>
+            <th class="table1" style="width: 5%"> Jumlah Keluar</th>
             <th class="table1" style="width: 5%"> Saldo</th>
 
     
@@ -184,11 +184,7 @@ if ($data['jenis_hpp'] == '1')
       }
 
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
-
-  echo "<td>". $data['tanggal'] ."</td>
-      <td>". rp($masuk) ."</td>
-      <td>0</td>";
-
+//
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
       if ($data['jenis_transaksi'] == 'Pembelian') {
 
@@ -237,8 +233,11 @@ if ($data['jenis_hpp'] == '1')
       }
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
-//
-      echo "<td>". rp($total_saldo) ."</td>
+
+  echo "<td>". $data['tanggal'] ."</td>
+      <td>". rp($masuk) ."</td>
+      <td>0</td>
+      <td>". rp($total_saldo) ."</td>
       ";
 }
 else
@@ -275,11 +274,7 @@ $total_saldo = $total_saldo - $keluar;
       }
 
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
-
-      echo "<td>". $data['tanggal'] ."</td>
-      <td>0</td>
-      <td>".rp($keluar)."</td>";
-
+//
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
       if ($data['jenis_transaksi'] == 'Penjualan') {
@@ -320,7 +315,12 @@ $total_saldo = $total_saldo - $keluar;
       }
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
-      echo "<td>". rp($total_saldo) ."</td>
+
+
+      echo "<td>". $data['tanggal'] ."</td>
+      <td>0</td>
+      <td>".rp($keluar)."</td>
+      <td>". rp($total_saldo) ."</td>
       ";
 }
 

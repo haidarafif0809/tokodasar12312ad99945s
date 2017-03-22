@@ -194,11 +194,7 @@ if ($data['jenis_hpp'] == '1')
 			}
 
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
-
-			$nestedData[] = $data['tanggal'];
-			$nestedData[] = $masuk ;
-			$nestedData[] =   	"0";
-
+//
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
 			if ($data['jenis_transaksi'] == 'Pembelian') {
 
@@ -248,6 +244,10 @@ if ($data['jenis_hpp'] == '1')
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
 
+
+			$nestedData[] = $data['tanggal'];
+			$nestedData[] = $masuk ;
+			$nestedData[] =   	"0";
 			$nestedData[] =  $total_saldo ;
 
 		$datatable[] = $nestedData;
@@ -289,11 +289,7 @@ $total_saldo = $total_saldo - $keluar;
 			}
 
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
-
-		$nestedData[] =	 $data['tanggal'] ;
-		$nestedData[] =	"0";
-		$nestedData[] = $keluar;
-
+//
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
@@ -336,6 +332,9 @@ $total_saldo = $total_saldo - $keluar;
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
+		$nestedData[] =	 $data['tanggal'] ;
+		$nestedData[] =	"0";
+		$nestedData[] = $keluar;
 		$nestedData[] = $total_saldo;
 		$datatable[] = $nestedData;
 }

@@ -47,11 +47,11 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
         <thead>
 
       <th style='background-color: #4CAF50; color:white'> No Faktur </th>
-      <th style='background-color: #4CAF50; color:white'> Tipe </th>
+      <th style='background-color: #4CAF50; color:white'> Jenis Transaksi </th>
+      <th style='background-color: #4CAF50; color:white'> Harga </th>
       <th style='background-color: #4CAF50; color:white'> Tanggal </th>
       <th style='background-color: #4CAF50; color:white'> Jumlah Masuk </th>
       <th style='background-color: #4CAF50; color:white'> Jumlah Keluar </th>
-      <th style='background-color: #4CAF50; color:white'> Harga </th>
       <th style='background-color: #4CAF50; color:white'> Saldo</th>
 
 </thead>
@@ -111,11 +111,7 @@ if ($data['jenis_hpp'] == '1')
       }
 
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
-
-  echo "<td>". $data['tanggal'] ."</td>
-      <td>". rp($masuk) ."</td>
-      <td>0</td>";
-
+//
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
       if ($data['jenis_transaksi'] == 'Pembelian') {
 
@@ -164,8 +160,11 @@ if ($data['jenis_hpp'] == '1')
       }
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
-//
-      echo "<td>". $total_saldo ."</td>
+
+  echo "<td>". $data['tanggal'] ."</td>
+      <td>". rp($masuk) ."</td>
+      <td>0</td>
+      <td>". $total_saldo ."</td>
 			";
 }
 else
@@ -202,11 +201,7 @@ $total_saldo = $total_saldo - $keluar;
       }
 
 //LOGIKA UNTUK MENAMPILKAN JENIS TRANSAKSI DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
-
-      echo "<td>". $data['tanggal'] ."</td>
-      <td>0</td>
-      <td>".rp($keluar)."</td>";
-
+//
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
       if ($data['jenis_transaksi'] == 'Penjualan') {
@@ -247,7 +242,11 @@ $total_saldo = $total_saldo - $keluar;
       }
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
-      echo "<td>". $total_saldo ."</td>
+
+      echo "<td>". $data['tanggal'] ."</td>
+      <td>0</td>
+      <td>".rp($keluar)."</td>
+      <td>". $total_saldo ."</td>
 			";
 }
 
