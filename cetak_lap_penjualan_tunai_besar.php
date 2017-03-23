@@ -6,7 +6,7 @@ include 'sanitasi.php';
 include 'db.php';
 
 
-  $no_faktur = $_GET['no_faktur'];
+  $no_faktur = stringdoang($_GET['no_faktur']);
 
     $select_penjualan = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.keterangan,p.cara_bayar,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.kode_gudang,p.tunai,pl.nama_pelanggan,pl.wilayah,dp.satuan,dp.jumlah_barang,dp.subtotal,dp.nama_barang,dp.harga, da.nama_daftar_akun, s.nama AS nama_satuan FROM penjualan p INNER JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan INNER JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun INNER JOIN satuan s ON dp.satuan = s.id WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
     $data0 = mysqli_fetch_array($select_penjualan);
@@ -122,7 +122,7 @@ include 'db.php';
 
         $no_urut = 0;
 
-            $query5 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
+            $query5 = $db->query("SELECT nama_barang, jumlah_barang, harga, subtotal FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
