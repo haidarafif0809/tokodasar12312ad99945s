@@ -7,12 +7,7 @@
 
 $session_id = session_id();
 
-$query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
- 
-
-
-
-
+//$query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
  ?>
 
@@ -33,7 +28,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
 
 
- <div class="container">
+ <div style="padding-right: 5%; padding-left: 5%;">
  
 <h3> <u>FORM PEMBAYARAN HUTANG</u> </h3>
 <br><br>
@@ -142,7 +137,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
           include 'db.php';
           
           // menampilkan data yang ada pada tabel suplier
-          $query = $db->query("SELECT * FROM suplier ");
+          $query = $db->query("SELECT id,nama FROM suplier ORDER BY id");
           
           // menyimpan data sementara yang ada pada $query
           while($data = mysqli_fetch_array($query))
@@ -355,15 +350,15 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
   <div class="table-responsive">
 
   <!--tag untuk membuat garis pada tabel-->       
-  <table id="table" class="table table-bordered">
+  <table id="table" class="table table-bordered table-sm">
     <thead>
-      <th> Nomor Faktur Pembelian </th>
+      <th> Nomor Faktur </th>
       <th> Tanggal </th>
-      <th> Tanggal JT </th>
-      <th> Kredit </th>
+      <th> Jth Tempo </th>
+      <th> Hutang </th>
       <th> Potongan </th>
       <th> Total </th>
-      <th> Jumlah Bayar </th>
+      <th> Dibayar </th>
       
       <th> Hapus </th>
       <th> Edit </th>
@@ -374,7 +369,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
     <?php
 
     //untuk menampilkan semua data yang ada pada tabel tbs pembelian dalam DB
-    $perintah = $db->query("SELECT * FROM tbs_pembayaran_hutang  WHERE session_id = '$session_id'");
+    $perintah = $db->query("SELECT id, no_faktur_pembelian, tanggal, tanggal_jt, kredit, potongan, total, jumlah_bayar FROM tbs_pembayaran_hutang  WHERE session_id = '$session_id'");
 
     //menyimpan data sementara yang ada pada $perintah
       while ($data1 = mysqli_fetch_array($perintah))
@@ -429,7 +424,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 <a href="form_pembayaran_hutang.php" class="btn btn-primary" style="display: none" id="transaksi_baru"><i class="fa fa-refresh"></i> Transaksi Baru</a>
 
 <?php 
-$perintah50 = $db->query("SELECT * FROM tbs_pembayaran_hutang WHERE session_id = '$session_id'");
+$perintah50 = $db->query("SELECT no_faktur_pembelian FROM tbs_pembayaran_hutang WHERE session_id = '$session_id'");
 $data50 = mysqli_fetch_array($perintah50);
 $no_faktur_pembelian = $data50['no_faktur_pembelian']; 
 

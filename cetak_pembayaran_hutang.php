@@ -12,11 +12,11 @@ $perintah = $db->query("SELECT p.id,p.no_faktur_pembayaran,p.keterangan,p.total,
 
 $data001 = mysqli_fetch_array($perintah);
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
+    $query1 = $db->query("SELECT foto, nama_perusahaan, alamat_perusahaan, no_telp FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
-    $query2 = $db->query("SELECT * FROM detail_pembayaran_hutang WHERE no_faktur_pembayaran = '$no_faktur_pembayaran' ");
-    $data2 = mysqli_fetch_array($query2);
+    //$query2 = $db->query("SELECT * FROM detail_pembayaran_hutang WHERE no_faktur_pembayaran = '$no_faktur_pembayaran' ");
+    //$data2 = mysqli_fetch_array($query2);
 
     $query3 = $db->query("SELECT SUM(jumlah_bayar) AS j_total FROM detail_pembayaran_hutang WHERE no_faktur_pembayaran = '$no_faktur_pembayaran'");
     $data3 = mysqli_fetch_array($query3);
@@ -57,7 +57,7 @@ $data001 = mysqli_fetch_array($perintah);
 
         <div class="col-sm-2">
                 <br><br><br><br><br>
-                User: <?php echo $_SESSION['user_name']; ?>  <br>
+                Petugas: <?php echo $_SESSION['user_name']; ?>  <br>
 
         </div><!--penutup colsm4-->
 
@@ -74,10 +74,11 @@ $data001 = mysqli_fetch_array($perintah);
         <thead>
 
            <th> Nomor Faktur </th>
-           <th> Tanggal JT </th>
-           <th> Jumlah Hutang </th>
+           <th> Jth Tempo </th>
+           <th> Hutang </th>
            <th> Potongan </th>
-           <th> Jumlah Bayar </th>
+           <th> Dibayar </th>
+           <th> Sisa Hutang </th>
            
             
         </thead>
@@ -85,7 +86,7 @@ $data001 = mysqli_fetch_array($perintah);
         <tbody>
         <?php
 
-            $query5 = $db->query("SELECT * FROM detail_pembayaran_hutang WHERE no_faktur_pembayaran = '$no_faktur_pembayaran' ");
+            $query5 = $db->query("SELECT no_faktur_pembayaran, tanggal_jt, kredit, potongan, jumlah_bayar FROM detail_pembayaran_hutang WHERE no_faktur_pembayaran = '$no_faktur_pembayaran' ");
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
@@ -96,6 +97,7 @@ $data001 = mysqli_fetch_array($perintah);
                 <td>". rp($data5['kredit']) ."</td>
                 <td>". rp($data5['potongan']) ."</td>
                 <td>". rp($data5['jumlah_bayar']) ."</td>
+                <td>". rp($data5['kredit'] - $data5['jumlah_bayar']) ."</td>
             <tr>";
 
             }
