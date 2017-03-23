@@ -8,7 +8,7 @@ include 'sanitasi.php';
 include 'db.php';
 
 //menampilkan seluruh data yang ada pada tabel penjualan
-$perintah = $db->query("SELECT pel.nama_pelanggan ,p.total, p.no_faktur ,p.kode_pelanggan ,p.tanggal ,p.jam ,p.user ,p.status ,p.potongan ,p.tax ,p.sisa FROM penjualan p INNER JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan ORDER BY p.no_faktur DESC");
+//$perintah = $db->query("SELECT pel.nama_pelanggan ,p.total, p.no_faktur ,p.kode_pelanggan ,p.tanggal ,p.jam ,p.user ,p.status ,p.potongan ,p.tax ,p.sisa FROM penjualan p INNER JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan ORDER BY p.no_faktur DESC");
 
 
 $jumlah_total_bersih = $db->query("SELECT SUM(total) AS total_bersih FROM penjualan");
@@ -67,7 +67,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 <br>
  <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="table-baru">
-<table id="tableuser" class="table table-bordered">
+<table id="table_lap_penjualan" class="table table-bordered table-sm">
 		<thead>
 			<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
 			<th style="background-color: #4CAF50; color: white;"> Kode Pelanggan</th>
@@ -75,16 +75,17 @@ tr:nth-child(even){background-color: #f2f2f2}
 			<th style="background-color: #4CAF50; color: white;"> Total Bersih </th>
 			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 			<th style="background-color: #4CAF50; color: white;"> Jam </th>
-			<th style="background-color: #4CAF50; color: white;"> User </th>
+			<th style="background-color: #4CAF50; color: white;"> Petugas </th>
 			<th style="background-color: #4CAF50; color: white;"> Status </th>
 			<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 			<th style="background-color: #4CAF50; color: white;"> Tax </th>
+			<th style="background-color: #4CAF50; color: white;"> Tunai </th>
 			<th style="background-color: #4CAF50; color: white;"> Kembalian </th>
 						
 		</thead>
 		
-		<tbody>
-		<?php
+		<!--tbody>
+		<?php/*
 
 			//menyimpan data sementara yang ada pada $perintah
 			while ($data1 = mysqli_fetch_array($perintah))
@@ -116,9 +117,9 @@ tr:nth-child(even){background-color: #f2f2f2}
 			}
 
 			//Untuk Memutuskan Koneksi Ke Database
-			mysqli_close($db);   
+			mysqli_close($db);  */ 
 		?>
-		</tbody>
+		</tbody-->
 
 	</table>
 </span>
@@ -129,11 +130,35 @@ tr:nth-child(even){background-color: #f2f2f2}
 <h3><i> Total Potongan : <b>Rp. <?php echo rp($sub_total_potongan); ?></b> --- Total Pajak : <b>Rp. <?php echo rp($sub_total_tax); ?></b></i></h3> 
 </div> <!--/ container-->
 
-		<script>
-		
-		$(document).ready(function(){
-		$('#tableuser').DataTable();
-		});
-		</script>
+<!--DATA TABLE MENGGUNAKAN AJAX-->
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+          var dataTable = $('#table_lap_penjualan').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_lap_penjualan.php", // json datasource
+           
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_lap_penjualan").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[11]+'');
+            },
+        });
+
+        $("#form").submit(function(){
+        return false;
+        });
+        
+
+      } );
+    </script>
+<!--/DATA TABLE MENGGUNAKAN AJAX-->
 
 <?php include 'footer.php'; ?>

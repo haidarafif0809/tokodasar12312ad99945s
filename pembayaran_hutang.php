@@ -108,7 +108,7 @@ echo '<a href="form_pembayaran_hutang.php"  class="btn btn-info" > <i class="fa 
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="table_baru">
-<table id="tableuser" class="table table-bordered">
+<table id="table_pembayaran_hutang" class="table table-bordered table-sm" >
 		<thead>
 			<th style="background-color: #4CAF50; color:white"> Detail </th>
 
@@ -131,15 +131,13 @@ if ($pembayaran_hutang['pembayaran_hutang_hapus'] > 0) {
 			<th style="background-color: #4CAF50; color:white"> Cetak </th>
 			<th style="background-color: #4CAF50; color:white"> Nomor Faktur </th>
 			<th style="background-color: #4CAF50; color:white"> Tanggal </th>
-			<th style="background-color: #4CAF50; color:white"> Jam </th>
 			<th style="background-color: #4CAF50; color:white"> Nama Suplier </th>
 			<th style="background-color: #4CAF50; color:white"> Keterangan </th>
 			<th style="background-color: #4CAF50; color:white"> Total </th>
-			<th style="background-color: #4CAF50; color:white"> User Buat </th>
-			<th style="background-color: #4CAF50; color:white"> User Edit </th>
-			<th style="background-color: #4CAF50; color:white"> Tanggal Edit </th>
 			<th style="background-color: #4CAF50; color:white"> Dari Kas </th>
-			
+			<th style="background-color: #4CAF50; color:white"> Petugas Buat </th>
+			<th style="background-color: #4CAF50; color:white"> Petugas Edit </th>
+			<th style="background-color: #4CAF50; color:white"> Tanggal Edit </th>
 			
 		</thead>
 		
@@ -147,7 +145,7 @@ if ($pembayaran_hutang['pembayaran_hutang_hapus'] > 0) {
 		<?php
 
 			//menyimpan data sementara yang ada pada $perintah
-			while ($data1 = mysqli_fetch_array($perintah))
+			/*while ($data1 = mysqli_fetch_array($perintah))
 			{
 				//menampilkan data
 			echo "<tr class='tr-id-".$data1['id']."'>
@@ -186,7 +184,7 @@ if ($pembayaran_hutang['pembayaran_hutang_hapus'] > 0) {
 			}
 
 //Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
+mysqli_close($db);  */ 
 			
 		?>
 		</tbody>
@@ -200,15 +198,42 @@ mysqli_close($db);
 		<span id="demo"> </span>
 </div><!--end of container-->
 
-<script>
-		
-		// untk menampilkan datatable atau filter seacrh
-		$(document).ready(function(){
-		$('#tableuser').DataTable({"ordering":false});
-		});
 
+<!--DATA TABLE MENGGUNAKAN AJAX-->
+<script type="text/javascript" language="javascript" >
+      $(document).ready(function() {
+          var dataTable = $('#table_pembayaran_hutang').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_pembayaran_hutang.php", // json datasource
+           
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_pembayaran_hutang").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[14]+'');
+            },
+        });
+
+        $("#form").submit(function(){
+        return false;
+        });
+        
+
+      } );
+    </script>
+<!--/DATA TABLE MENGGUNAKAN AJAX-->
+
+<script type="text/javascript">
 		
-		$(".detail").click(function(){
+		// untk menampilkan datatable atau filter seacrh		
+		$(document).on('click','.detail',function(e){
 		var no_faktur_pembayaran = $(this).attr('no_faktur_pembayaran');
 		
 		
@@ -228,7 +253,7 @@ mysqli_close($db);
  <script type="text/javascript">
 			
 //fungsi hapus data 
-		$(".btn-hapus").click(function(){
+		$(document).on('click','.btn-hapus',function(e){
 		var suplier = $(this).attr("data-suplier");
 		var no_faktur_pembayaran = $(this).attr("data-no_faktur_pembayaran");
 		var id = $(this).attr("data-id");
@@ -251,7 +276,25 @@ mysqli_close($db);
 		if (data != "") {
 		
 		$("#modal_hapus").modal('hide');
-		$(".tr-id-"+id).remove();
+		$('#table_pembayaran_hutang').DataTable().destroy();
+		var dataTable = $('#table_pembayaran_hutang').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_pembayaran_hutang.php", // json datasource
+           
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_pembayaran_hutang").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+            
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $(nRow).attr('class','tr-id-'+aData[14]+'');
+            },
+        });
 		
 		}
 

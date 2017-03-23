@@ -70,7 +70,7 @@ tr:nth-child(even){background-color: #f2f2f2}
  <br>
  <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="result">
-<table id="tableuser" class="table table-bordered table-sm">
+<table id="table_lap_penjualan_detail" class="table table-bordered table-sm">
 					<thead>
 					<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
 					<th style="background-color: #4CAF50; color: white;"> Kode Barang </th>
@@ -81,19 +81,9 @@ tr:nth-child(even){background-color: #f2f2f2}
 					<th style="background-color: #4CAF50; color: white;"> Subtotal </th>
 					<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 					<th style="background-color: #4CAF50; color: white;"> Tax </th>
-      <?php 
-             if ($_SESSION['otoritas'] == 'Pimpinan')
-             {
-             
-             
-             echo "<th style='background-color: #4CAF50; color: white;'> Hpp </th>";
-             }
-      ?>
+          <th style="background-color: #4CAF50; color: white;"> Total </th>
 
-					
-					<th style="background-color: #4CAF50; color: white;"> Sisa Barang </th>
-					
-					
+
 					</thead>
 					
 					<tbody>
@@ -103,9 +93,15 @@ tr:nth-child(even){background-color: #f2f2f2}
 					</table>
 </span>
 </div> <!--/ responsive-->
+
+       <a href='cetak_laporan_penjualan_piutang.php' style="display: none" class='btn btn-success'  id="cetak_non" target='blank'><i class='fa fa-print'> </i> Cetak Penjualan Detail</a>  
+
+       <a href='download_lap_penjualan_piutang.php' style="display: none" type='submit' target="blank" id="btn-download-non" class='btn btn-purple'><i class="fa fa-download"> </i> Download Excel Penjualan Detail</a>
+
+
 </div> <!--/ container-->
 
-		<script>
+		<!--script>
 		
 		$(document).ready(function(){
 		$('#tableuser').DataTable();
@@ -136,11 +132,70 @@ tr:nth-child(even){background-color: #f2f2f2}
 		
 		});
 		
-		</script>
+		</script>-->
 
       <script type="text/javascript">     
       $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});      
       </script>
+
+      <script type="text/javascript">
+		$(document).on('click','#submit',function(e){
+
+			$('#table_lap_penjualan_detail').DataTable().destroy();
+			var kategori = $("#kategori").val();
+			var dari_tanggal = $("#dari_tanggal").val();
+      		var sampai_tanggal = $("#sampai_tanggal").val();
+
+      		if (kategori == '') {
+            alert("Silakan Pilih kategori terlebih dahulu.");
+            $("#kategori").focus();
+          }
+
+      	else if (dari_tanggal == '') {
+            alert("Silakan dari tanggal diisi terlebih dahulu.");
+            $("#dari_tanggal").focus();
+          }
+          else if (sampai_tanggal == '') {
+            alert("Silakan sampai tanggal diisi terlebih dahulu.");
+            $("#sampai_tanggal").focus();
+          }
+            else{
+          var dataTable = $('#table_lap_penjualan_detail').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_lap_penjualan_detail.php", // json datasource
+           	"data": function ( d ) {
+                      d.kategori = $("#kategori").val();
+                      d.dari_tanggal = $("#dari_tanggal").val();
+                      d.sampai_tanggal = $("#sampai_tanggal").val();
+                      // d.custom = $('#myInput').val();
+                      // etc
+                  },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_lap_penjualan_detail").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+            }
+        },
+    });
+
+
+    $("#cetak_non").show();
+    $("#btn-download-non").show();
+$("#cetak_non").attr("href", "cetak_lap_penjualan_detail.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&kategori="+kategori+"");
+$("#btn-download-non").attr("href", "download_lap_penjualan_detail.php?dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&kategori="+kategori+"");
+
+
+        }//end else
+        $("form").submit(function(){
+        return false;
+        });
+		
+		});
+		
+		</script>
 
 
 

@@ -10,15 +10,15 @@ include 'db.php';
 //menampilkan seluruh data yang ada pada tabel penjualan
 $status = $_GET['status'];
 
-if ($status == 'semua') {
+//if ($status == 'semua') {
     
-    $perintah = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,g.nama_gudang,p.kode_gudang,pl.nama_pelanggan FROM penjualan p INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan ORDER BY p.id DESC");
+    //$perintah = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,g.nama_gudang,p.kode_gudang,pl.nama_pelanggan FROM penjualan p INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan ORDER BY p.id DESC");
 
-}
+//}
 
-else{
-    $perintah = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,g.nama_gudang,p.kode_gudang,pl.nama_pelanggan FROM penjualan p INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan WHERE p.status = '$status' ORDER BY p.id DESC");
-}
+//else{
+    //$perintah = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,g.nama_gudang,p.kode_gudang,pl.nama_pelanggan FROM penjualan p INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan WHERE p.status = '$status' ORDER BY p.id DESC");
+//}
 
  ?>
 
@@ -205,6 +205,34 @@ else{
       <span id="modal-detail"> </span>
       </div>
 
+        <div class="table-responsive"> 
+          <table id="table_detail_penjualan" class="table table-bordered">
+          <thead>
+          <th> Nomor Faktur </th>
+          <th> Kode Barang </th>
+          <th> Nama Barang </th>
+          <th> Jumlah Barang </th>
+          <th> Satuan </th>
+          <th> Harga </th>
+          <th> Subtotal </th>
+          <th> Potongan </th>
+          <th> Tax </th>
+      <?php 
+             if ($_SESSION['otoritas'] == 'Pimpinan')
+             {
+             
+             
+             echo "<th> Hpp </th>";
+             }
+      ?>
+
+          
+          <th> Sisa Barang </th>
+          
+          
+          </thead>
+          </table>
+        </div>
      </div>
 
       <div class="modal-footer">
@@ -268,7 +296,7 @@ if ($penjualan_tambah > 0){
 
 </div>
 
-
+<input type="hidden" name="status" id="status" value="<?php echo $status; ?>">
 <div class="col-sm-7">
 	<ul class="nav nav-tabs md-pills pills-ins" role="tablist">
        <?php if ($status == 'semua'): ?>
@@ -316,7 +344,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <span id="table-baru">
-<table id="tableuser" class="table table-bordered">
+<table id="table_penjualan" class="table table-bordered table-sm">
 		<thead>
 
 		
@@ -354,17 +382,17 @@ $penjualan_hapus = mysqli_num_rows($pilih_akses_penjualan_hapus);
 			<th style='background-color: #4CAF50; color:white'> Detail </th>
 			<th style='background-color: #4CAF50; color:white'> Nomor Faktur </th>
 			<th style='background-color: #4CAF50; color:white'> Gudang </th>
-			<th style='background-color: #4CAF50; color:white'> Bayar </th>
 			<th style='background-color: #4CAF50; color:white'> Kode Pelanggan</th>
 			<th style='background-color: #4CAF50; color:white'> Total </th>
 			<th style='background-color: #4CAF50; color:white'> Tanggal </th>
+      <th style='background-color: #4CAF50; color:white'> Jam </th>
 			<th style='background-color: #4CAF50; color:white'> Tanggal Jt </th>
-			<th style='background-color: #4CAF50; color:white'> Jam </th>
 			<th style='background-color: #4CAF50; color:white'> Petugas Kasir </th>
 			<th style='background-color: #4CAF50; color:white'> Sales </th>
 			<th style='background-color: #4CAF50; color:white'> Status </th>
 			<th style='background-color: #4CAF50; color:white'> Potongan </th>
 			<th style='background-color: #4CAF50; color:white'> Tax </th>
+      <th style='background-color: #4CAF50; color:white'> Tunai </th>
 			<th style='background-color: #4CAF50; color:white'> Kembalian </th>
 			<th style='background-color: #4CAF50; color:white'> Kredit </th>
 			
@@ -376,7 +404,7 @@ $penjualan_hapus = mysqli_num_rows($pilih_akses_penjualan_hapus);
 		<tbody>
 		<?php
 
-			//menyimpan data sementara yang ada pada $perintah
+			/*//menyimpan data sementara yang ada pada $perintah
 			while ($data1 = mysqli_fetch_array($perintah))
 
 			{
@@ -493,7 +521,7 @@ else{
 			}
 
 //Untuk Memutuskan Koneksi Ke Database
-mysqli_close($db);   
+mysqli_close($db);  */ 
 		?>
 		</tbody>
 
@@ -506,18 +534,82 @@ mysqli_close($db);
 </div><!--end of container-->
 		
 
-<!--menampilkan detail penjualan-->
+<!--menampilkan detail penjualan
 		<script>
 		
 		$(document).ready(function(){
 		$('#tableuser').DataTable(
 			{"ordering": false});
 		});
-		</script>
+		</script>-->
+  <script type="text/javascript">
+  // ajax table penjualan
+  $(document).ready(function(){
+    $(document).ready(function(){
 
-		<script type="text/javascript">
+      var status = $('#status').val();
+
+        $("#table_penjualan").DataTable().destroy();
+          var dataTable = $('#table_penjualan').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_penjualan.php", // json datasource
+            "data": function ( d ) {
+                  d.status = status;
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_penjualan").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          }
+
+      }); 
+  });
+  });
+</script>
+
+<script type="text/javascript">
+// table ajax untuk detail penjualan
+  $(document).ready(function(){
+    $(document).on('click','.detail',function(e){
+
+      var no_faktur = $(this).attr('no_faktur');
+
+    $("#modal_detail").modal('show');
+    $("#table_detail_penjualan").DataTable().destroy();
+          var dataTable = $('#table_detail_penjualan').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_detail_penjualan.php", // json datasource
+            "data": function ( d ) {
+                  d.no_faktur = no_faktur;
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#table_detail_penjualan").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          }
+
+      }); 
+  });
+  });
+</script>
+
+		<!--script type="text/javascript">
 		
-		$(".detail").click(function(){
+		$(document).on('click', '.detail', function (e) {
 		var no_faktur = $(this).attr('no_faktur');
 		
 		
@@ -532,7 +624,7 @@ mysqli_close($db);
 		
 		});
 		
-		</script>
+		</script-->
 
 
 		<script type="text/javascript">

@@ -8,7 +8,7 @@ include 'sanitasi.php';
 include 'db.php';
 
 //menampilkan seluruh data yang ada pada tabel Pembelian
-$perintah = $db->query("SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang ORDER BY p.id DESC");
+$perintah = $db->query("SELECT p.id,p.tunai,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang ORDER BY p.id DESC");
 
  ?>
 
@@ -45,10 +45,11 @@ $perintah = $db->query("SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.ta
 			<th style="background-color: #4CAF50; color: white;"> Total </th>
 			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 			<th style="background-color: #4CAF50; color: white;"> Jam </th>
-			<th style="background-color: #4CAF50; color: white;"> User </th>
+			<th style="background-color: #4CAF50; color: white;"> Petugas </th>
 			<th style="background-color: #4CAF50; color: white;"> Status </th>
 			<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 			<th style="background-color: #4CAF50; color: white;"> Tax </th>
+			<th style="background-color: #4CAF50; color: white;"> Tunai </th>
 			<th style="background-color: #4CAF50; color: white;"> Kembalian </th>
 			<th style="background-color: #4CAF50; color: white;"> Kredit </th>
 
@@ -73,6 +74,7 @@ $perintah = $db->query("SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.ta
 			<td>". $data1['status'] ."</td>
 			<td>". rp($data1['potongan']) ."</td>
 			<td>". rp($data1['tax']) ."</td>
+			<td>". rp($data1['tunai']) ."</td>
 			<td>". rp($data1['sisa']) ."</td>
 			<td>". rp($data1['kredit']) ."</td>
 

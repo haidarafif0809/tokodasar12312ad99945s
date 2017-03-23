@@ -88,7 +88,7 @@ $t_barang = $cek011['total_barang'];
     <br>
 
 
- <table id="tableuser" class="table table-bordered">
+ <table id="tableuser" class="table table-bordered table-sm">
             <thead>
                   <th> Nomor Faktur </th>                  
                   <th> Tanggal </th>

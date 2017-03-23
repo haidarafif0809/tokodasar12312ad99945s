@@ -782,17 +782,7 @@ $(document).ready(function(){
        var sisa = pembayaran - total;
        var sisa_kredit = total - pembayaran;
 
-
-     
- if (sisa_pembayaran < 0)
- {
-
-  alert("Jumlah Pembayaran Tidak Mencukupi");
-
- }
-
-
- else if (suplier1 == "") 
+if (suplier1 == "") 
  {
 
 alert("Suplier Harus Di Isi");
@@ -802,6 +792,12 @@ alert("Suplier Harus Di Isi");
 
 
  }
+ else if (sisa_pembayaran < 0)
+ {
+
+  alert("Jumlah Pembayaran Tidak Mencukupi");
+
+ } 
 else if (pembayaran == "") 
  {
 
@@ -2028,7 +2024,6 @@ $(document).ready(function(){
 
         });
 
-            $("#nama_suplier").val('');
             $("#nama_suplier").trigger('chosen;updated');
             $("#pembayaran_pembelian").val('');
             $("#sisa_pembayaran_pembelian").val('');

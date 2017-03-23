@@ -9,7 +9,7 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
 
 //menampilkan seluruh data yang ada pada tabel penjualan
-$perintah = $db->query("SELECT p.id,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' ORDER BY p.id DESC");
+$perintah = $db->query("SELECT p.id,p.tunai,p.no_faktur,p.total,p.suplier,p.tanggal,p.tanggal_jt,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit,s.nama,g.nama_gudang FROM pembelian p INNER JOIN suplier s ON p.suplier = s.id INNER JOIN gudang g ON p.kode_gudang = g.kode_gudang WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' ORDER BY p.id DESC");
 
 $query02 = $db->query("SELECT SUM(total) AS total_akhir FROM pembelian WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
 $cek02 = mysqli_fetch_array($query02);
@@ -41,6 +41,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 			<th style="background-color: #4CAF50; color: white;"> Status </th>
 			<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 			<th style="background-color: #4CAF50; color: white;"> Tax </th>
+			<th style="background-color: #4CAF50; color: white;"> Tunai </th>
 			<th style="background-color: #4CAF50; color: white;"> Kembalian </th>
 			<th style="background-color: #4CAF50; color: white;"> Kredit </th>
 			
@@ -64,6 +65,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 			<td>". $data1['status'] ."</td>
 			<td>". rp($data1['potongan']) ."</td>
 			<td>". rp($data1['tax']) ."</td>
+			<td>". rp($data1['tunai']) ."</td>
 			<td>". rp($data1['sisa']) ."</td>
 			<td>". rp($data1['kredit']) ."</td>
 			</tr>";
