@@ -7,12 +7,7 @@
 
 $session_id = session_id();
 
-$query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
- 
-
-
-
-
+//$query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
  ?>
 
@@ -33,7 +28,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 
 
 
- <div class="container">
+ <div style="padding-right: 5%; padding-left: 5%;">
  
 <h3> <u>FORM PEMBAYARAN HUTANG</u> </h3>
 <br><br>
@@ -142,7 +137,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
           include 'db.php';
           
           // menampilkan data yang ada pada tabel suplier
-          $query = $db->query("SELECT * FROM suplier ");
+          $query = $db->query("SELECT id,nama FROM suplier ORDER BY id");
           
           // menyimpan data sementara yang ada pada $query
           while($data = mysqli_fetch_array($query))
@@ -235,15 +230,14 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
       <th> Nomor Faktur </th>
       <th> Suplier </th>
       <th> Total Beli</th>
-      <th> Tanggal </th>
-      <th> Tanggal Jatuh Tempo </th>
-      <th> Jam </th>
-      <th> User </th>
-      <th> Status </th>
-      <th> Potongan </th>
       <th> Tax </th>
       <th> Sisa </th>
       <th> Kredit </th>
+      <th> Tanggal </th>
+      <th> Tanggal Jatuh Tempo </th>
+      <th> User </th>
+      <th> Status </th>
+      <th> Potongan </th>
       
     </thead> <!-- tag penutup tabel -->
     
@@ -263,15 +257,14 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
       <td>". $data1['no_faktur'] ."</td>
       <td>". $data1['nama'] ."</td>
       <td>". $data1['total'] ."</td>
-      <td>". $data1['tanggal'] ."</td>
-      <td>". $data1['tanggal_jt'] ."</td>
-      <td>". $data1['jam'] ."</td>
-      <td>". $data1['user'] ."</td>
-      <td>". $data1['status'] ."</td>
       <td>". $data1['potongan'] ."</td>
       <td>". $data1['tax'] ."</td>
       <td>". $data1['sisa'] ."</td>
       <td>". $data1['kredit'] ."</td>
+      <td>". $data1['tanggal'] ." ". $data1['jam'] ."</td>
+      <td>". $data1['tanggal_jt'] ."</td>
+      <td>". $data1['user'] ."</td>
+      <td>". $data1['status'] ."</td>
       </tr>";
       
        }
@@ -357,15 +350,15 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
   <div class="table-responsive">
 
   <!--tag untuk membuat garis pada tabel-->       
-  <table id="table" class="table table-bordered">
+  <table id="table" class="table table-bordered table-sm">
     <thead>
-      <th> Nomor Faktur Pembelian </th>
+      <th> Nomor Faktur </th>
       <th> Tanggal </th>
-      <th> Tanggal JT </th>
-      <th> Kredit </th>
+      <th> Jth Tempo </th>
+      <th> Hutang </th>
       <th> Potongan </th>
       <th> Total </th>
-      <th> Jumlah Bayar </th>
+      <th> Dibayar </th>
       
       <th> Hapus </th>
       <th> Edit </th>
@@ -376,8 +369,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
     <?php
 
     //untuk menampilkan semua data yang ada pada tabel tbs pembelian dalam DB
-    $perintah = $db->query("SELECT * FROM tbs_pembayaran_hutang 
-                WHERE session_id = '$session_id'");
+    $perintah = $db->query("SELECT id, no_faktur_pembelian, tanggal, tanggal_jt, kredit, potongan, total, jumlah_bayar FROM tbs_pembayaran_hutang  WHERE session_id = '$session_id'");
 
     //menyimpan data sementara yang ada pada $perintah
       while ($data1 = mysqli_fetch_array($perintah))
@@ -432,7 +424,7 @@ $query = $db->query("SELECT * FROM pembayaran_hutang ORDER BY id DESC");
 <a href="form_pembayaran_hutang.php" class="btn btn-primary" style="display: none" id="transaksi_baru"><i class="fa fa-refresh"></i> Transaksi Baru</a>
 
 <?php 
-$perintah50 = $db->query("SELECT * FROM tbs_pembayaran_hutang WHERE session_id = '$session_id'");
+$perintah50 = $db->query("SELECT no_faktur_pembelian FROM tbs_pembayaran_hutang WHERE session_id = '$session_id'");
 $data50 = mysqli_fetch_array($perintah50);
 $no_faktur_pembelian = $data50['no_faktur_pembelian']; 
 
