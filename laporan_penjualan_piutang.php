@@ -29,10 +29,10 @@ include 'db.php';
 
 <div class="row">
 <div class="col-sm-4">
-				<button type="button" class="btn btn-primary" id="per_konsumen" style="width:98%;" align="left">Rekap Konsumen / Sales </button> 
+				<button type="button" class="btn btn-primary" id="per_konsumen" style="width:98%;" align="left">Rekap Konsumen & Sales </button> 
 </div>	
 <div class="col-sm-4">
-      	<button type="button" class="btn btn-primary" id="non_konsumen" style="width:98%;" align="left">Rekap Semua Konsumen / Sales  </button>
+      	<button type="button" class="btn btn-primary" id="non_konsumen" style="width:98%;" align="left">Rekap Semua Konsumen & Sales  </button>
 </div>
 
 </div> 
@@ -89,7 +89,7 @@ include 'db.php';
 			</div>
 <div class="form-group"> 
 <select style="font-size:15px; height:35px" name="sales" id="sales" class="form-control" required="">
-
+              <option value='semua' >Semua Sales</option>
   <?php 
     
     //untuk menampilkan semua data pada tabel pelanggan dalam DB
