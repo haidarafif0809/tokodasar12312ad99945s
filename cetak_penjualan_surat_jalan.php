@@ -6,7 +6,7 @@ include 'sanitasi.php';
 include 'db.php';
 
 
-  $no_faktur = $_GET['no_faktur'];
+  $no_faktur = stringdoang($_GET['no_faktur']);
 
     $query0 = $db->query("SELECT s.nama,p.id,p.no_faktur,p.total,p.kode_pelanggan,p.keterangan,p.cara_bayar,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.kode_gudang,p.tunai,pl.nama_pelanggan,pl.wilayah,dp.satuan,dp.jumlah_barang,dp.subtotal,dp.nama_barang,dp.harga, da.nama_daftar_akun FROM penjualan p INNER JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan INNER JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun INNER JOIN satuan s ON dp.satuan = s.id WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
      $data_inner = mysqli_fetch_array($query0);
@@ -16,29 +16,13 @@ include 'db.php';
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
-    $query2 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
-    $data2 = mysqli_fetch_array($query2);
-
-    $query3 = $db->query("SELECT SUM(jumlah_barang) as total_item FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
+    $query3 = $db->query("SELECT SUM(jumlah_barang) as total_item, SUM(subtotal) as t_subtotal FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
     $data3 = mysqli_fetch_array($query3);
     $total_item = $data3['total_item'];
+    $t_subtotal = $data3['t_subtotal'];
 
-    $query04 = $db->query("SELECT SUM(kredit) as total_kredit FROM penjualan WHERE no_faktur = '$no_faktur'");
-    $data04 = mysqli_fetch_array($query04);
-    $total_kredit = $data04['total_kredit'];
-
-    $query05 = $db->query("SELECT SUM(subtotal) as t_subtotal FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
-    $data05 = mysqli_fetch_array($query05);
-    $t_subtotal = $data05['t_subtotal'];
-
-    $setting_bahasa = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Sales' ");
-    $data20 = mysqli_fetch_array($setting_bahasa);
-
-    $setting_bahasa0 = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
-    $data200 = mysqli_fetch_array($setting_bahasa0);
-
-     $ubah_tanggal = $data_inner['tanggal'];
-     $tanggal = date('d F Y', strtotime($ubah_tanggal));
+    $ubah_tanggal = $data_inner['tanggal'];
+    $tanggal = date('d F Y', strtotime($ubah_tanggal));
 
 
  ?>
@@ -109,7 +93,7 @@ include 'db.php';
         <thead>
             <th class="table" style="width: 3%"> <center> No. </center> </th>
             <th class="table" style="width: 50%"> <center> Nama Barang </center> </th>
-            <th class="table" style="width: 5%"> <center> Qty </center> </th>
+            <th class="table" style="width: 5%"> <center> Jumlah </center> </th>
             <th class="table" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table" style="width: 15%"> <center> Keterangan </center> </th>
         
@@ -120,7 +104,7 @@ include 'db.php';
 
         $no_urut = 0;
 
-            $query5 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
+            $query5 = $db->query("SELECT kode_barang, nama_barang, jumlah_barang FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
