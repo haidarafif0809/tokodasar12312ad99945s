@@ -109,7 +109,7 @@ include 'db.php';
         <thead>
             <th class="table" style="width: 3%"> <center> No. </center> </th>
             <th class="table" style="width: 50%"> <center> Nama Barang </center> </th>
-            <th class="table" style="width: 5%"> <center> Qty </center> </th>
+            <th class="table" style="width: 5%"> <center> Jumlah </center> </th>
             <th class="table" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table" style="width: 15%"> <center> Keterangan </center> </th>
         
