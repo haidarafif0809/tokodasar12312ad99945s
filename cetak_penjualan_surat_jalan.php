@@ -104,7 +104,7 @@ include 'db.php';
 
         $no_urut = 0;
 
-            $query5 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
+            $query5 = $db->query("SELECT kode_barang, nama_barang, jumlah_barang FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
