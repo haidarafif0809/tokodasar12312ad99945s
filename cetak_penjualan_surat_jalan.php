@@ -16,29 +16,13 @@ include 'db.php';
     $query1 = $db->query("SELECT * FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
-    $query2 = $db->query("SELECT * FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
-    $data2 = mysqli_fetch_array($query2);
-
-    $query3 = $db->query("SELECT SUM(jumlah_barang) as total_item FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
+    $query3 = $db->query("SELECT SUM(jumlah_barang) as total_item, SUM(subtotal) as t_subtotal FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
     $data3 = mysqli_fetch_array($query3);
     $total_item = $data3['total_item'];
+    $t_subtotal = $data3['t_subtotal'];
 
-    $query04 = $db->query("SELECT SUM(kredit) as total_kredit FROM penjualan WHERE no_faktur = '$no_faktur'");
-    $data04 = mysqli_fetch_array($query04);
-    $total_kredit = $data04['total_kredit'];
-
-    $query05 = $db->query("SELECT SUM(subtotal) as t_subtotal FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
-    $data05 = mysqli_fetch_array($query05);
-    $t_subtotal = $data05['t_subtotal'];
-
-    $setting_bahasa = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Sales' ");
-    $data20 = mysqli_fetch_array($setting_bahasa);
-
-    $setting_bahasa0 = $db->query("SELECT * FROM setting_bahasa WHERE kata_asal = 'Pelanggan' ");
-    $data200 = mysqli_fetch_array($setting_bahasa0);
-
-     $ubah_tanggal = $data_inner['tanggal'];
-     $tanggal = date('d F Y', strtotime($ubah_tanggal));
+    $ubah_tanggal = $data_inner['tanggal'];
+    $tanggal = date('d F Y', strtotime($ubah_tanggal));
 
 
  ?>
