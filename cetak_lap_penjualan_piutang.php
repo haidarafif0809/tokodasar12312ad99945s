@@ -95,7 +95,7 @@ include 'db.php';
             <tbody>
 
                  <tr> <td width="5%"><font class="satu"> Alamat</td> <td> :&nbsp;&nbsp;</td> </font> </td><td><?php echo $data0['wilayah'];?> </td></tr>
-                 <tr><td width="19%"><font class="satu"> Tanggal Jatuh Tempo</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $tanggal_jt;?></font> </td></tr>
+                 <tr><td width="19%"><font class="satu"> Tgl Jatuh Tempo</td> <td> :&nbsp;&nbsp;</td> <td><?php echo $tanggal_jt;?></font> </td></tr>
 
             </tbody>
           </table>

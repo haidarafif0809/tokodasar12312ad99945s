@@ -5,22 +5,10 @@ include 'sanitasi.php';
 include 'piutang.function.php';
 
 // mengirim data no faktur menggunakan metode POST
- $total_akhir = angkadoang($_POST['kredit']);
- $kode_pelanggan = angkadoang($_POST['kode_pelanggan']);
-
- $plafon = hitungSisaPlafon($kode_pelanggan);
+ $kode_pelanggan = angkadoang($_GET['kode_pelanggan']);
 
 
-$hitung = $plafon - $total_akhir;
-
-if($hitung < 0)
-{
-	echo 1;
-}
-else
-{
-	echo 0;
-}
+echo rp(hitungSisaPlafon($kode_pelanggan));
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db); 
 

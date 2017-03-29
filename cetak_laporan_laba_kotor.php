@@ -86,10 +86,10 @@ $penjualan = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tang
 			<th class="table1" style="text-align: center; width: 5%"> Nomor Transaksi </th>
 			<th class="table1" style="text-align: center; width: 5%"> Tanggal </th>
 			<th class="table1" style="text-align: center; width: 5%"> Kode Pelanggan</th>
-			<th class="table1" style="text-align: center; width: 5%"> Sub Total </th>
-			<th class="table1" style="text-align: center; width: 5%"> Total Pokok </th>
-			<th class="table1" style="text-align: center; width: 5%"> Laba Kotor </th>
-			<th class="table1" style="text-align: center; width: 5%"> Diskon Faktur </th>
+			<th class="table1" style="text-align: center; width: 5%"> Penjualan </th>
+			<th class="table1" style="text-align: center; width: 5%"> Hpp </th>
+			<th class="table1" style="text-align: center; width: 5%"> Subtotal </th>
+			<th class="table1" style="text-align: center; width: 5%"> Diskon </th>
 			<th class="table1" style="text-align: center; width: 5%"> Laba Jual </th>
 			
 		</thead>

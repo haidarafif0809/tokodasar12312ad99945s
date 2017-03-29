@@ -38,16 +38,16 @@ th {
 <div class="card card-block">
 
 <div class="table-responsive">
- <table id="tableuser" class="table table-hover">
+ <table id="tableuser" class="table table-bordered table-sm">
             <thead>
 			<th style="text-align: center"> Nomor Transaksi </th>
 			<th style="text-align: center"> Tanggal </th>
 			<th style="text-align: center"> Kode Pelanggan</th>
-			<th style="text-align: center"> Sub Total </th>
-			<th style="text-align: center"> Total Pokok </th>
+			<th style="text-align: center"> Penjualan </th>
+			<th style="text-align: center"> Hpp </th>
+			<th style="text-align: center"> Subtotal </th>
+			<th style="text-align: center"> Diskon </th>
 			<th style="text-align: center"> Laba Kotor </th>
-			<th style="text-align: center"> Diskon Faktur </th>
-			<th style="text-align: center"> Laba Jual </th>
 			
 		</thead>
 		
