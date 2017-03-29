@@ -104,26 +104,26 @@ else
           echo "<td>".$row['nama']."</td>";
      }
   echo "
-  <td align='right'>".  rp($row['harga'])."</td>
-  <td align='right'>". rp($subtotal)."</td>
-  <td align='right'>". rp($row['potongan'])."</td>
-  <td align='right'>". rp($row['tax'])."</td>
-  <td align='right'>". rp($row['subtotal'] + $row['tax'])."</td>
+  <td>". $row['harga']."</td>
+  <td>". $subtotal."</td>
+  <td>". $row['potongan']."</td>
+  <td>". $row['tax']."</td>
+  <td>". $row['subtotal'] + $row['tax']."</td>
   </tr>";
 
       }
 
 echo "<tr>"; 
-      echo " <td><p style='color:red'> TOTAL </td>";
-      echo " <td><p style='color:red'> - </td>";
-      echo " <td><p style='color:red'> - </td>";
-      echo " <td><p style='color:red' align='right'> ".rp($tot_jumlah)." </td>";
-      echo " <td><p style='color:red'> - </td>";
-      echo " <td><p style='color:red'> - </td>";
-      echo " <td><p style='color:red' align='right'> ".rp($tot_subtotal)." </td>";
-      echo " <td><p style='color:red' align='right'> ".rp($tot_potongan)." </td>";
-      echo " <td><p style='color:red' align='right'> ".rp($tot_tax)." </td>";
-      echo " <td><p style='color:red' align='right'> ".rp($tot_akhir)." </td>
+      echo " <td style='color:red'> TOTAL </td>";
+      echo " <td style='color:red'> - </td>";
+      echo " <td style='color:red'> - </td>";
+      echo " <td style='color:red'> ".$tot_jumlah." </td>";
+      echo " <td style='color:red'> - </td>";
+      echo " <td style='color:red'> - </td>";
+      echo " <td style='color:red'> ".$tot_subtotal." </td>";
+      echo " <td style='color:red'> ".$tot_potongan." </td>";
+      echo " <td style='color:red'> ".$tot_tax." </td>";
+      echo " <td style='color:red'> ".$tot_akhir." </td>
 
 
       </tr>"; 

@@ -165,20 +165,30 @@ $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
                   <td>". $data11['no_faktur'] ."</td>
                   <td>". $data11['nama_pelanggan'] ."</td>
                   <td>". $data11['sales'] ."</td>
-                  <td>". rp($data11['total']) ."</td>";
+                  <td align='right'>". $data11['total'] ."</td>";
                   if ($num_rows > 0)
                   {
-                      echo "<td>". rp($tot_bayar) ."</td>";
+                      echo "<td align='right'>". $tot_bayar ."</td>";
                   }
                   else
                   {
                     echo 0;
                   }
-                  echo "<td>". rp($data11['kredit']) ."</td>
+                  echo "<td align='right'>". $data11['kredit'] ."</td>
                   </tr>";
 
 
                   }
+
+
+
+    echo "<td><p style='color:red'> TOTAL </p></td>
+      <td><p style='color:red'> - </p></td>
+      <td><p style='color:red'> - </p></td>
+      <td><p style='color:red'> - </p></td>
+      <td><p style='color:red' align='right'> ".$total_akhir." </p></td>
+      <td><p style='color:red' align='right'> ".$total_bayar." </p></td>
+      <td><p style='color:red' align='right'> ".$total_kredit." </p></td>";  
 
 //Untuk Memutuskan Koneksi Ke Database
 
