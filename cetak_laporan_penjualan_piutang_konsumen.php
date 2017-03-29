@@ -75,7 +75,7 @@ else
         </div><!--penutup colsm2-->
 
         <div class="col-sm-6">
-                 <h3> <b> LAPORAN PIUTANG KONSUMEN / SALES </b></h3>
+                 <h3> <b> LAPORAN PIUTANG KONSUMEN & SALES </b></h3>
                  <hr>
                  <h4> <b> <?php echo $data1['nama_perusahaan']; ?> </b> </h4> 
                  <p> <?php echo $data1['alamat_perusahaan']; ?> </p> 
