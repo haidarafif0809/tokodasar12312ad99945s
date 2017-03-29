@@ -172,9 +172,10 @@ nama_gudang FROM gudang");
 <div class="col-sm-2">
           <label class="gg">PPN</label>
           <select type="hidden" style="font-size:15px; height:35px" name="ppn" id="ppn" class="form-control gg">
+             <option value="Non">Non</option>    
             <option value="Include">Include</option>  
             <option value="Exclude">Exclude</option>
-            <option value="Non">Non</option>          
+                 
           </select>
 </div>
 
