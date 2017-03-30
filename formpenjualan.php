@@ -1127,8 +1127,8 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
                 var diskon_persen = diskon_bertingkat[index];
 
                 if (diskon_persen != '' || diskon_persen != 0) {
-                 total_potongan_nominal = potongan_nominal + ((total_kurang_potongan * diskon_persen) / 100);
-                 potongan_nominal = (total_kurang_potongan * diskon_persen) / 100;
+                 total_potongan_nominal = Math.round(potongan_nominal) + Math.round(((total_kurang_potongan * diskon_persen) / 100));
+                 potongan_nominal =  Math.round((total_kurang_potongan * diskon_persen) / 100);
                 var total_kurang_potongan = total_kurang_potongan - parseInt(potongan_nominal,10);
                 }
               
@@ -1144,7 +1144,7 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
         } 
         else {
 
-          var total_potongan_nominal = ((total * potongan_persen) / 100);
+          var total_potongan_nominal =  Math.round(((total * potongan_persen) / 100));
           var total_kurang_potongan = total - total_potongan_nominal;
           var t_tax = ((parseInt(total_kurang_potongan,10) * parseInt(tax_faktur,10)) / 100);
 
@@ -2142,8 +2142,8 @@ $(document).on('click','.btn-hapus-tbs',function(e){
                 var diskon_persen = diskon_bertingkat[index];
 
                 if (diskon_persen != '' || diskon_persen != 0) {
-                 total_potongan_nominal = potongan_nominal + ((total_kurang_potongan * diskon_persen) / 100);
-                 potongan_nominal = (total_kurang_potongan * diskon_persen) / 100;
+                 total_potongan_nominal =  Math.round(potongan_nominal) +  Math.round(((total_kurang_potongan * diskon_persen) / 100));
+                 potongan_nominal =  Math.round((total_kurang_potongan * diskon_persen) / 100);
                 var total_kurang_potongan = total_kurang_potongan - parseInt(potongan_nominal,10);
                 }
               
@@ -2158,7 +2158,7 @@ $(document).on('click','.btn-hapus-tbs',function(e){
         } 
         else {
 
-          var total_potongan_nominal = ((total * potongan_persen) / 100);
+          var total_potongan_nominal =  Math.round((total * potongan_persen) / 100);
           var total_kurang_potongan = total - total_potongan_nominal;
           var t_tax = ((parseInt(total_kurang_potongan,10) * parseInt(tax,10)) / 100);
 
@@ -2552,8 +2552,8 @@ $(document).ready(function(){
                     var diskon_persen = diskon_bertingkat[index];
 
                     if (diskon_persen != '' || diskon_persen != 0) {
-                     total_potongan_nominal = potongan_nominal + ((total_kurang_potongan * diskon_persen) / 100);
-                     potongan_nominal = (total_kurang_potongan * diskon_persen) / 100;
+                     total_potongan_nominal =  Math.round(potongan_nominal) +  Math.round(((total_kurang_potongan * diskon_persen) / 100));
+                     potongan_nominal =  Math.round((total_kurang_potongan * diskon_persen) / 100);
                     var total_kurang_potongan = total_kurang_potongan - parseInt(potongan_nominal,10);
                     }
                   
@@ -2568,7 +2568,7 @@ $(document).ready(function(){
              } 
             else {
 
-              var total_potongan_nominal = ((total * potongan_persen) / 100);
+              var total_potongan_nominal =  Math.round((total * potongan_persen) / 100);
               var total_kurang_potongan = total - total_potongan_nominal;
               var t_tax = ((parseInt(total_kurang_potongan,10) * parseInt(tax,10)) / 100);
 
