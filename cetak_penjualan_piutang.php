@@ -43,6 +43,9 @@ include 'db.php';
    font-size: 15px;
    font: verdana;
    }
+   .rata-kanan{
+    text-align: right;
+   }
 </style>
 
 
@@ -147,10 +150,10 @@ include 'db.php';
             echo "<tr>
             <td class='table1' align='center'>".$no_urut."</td>
             <td class='table1'>". $data5['nama_barang'] ."</td>
-            <td class='table1' align='center'>". rp($data5['jumlah_barang']) ."</td>
+            <td class='table1 rata-kanan'>". rp($data5['jumlah_barang']) ."</td>
             <td class='table1' align='center'>". $data0['nama_satuan'] ."</td>
-            <td class='table1' align='center'>". rp($data5['harga']) ."</td>
-            <td class='table1' align='center'>". rp($data5['subtotal']) ."</td>
+            <td class='table1 rata-kanan'>". rp($data5['harga']) ."</td>
+            <td class='table1 rata-kanan'>". rp($data5['subtotal']) ."</td>
             <tr>";
 
             }
