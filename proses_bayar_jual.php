@@ -435,6 +435,8 @@ else
     
       }
 
+// coding untuk memasukan history_tbs dan menghapus tbs
+    $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (session_id, no_faktur, kode_barang, nama_barang, jumlah_barang, satuan, harga, subtotal, potongan, tax) SELECT session_id, no_faktur, kode_barang, nama_barang, jumlah_barang, satuan, harga, subtotal, potongan, tax FROM tbs_penjualan  WHERE session_id = '$session_id' ");
 
 
     $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE session_id = '$session_id'");
