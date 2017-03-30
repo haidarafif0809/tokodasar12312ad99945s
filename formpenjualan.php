@@ -1127,7 +1127,7 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
                 var diskon_persen = diskon_bertingkat[index];
 
                 if (diskon_persen != '' || diskon_persen != 0) {
-                 total_potongan_nominal = Math.round(potongan_nominal) + Math.round(((total_kurang_potongan * diskon_persen) / 100));
+                 total_potongan_nominal = Math.round(total_potongan_nominal) + Math.round(((total_kurang_potongan * diskon_persen) / 100));
                  potongan_nominal =  Math.round((total_kurang_potongan * diskon_persen) / 100);
                 var total_kurang_potongan = total_kurang_potongan - parseInt(potongan_nominal,10);
                 }
@@ -1800,8 +1800,8 @@ $("#cari_produk_penjualan").click(function(){
                 var diskon_persen = diskon_bertingkat[index];
 
                 if (diskon_persen != '' || diskon_persen != 0) {
-                 total_potongan_nominal = potongan_nominal + ((total_kurang_potongan * diskon_persen) / 100);
-                 potongan_nominal = (total_kurang_potongan * diskon_persen) / 100;
+                 total_potongan_nominal = Math.round(total_potongan_nominal) + Math.round(((total_kurang_potongan * diskon_persen) / 100));
+                 potongan_nominal = Math.round((total_kurang_potongan * diskon_persen) / 100);
                 var total_kurang_potongan = total_kurang_potongan - parseInt(potongan_nominal,10);
                 }
               
@@ -2142,12 +2142,12 @@ $(document).on('click','.btn-hapus-tbs',function(e){
                 var diskon_persen = diskon_bertingkat[index];
 
                 if (diskon_persen != '' || diskon_persen != 0) {
-                 total_potongan_nominal =  Math.round(potongan_nominal) +  Math.round(((total_kurang_potongan * diskon_persen) / 100));
+                 total_potongan_nominal =  Math.round(total_potongan_nominal) +  Math.round(((total_kurang_potongan * diskon_persen) / 100));
                  potongan_nominal =  Math.round((total_kurang_potongan * diskon_persen) / 100);
                 var total_kurang_potongan = total_kurang_potongan - parseInt(potongan_nominal,10);
                 }
               
-                console.log(potongan_nominal);
+                console.log( parseInt(potongan_nominal,10));
 
             }
 
@@ -2552,7 +2552,7 @@ $(document).ready(function(){
                     var diskon_persen = diskon_bertingkat[index];
 
                     if (diskon_persen != '' || diskon_persen != 0) {
-                     total_potongan_nominal =  Math.round(potongan_nominal) +  Math.round(((total_kurang_potongan * diskon_persen) / 100));
+                     total_potongan_nominal =  Math.round(total_potongan_nominal) +  Math.round(((total_kurang_potongan * diskon_persen) / 100));
                      potongan_nominal =  Math.round((total_kurang_potongan * diskon_persen) / 100);
                     var total_kurang_potongan = total_kurang_potongan - parseInt(potongan_nominal,10);
                     }
