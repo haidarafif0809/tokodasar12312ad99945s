@@ -18,6 +18,7 @@ $query = $db->query("SELECT * FROM pelanggan");
 			<th style='background-color: #4CAF50; color: white'> Kode Pelanggan </th>
 			<th style='background-color: #4CAF50; color: white'> Nama Pelanggan </th>
 			<th style='background-color: #4CAF50; color: white'> Flafon </th>
+				<th style='background-color: #4CAF50; color: white'> Flafon Usia </th>
 			<th style='background-color: #4CAF50; color: white'> Level Harga </th>
 			<th style='background-color: #4CAF50; color: white'> Tgl. Lahir </th>
 			<th style='background-color: #4CAF50; color: white'> Nomor Telp </th>
@@ -68,6 +69,7 @@ $pelanggan_edit = mysqli_num_rows($pilih_akses_pelanggan_edit);
 			<td>". $data['kode_pelanggan'] ."</td>
 			<td>". $data['nama_pelanggan'] ."</td>
 			<td>". rp($data['flafon']) ."</td>
+				<td>". $data['flafon_usia'] ." Hari</td>
 			<td>". $data['level_harga'] ."</td>
 			<td>". tanggal($data['tgl_lahir']) ."</td>
 			<td>". $data['no_telp'] ."</td>
@@ -96,7 +98,7 @@ $pelanggan_edit = mysqli_num_rows($pilih_akses_pelanggan_edit);
 
 
     if ($pelanggan_edit > 0){
-			echo "<td> <button class='btn btn-info btn-edit' data-pelanggan='". $data['nama_pelanggan'] ."' data-kode='". $data['kode_pelanggan'] ."' data-tanggal='". $data['tgl_lahir'] ."' data-nomor='". $data['no_telp'] ."' data-email='". $data['e_mail'] ."' data-wilayah='". $data['wilayah'] ."' data-level-harga='". $data['level_harga'] ."' data-id='". $data['id'] ."'> <span class='glyphicon glyphicon-edit'> </span> Edit </button> </td>";
+			echo "<td> <button class='btn btn-info btn-edit' data-pelanggan='". $data['nama_pelanggan'] ."' data-kode='". $data['kode_pelanggan'] ."' data-tanggal='". $data['tgl_lahir'] ."' data-nomor='". $data['no_telp'] ."' data-email='". $data['e_mail'] ."' data-wilayah='". $data['wilayah'] ."' data-level-harga='". $data['level_harga'] ."' data-id='". $data['id'] ."' data-flafon='". $data['flafon'] ."' data-flafon-usia='". $data['flafon_usia'] ."'> <span class='glyphicon glyphicon-edit'> </span> Edit </button> </td>";
 		}
 
 			echo"</tr>";
