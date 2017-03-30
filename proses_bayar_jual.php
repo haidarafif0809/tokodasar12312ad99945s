@@ -74,7 +74,7 @@ echo $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
     $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
     
-    $perintah0 = $db->query("SELECT * FROM fee_faktur WHERE nama_petugas = '$sales'");
+    $perintah0 = $db->query("SELECT jumlah_uang,jumlah_prosentase FROM fee_faktur WHERE nama_petugas = '$sales'");
     $cek = mysqli_fetch_array($perintah0);
     $nominal = $cek['jumlah_uang'];
     $prosentase = $cek['jumlah_prosentase'];
@@ -159,6 +159,9 @@ echo $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
     $sisa = angkadoang($_POST['sisa']);
     $sisa_kredit = angkadoang($_POST['kredit']);
 
+$select_setting_akun = $db->query("SELECT * FROM setting_akun");
+$ambil_setting = mysqli_fetch_array($select_setting_akun);
+
               if ($sisa_kredit == 0 ) 
 
             {
@@ -195,23 +198,7 @@ echo $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
               $stmt->execute();
               
               
-    // UPDATE KAS 
-              $stmt1 = $db->prepare("UPDATE kas SET jumlah = jumlah + ? WHERE nama = ?");
-              
-              $stmt1->bind_param("is", 
-              $total, $cara_bayar);
-              
-              // siapkan "data" query
-              
-              $total = angkadoang($_POST['total']);
-              $cara_bayar = stringdoang($_POST['cara_bayar']);
-              
-              // jalankan query
-              $stmt1->execute();
 
-
-$select_setting_akun = $db->query("SELECT * FROM setting_akun");
-$ambil_setting = mysqli_fetch_array($select_setting_akun);
 
 $select = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_keluar WHERE no_faktur = '$no_faktur'");
 $ambil = mysqli_fetch_array($select);
@@ -334,9 +321,7 @@ if ($potongan != "" || $potongan != 0 ) {
               $stmt->execute();
               
               
-              
-$select_setting_akun = $db->query("SELECT * FROM setting_akun");
-$ambil_setting = mysqli_fetch_array($select_setting_akun);
+            
 
 $select = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_keluar WHERE no_faktur = '$no_faktur'");
 $ambil = mysqli_fetch_array($select);
