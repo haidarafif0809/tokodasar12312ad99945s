@@ -104,11 +104,11 @@ else
           echo "<td>".$row['nama']."</td>";
      }
   echo "
-  <td>". $row['harga']."</td>
-  <td>". $subtotal."</td>
-  <td>". $row['potongan']."</td>
-  <td>". $row['tax']."</td>
-  <td>". $row['subtotal'] + $row['tax']."</td>
+  <td>". rp($row['harga'])."</td>
+  <td>". rp($subtotal)."</td>
+  <td>". rp($row['potongan'])."</td>
+  <td>". rp($row['tax'])."</td>
+  <td>". rp($row['subtotal'] + $row['tax'])."</td>
   </tr>";
 
       }
