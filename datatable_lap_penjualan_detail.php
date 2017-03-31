@@ -11,17 +11,18 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
 if ($kategori == 'semua')
 {
-  $query02 = $db->query("SELECT SUM(dp.jumlah_barang) as tot_jumlah ,SUM(dp.harga * dp.jumlah_barang) as tot_subtotal ,SUM(dp.potongan) as tot_potongan ,SUM(dp.tax) as tot_tax, SUM(dp.subtotal + dp.tax) as tot_akhir FROM detail_penjualan dp WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ");
+  $query02 = $db->query("SELECT SUM(dp.jumlah_barang) as tot_jumlah ,SUM(dp.harga) AS tot_harga ,SUM(dp.harga * dp.jumlah_barang) as tot_subtotal ,SUM(dp.potongan) as tot_potongan ,SUM(dp.tax) as tot_tax, SUM(dp.subtotal + dp.tax) as tot_akhir FROM detail_penjualan dp WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ");
 
 }
 else
 {
 
-	  $query02 = $db->query("SELECT SUM(dp.jumlah_barang) as tot_jumlah ,SUM(dp.harga * dp.jumlah_barang) as tot_subtotal ,SUM(dp.potongan) as tot_potongan ,SUM(dp.tax) as tot_tax, SUM(dp.subtotal + dp.tax) as tot_akhir FROM detail_penjualan dp  LEFT JOIN barang br ON dp.kode_barang = br.kode_barang WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'  AND br.kategori = '$kategori'");
+	  $query02 = $db->query("SELECT SUM(dp.jumlah_barang) as tot_jumlah ,SUM(dp.harga) AS tot_harga ,SUM(dp.harga * dp.jumlah_barang) as tot_subtotal ,SUM(dp.potongan) as tot_potongan ,SUM(dp.tax) as tot_tax, SUM(dp.subtotal + dp.tax) as tot_akhir FROM detail_penjualan dp  LEFT JOIN barang br ON dp.kode_barang = br.kode_barang WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'  AND br.kategori = '$kategori'");
 }
 
 $cek02 = mysqli_fetch_array($query02);
 $tot_jumlah = $cek02['tot_jumlah'];
+$tot_harga = $cek02['tot_harga'];
 $tot_subtotal = $cek02['tot_subtotal'];
 $tot_potongan = $cek02['tot_potongan'];
 $tot_tax = $cek02['tot_tax'];
@@ -126,23 +127,23 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 					//menampilkan data
 					$nestedData[] = $row['no_faktur'];
 					$nestedData[] = $row['kode_barang'];
-					$nestedData[] = $row['nama_barang'];				
-					$nestedData[] = "<p align='right'>".$jumlah_barang." </p>";						
+					$nestedData[] = $row['nama_barang'];
+
 					if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") 
 					     {	
-								$nestedData[] = $row['nama']." ( ".$konver." ".$cek011['nama']." )";
+							$nestedData[] = $jumlah_barang." ( ".$konver." ".$cek011['nama']." )";
 						}
 					else
 						{
-								$nestedData[] = $row['nama'];
+							$nestedData[] = $jumlah_barang;
 						}
-
-					$nestedData[] = "<p align='right'>".rp($row['harga'])." </p>";
-					$nestedData[] = "<p align='right'>".rp($subtotal)." </p>";
-					$nestedData[] = "<p align='right'>".rp($row['potongan'])."</p>";
-					$nestedData[] = "<p align='right'>".rp($row['tax'])."</p>";
-					$nestedData[] = "<p align='right'>".rp($row['subtotal'] + $row['tax'])."</p>";
-					$nestedData[] = "<p align='right'>".$row["id"]."</p>";
+					$nestedData[] = $row['nama'];
+					$nestedData[] = rp($row['harga']);
+					$nestedData[] = rp($subtotal);
+					$nestedData[] = rp($row['potongan']);
+					$nestedData[] = rp($row['tax']);
+					$nestedData[] = rp($row['subtotal'] + $row['tax']);
+					$nestedData[] = $row["id"];
 				$data[] = $nestedData;
 			}
 
@@ -151,13 +152,13 @@ $nestedData=array();
       $nestedData[] = "<p style='color:red'> TOTAL </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
-      $nestedData[] = "<p style='color:red' align='right'> ".rp($tot_jumlah)." </p>";
-      $nestedData[] = "<p style='color:red'> - </p>";
-      $nestedData[] = "<p style='color:red'> - </p>";
-      $nestedData[] = "<p style='color:red' align='right'> ".rp($tot_subtotal)." </p>";
-      $nestedData[] = "<p style='color:red' align='right'> ".rp($tot_potongan)." </p>";
-      $nestedData[] = "<p style='color:red' align='right'> ".rp($tot_tax)." </p>";
-      $nestedData[] = "<p style='color:red' align='right'> ".rp($tot_akhir)." </p>"; 
+      $nestedData[] = "<p style='color:red'> ".rp($tot_jumlah)." </p>";
+      $nestedData[] = "<p style='color:red'>  </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($tot_harga)." </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($tot_subtotal)." </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($tot_potongan)." </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($tot_tax)." </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($tot_akhir)." </p>"; 
   $data[] = $nestedData;
 
 $json_data = array(

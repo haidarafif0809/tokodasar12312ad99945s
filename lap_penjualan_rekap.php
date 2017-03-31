@@ -130,7 +130,8 @@ tr:nth-child(even){background-color: #f2f2f2}
             $("#sampai_tanggal").focus();
           }
             else{
-      
+            $('#tableuser').hide();
+			$('#lapper').show();
           var dataTable = $('#table_lap_penjualan_rekap').DataTable( {
           "processing": true,
           "serverSide": true,

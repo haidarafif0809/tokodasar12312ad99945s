@@ -145,11 +145,11 @@ $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
       $nestedData[] = $row['no_faktur'];
       $nestedData[] = $row['nama_pelanggan'];
       $nestedData[] = $row['sales'];
-      $nestedData[] =  "<p align='right'>".rp($row['total'])."</p>";
+      $nestedData[] = rp($row['total']);
 
       if ($num_rows > 0 )
       {
-      	$nestedData[] =  "<p align='right'>".rp($tot_bayar)."</p>";
+      	$nestedData[] = rp($tot_bayar);
       }
       else
       {
@@ -157,7 +157,7 @@ $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
 
       }
 
-      $nestedData[] =  "<p align='right'>".rp($row['kredit'])."</p>";
+      $nestedData[] = rp($row['kredit']);
 
   $data[] = $nestedData;
 }
@@ -170,9 +170,9 @@ $nestedData=array();
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
-      $nestedData[] = "<p style='color:red' align='right' > ".rp($total_akhir)." </p>";
-      $nestedData[] = "<p style='color:red' align='right' > ".rp($total_bayar)." </p>";
-      $nestedData[] = "<p style='color:red' align='right' > ".rp($total_kredit)." </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($total_akhir)." </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($total_bayar)." </p>";
+      $nestedData[] = "<p style='color:red'> ".rp($total_kredit)." </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
       $nestedData[] = "<p style='color:red'> - </p>";
   

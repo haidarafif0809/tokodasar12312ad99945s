@@ -53,7 +53,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 				<li><a href="lap_penjualan_detail.php"> Laporan Penjualan Detail </a></li>
 				<li><a href="lap_penjualan_harian.php"> Laporan Penjualan Harian </a></li>
 				<li><a href="lap_omset.php"> Laporan Omset </a></li>
-				<li><a href="lap_kekuatan_jual_item.php"> Laporan Kekuatan Jual Peritem </a></li>
 				<!--
 				
 				<li><a href="lap_pelanggan_rekap.php"> Laporan Jual Per Pelanggan Rekap </a></li>
@@ -85,7 +84,42 @@ tr:nth-child(even){background-color: #f2f2f2}
 						
 		</thead>
 		
-	
+		<!--tbody>
+		<?php/*
+
+			//menyimpan data sementara yang ada pada $perintah
+			while ($data1 = mysqli_fetch_array($perintah))
+
+			{
+
+				$sum_subtotal = $db->query("SELECT SUM(subtotal) AS total_kotor FROM detail_penjualan WHERE no_faktur = '$data1[no_faktur]' ");
+
+				$ambil_sum_subtotal = mysqli_fetch_array($sum_subtotal);
+				$total_kotor = $ambil_sum_subtotal['total_kotor'];
+
+
+				//menampilkan data
+			echo "<tr>
+			<td>". $data1['no_faktur'] ."</td>
+			<td>". $data1['kode_pelanggan'] ." ". $data1['nama_pelanggan'] ."</td>
+			<td>". rp($total_kotor) ."</td>
+			<td>". rp($data1['total']) ."</td>
+			<td>". $data1['tanggal'] ."</td>
+			<td>". $data1['jam'] ."</td>
+			<td>". $data1['user'] ."</td>
+			<td>". $data1['status'] ."</td>
+			<td>". rp($data1['potongan']) ."</td>
+			<td>". rp($data1['tax']) ."</td>
+			<td>". rp($data1['sisa']) ."</td>
+			</tr>";
+
+
+			}
+
+			//Untuk Memutuskan Koneksi Ke Database
+			mysqli_close($db);  */ 
+		?>
+		</tbody-->
 
 	</table>
 </span>

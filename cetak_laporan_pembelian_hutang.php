@@ -116,10 +116,10 @@ $total_kredit = $cek20['total_kredit'];
                   <td>". $data11['no_faktur'] ."</td>
                   <td>". $data11['tanggal'] ."</td>
                   <td>". $data11['nama'] ."</td>
-                  <td align='right'>". rp($data11['total']) ."</td>
-                  <td align='right'>". rp($data11['potongan']) ."</td>
-                  <td align='right'>". rp($data11['tunai']) ."</td>
-                  <td align='right'>". rp($data11['kredit']) ."</td>
+                  <td>". rp($data11['total']) ."</td>
+                  <td>". rp($data11['potongan']) ."</td>
+                  <td>". rp($data11['tunai']) ."</td>
+                  <td>". rp($data11['kredit']) ."</td>
 
                   </tr>";
 
@@ -128,10 +128,10 @@ $total_kredit = $cek20['total_kredit'];
                    echo"<td><p style='color:red'><b>Jumlah Total</b></p></td>
                   <td></td>
                   <td></td>
-                  <td align='right'><p style='color:red'><b>".rp($total_akhir)."</b></p></td>
-                  <td align='right'><p style='color:red'><b>".rp($total_potongan)."</b></p></td>
-                  <td align='right'><p style='color:red'><b>".rp($total_bayar)."</b></p></td>
-                  <td align='right'><p style='color:red'><b>".rp($total_kredit)."</b></p>";
+                  <td><p style='color:red'><b>".rp($total_akhir)."</b></p></td>
+                  <td><p style='color:red'><b>".rp($total_potongan)."</b></p></td>
+                  <td><p style='color:red'><b>".rp($total_bayar)."</b></p></td>
+                  <td><p style='color:red'><b>".rp($total_kredit)."</b></p>";
 
 //Untuk Memutuskan Koneksi Ke Database
 
