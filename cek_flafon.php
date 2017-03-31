@@ -6,7 +6,7 @@ include 'piutang.function.php';
 
 // mengirim data no faktur menggunakan metode POST
  $total_akhir = angkadoang($_GET['kredit']);
- $kode_pelanggan = angkadoang($_GET['kode_pelanggan']);
+ $kode_pelanggan = stringdoang($_GET['kode_pelanggan']);
 
 
 $query_plafon  = $db->query("SELECT flafon,flafon_usia FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
@@ -77,10 +77,10 @@ $plafon_usia = $data_plafon['flafon_usia'];
 
 					$temp = array(
 					"no_faktur" => $data_piutang_lewat_usia_plafon['no_faktur'],
-					"total" => $data_piutang_lewat_usia_plafon['total'],
-					"kredit" => $data_piutang_lewat_usia_plafon['kredit'],
+					"total" => rp($data_piutang_lewat_usia_plafon['total']),
+					"kredit" => rp($data_piutang_lewat_usia_plafon['kredit']),
 					"tanggal" => $data_piutang_lewat_usia_plafon['tanggal'],
-					"tanggal_jt" => $data_piutang_lewat_usia_plafon['tanggal_jt']
+					"tanggal_jt" => tanggal($data_piutang_lewat_usia_plafon['tanggal_jt'])
 					);
 
 					array_push($arr, $temp);

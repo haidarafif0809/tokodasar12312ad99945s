@@ -1680,7 +1680,7 @@ alert("Silakan Bayar Piutang");
 
     }
     else if(data.status == 1){
-         alert("Anda Tidak Bisa Melakukan Transaksi Piutang, sisa plafon : "+sisa_piutang+" dan Ada penjualan yang sudah melewat batas usia plafon");
+         alert("Anda Tidak Bisa Melakukan Transaksi Piutang, sisa plafon : "+sisa_piutang+" ");
     }
     else
     {
