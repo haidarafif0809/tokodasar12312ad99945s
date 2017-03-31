@@ -48,7 +48,7 @@ $columns = array(
 
 // getting total number records without any search
 $sql =" SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,pl.nama_pelanggan ";
-$sql.=" FROM penjualan p LEFT JOIN pelanggan pl ON p.kode_pelanggan = pl.id ";
+$sql.=" FROM penjualan p LEFT JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan ";
 $sql.=" WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' ";
 $query=mysqli_query($conn, $sql) or die("eror.php: get employees");
 $totalData = mysqli_num_rows($query);
@@ -56,7 +56,7 @@ $totalFiltered = $totalData;  // when there is no search parameter then total nu
 
 
 $sql =" SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,pl.nama_pelanggan ";
-$sql.=" FROM penjualan p LEFT JOIN pelanggan pl ON p.kode_pelanggan = pl.id ";
+$sql.=" FROM penjualan p LEFT JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan ";
 $sql.=" WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' ";
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
