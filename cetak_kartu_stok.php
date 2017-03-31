@@ -37,6 +37,9 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
    font-size: 15px;
    font: verdana;
    }
+   .rata-kanan{
+    text-align: right;
+   }
 </style>
 
 
@@ -58,7 +61,7 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 
 
 
-    <center> <h4> <b> KARTU STOK </b> </h4> </center>
+    <center> <h4> <b> DATA STOK </b> </h4> </center>
     <center> <h4> <b> PERIODE <?php echo tanggal($daritgl); ?> Sampai <?php echo tanggal($sampaitgl); ?></b> </h4> </center><hr>
 
 
@@ -118,7 +121,7 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
             <th class="table1" style="width: 3%"> No Faktur</th>
             <th class="table1" style="width: 50%"> Jenis Transaksi </th>
             <th class="table1" style="width: 10%"> Harga</th>
-            <th class="table1" style="width: 5%"> Tanggal</th>
+            <th class="table1" style="width: 10%"> Tanggal</th>
             <th class="table1" style="width: 5%"> Jumlah Masuk</th>
             <th class="table1" style="width: 5%"> Jumlah Keluar</th>
             <th class="table1" style="width: 5%"> Saldo</th>
@@ -135,7 +138,7 @@ $total_saldo = $jumlah_masuk - $jumlah_keluar;
 <td></td>
 <td></td>
 <td></td>
-<td><b style='color:red ;'><?php echo $total_saldo ?></b></td>
+<td class="rata-kanan"><b style='color:red ;'><?php echo rp($total_saldo) ?></b></td>
 </tr>
 
 <?php 
@@ -190,7 +193,7 @@ if ($data['jenis_hpp'] == '1')
         $data_beli = mysqli_fetch_array($ambil_harga_beli);
         $harga_beli = $data_beli['harga_beli'];
 
-        echo "<td>".rp($harga_beli)."</td>";
+        echo "<td class='rata-kanan'>".rp($harga_beli)."</td>";
         
       }
       else if ($data['jenis_transaksi'] == 'Retur Penjualan') {
@@ -200,7 +203,7 @@ if ($data['jenis_hpp'] == '1')
         $data_retur_jual = mysqli_fetch_array($ambil_harga_retur_jual);
         $harga_retur_jual = $data_retur_jual['harga_retur_jual'];
 
-        echo "<td>".rp($harga_retur_jual)."</td>";
+        echo "<td class='rata-kanan'>".rp($harga_retur_jual)."</td>";
       }
       else if ($data['jenis_transaksi'] == 'Item Masuk') {
 
@@ -209,7 +212,7 @@ if ($data['jenis_hpp'] == '1')
         $data_masuk = mysqli_fetch_array($ambil_harga_masuk);
         $harga_masuk = $data_masuk['harga_masuk'];
 
-        echo "<td>".rp($harga_masuk)."</td>";
+        echo "<td class='rata-kanan'>".rp($harga_masuk)."</td>";
       }
       else if ($data['jenis_transaksi'] == 'Stok Opname') {
 
@@ -218,7 +221,7 @@ if ($data['jenis_hpp'] == '1')
         $data_opname = mysqli_fetch_array($ambil_harga_opname);
         $harga_opname = $data_opname['harga_opname'];
 
-        echo "<td>".rp($harga_opname)."</td>";
+        echo "<td class='rata-kanan'>".rp($harga_opname)."</td>";
       }
       else if ($data['jenis_transaksi'] == 'Stok Awal') {
 
@@ -227,14 +230,14 @@ if ($data['jenis_hpp'] == '1')
         $data_awal = mysqli_fetch_array($ambil_harga_awal);
         $harga_awal = $data_awal['harga_awal'];
 
-        echo "<td>".rp($harga_awal);
+        echo "<td class='rata-kanan'>".rp($harga_awal);
       }
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
-  echo "<td>". $data['tanggal'] ."</td>
-      <td>". rp($masuk) ."</td>
-      <td>0</td>
-      <td>". rp($total_saldo) ."</td>
+  echo "<td>". tanggal($data['tanggal']) ."</td>
+      <td class='rata-kanan'>". rp($masuk) ."</td>
+      <td class='rata-kanan'>0</td>
+      <td class='rata-kanan'>". rp($total_saldo) ."</td>
       ";
 }
 else
@@ -280,7 +283,7 @@ $total_saldo = $total_saldo - $keluar;
         $data_jual = mysqli_fetch_array($ambil_harga_jual);
         $harga_jual = $data_jual['harga_jual'];
 
-        echo "<td>".rp($harga_jual)."</td>";
+        echo "<td class='rata-kanan'>".rp($harga_jual)."</td>";
         
       }
       else if ($data['jenis_transaksi'] == 'Retur Pembelian') {
@@ -290,7 +293,7 @@ $total_saldo = $total_saldo - $keluar;
         $data_retur_beli = mysqli_fetch_array($ambil_harga_retur_beli);
         $harga_retur_beli = $data_retur_beli['harga_retur_beli'];
 
-        echo "<td>".rp($harga_retur_beli)."</td>";
+        echo "<td class='rata-kanan'>".rp($harga_retur_beli)."</td>";
       }
       else if ($data['jenis_transaksi'] == 'Item Keluar') {
 
@@ -299,7 +302,7 @@ $total_saldo = $total_saldo - $keluar;
         $data_keluar = mysqli_fetch_array($ambil_harga_keluar);
         $harga_keluar = $data_keluar['harga_keluar'];
 
-        echo "<td>".rp($harga_keluar)."</td>";
+        echo "<td class='rata-kanan'>".rp($harga_keluar)."</td>";
       }
       else if ($data['jenis_transaksi'] == 'Stok Opname') {
 
@@ -308,15 +311,15 @@ $total_saldo = $total_saldo - $keluar;
         $data_opname = mysqli_fetch_array($ambil_harga_opname);
         $harga_opname = $data_opname['harga_opname'];
 
-        echo "<td>".rp($harga_opname)."</td>";
+        echo "<td class='rata-kanan'>".rp($harga_opname)."</td>";
       }
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
-      echo "<td>". $data['tanggal'] ."</td>
-      <td>0</td>
-      <td>".rp($keluar)."</td>
-      <td>". rp($total_saldo) ."</td>
+      echo "<td>". tanggal($data['tanggal']) ."</td>
+      <td class='rata-kanan'>0</td>
+      <td class='rata-kanan'>".rp($keluar)."</td>
+      <td class='rata-kanan'>". rp($total_saldo) ."</td>
       ";
 }
 

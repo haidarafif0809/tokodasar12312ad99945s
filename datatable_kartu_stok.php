@@ -6,7 +6,10 @@ $id = stringdoang($_POST['id_produk']);
 $kode_barang = stringdoang($_POST['kode_barang']); 
 $bulan = stringdoang($_POST['bulan']); 
 $tahun = stringdoang($_POST['tahun']);
+?>
 
+
+<?php 
 if ($bulan == '1')
 {
 	$moon = 'Januari';
@@ -144,12 +147,12 @@ $datatable = array();
 
 
 $nestedData[] = "";
-$nestedData[] = "<font color='red'>SALDO AWAL</font>";
+$nestedData[] = "<p style='color:red'>SALDO AWAL</p>";
 $nestedData[] = "";
 $nestedData[] = "";
 $nestedData[] = "";
 $nestedData[] = "";
-$nestedData[] =  "<font color='red'>".rp($total_saldo)."</font>" ;
+$nestedData[] =  "<p style='color:red; text-align:right'>".rp($total_saldo)."</p>" ;
 
 
 $datatable[] = $nestedData;
@@ -202,7 +205,7 @@ if ($data['jenis_hpp'] == '1')
 				$data_beli = mysqli_fetch_array($ambil_harga_beli);
 				$harga_beli = $data_beli['harga_beli'];
 
-				$nestedData[] = rp($harga_beli);
+				$nestedData[] = "<p style='text-align:right'>".rp($harga_beli)."<p/>";
 				
 			}
 			else if ($data['jenis_transaksi'] == 'Retur Penjualan') {
@@ -212,7 +215,7 @@ if ($data['jenis_hpp'] == '1')
 				$data_retur_jual = mysqli_fetch_array($ambil_harga_retur_jual);
 				$harga_retur_jual = $data_retur_jual['harga_retur_jual'];
 
-				$nestedData[] = rp($harga_retur_jual);
+				$nestedData[] = "<p style='text-align:right'>".rp($harga_retur_jual)."<p/>";
 			}
 			else if ($data['jenis_transaksi'] == 'Item Masuk') {
 
@@ -221,7 +224,7 @@ if ($data['jenis_hpp'] == '1')
 				$data_masuk = mysqli_fetch_array($ambil_harga_masuk);
 				$harga_masuk = $data_masuk['harga_masuk'];
 
-				$nestedData[] = rp($harga_masuk);
+				$nestedData[] = "<p style='text-align:right'>".rp($harga_masuk)."<p/>";
 			}
 			else if ($data['jenis_transaksi'] == 'Stok Opname') {
 
@@ -230,7 +233,7 @@ if ($data['jenis_hpp'] == '1')
 				$data_opname = mysqli_fetch_array($ambil_harga_opname);
 				$harga_opname = $data_opname['harga_opname'];
 
-				$nestedData[] = rp($harga_opname);
+				$nestedData[] = "<p style='text-align:right'>".rp($harga_opname)."<p/>";
 			}
 			else if ($data['jenis_transaksi'] == 'Stok Awal') {
 
@@ -239,16 +242,16 @@ if ($data['jenis_hpp'] == '1')
 				$data_awal = mysqli_fetch_array($ambil_harga_awal);
 				$harga_awal = $data_awal['harga_awal'];
 
-				$nestedData[] = rp($harga_awal);
+				$nestedData[] = "<p style='text-align:right'>".rp($harga_awal)."<p/>";
 			}
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
 
 
-			$nestedData[] = $data['tanggal'];
-			$nestedData[] = $masuk ;
-			$nestedData[] =   	"0";
-			$nestedData[] =  $total_saldo ;
+			$nestedData[] = tanggal($data['tanggal']);
+			$nestedData[] = "<p style='text-align:right'>".rp($masuk)."<p/>";
+			$nestedData[] = "<p style='text-align:right'>0<p/>";
+			$nestedData[] = "<p style='text-align:right'>".rp($total_saldo)."<p/>";
 
 		$datatable[] = $nestedData;
 		
@@ -299,7 +302,7 @@ $total_saldo = $total_saldo - $keluar;
 				$data_jual = mysqli_fetch_array($ambil_harga_jual);
 				$harga_jual = $data_jual['harga_jual'];
 
-				$nestedData[] = rp($harga_jual);
+				$nestedData[] = "<p style='text-align:right'>".rp($harga_jual)."<p/>";
 				
 			}
 			else if ($data['jenis_transaksi'] == 'Retur Pembelian') {
@@ -309,7 +312,7 @@ $total_saldo = $total_saldo - $keluar;
 				$data_retur_beli = mysqli_fetch_array($ambil_harga_retur_beli);
 				$harga_retur_beli = $data_retur_beli['harga_retur_beli'];
 
-				$nestedData[] = rp($harga_retur_beli);
+				$nestedData[] = "<p style='text-align:right'>".rp($harga_retur_beli)."<p/>";
 			}
 			else if ($data['jenis_transaksi'] == 'Item Keluar') {
 
@@ -318,7 +321,7 @@ $total_saldo = $total_saldo - $keluar;
 				$data_keluar = mysqli_fetch_array($ambil_harga_keluar);
 				$harga_keluar = $data_keluar['harga_keluar'];
 
-				$nestedData[] = rp($harga_keluar);
+				$nestedData[] = "<p style='text-align:right'>".rp($harga_keluar)."<p/>";
 			}
 			else if ($data['jenis_transaksi'] == 'Stok Opname') {
 
@@ -327,15 +330,15 @@ $total_saldo = $total_saldo - $keluar;
 				$data_opname = mysqli_fetch_array($ambil_harga_opname);
 				$harga_opname = $data_opname['harga_opname'];
 
-				$nestedData[] = rp($harga_opname);
+				$nestedData[] = "<p style='text-align:right'>".rp($harga_opname)."<p/>";
 			}
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
-		$nestedData[] =	 $data['tanggal'] ;
-		$nestedData[] =	"0";
-		$nestedData[] = $keluar;
-		$nestedData[] = $total_saldo;
+		$nestedData[] =	 tanggal($data['tanggal']);
+		$nestedData[] =	"<p style='text-align:right'>0<p/>";
+		$nestedData[] = "<p style='text-align:right'>".rp($keluar)."<p/>";
+		$nestedData[] = "<p style='text-align:right'>".rp($total_saldo)."<p/>";
 		$datatable[] = $nestedData;
 }
 
