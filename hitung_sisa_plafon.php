@@ -5,7 +5,7 @@ include 'sanitasi.php';
 include 'piutang.function.php';
 
 // mengirim data no faktur menggunakan metode POST
- $kode_pelanggan = stringdoang($_GET['kode_pelanggan']);
+ $kode_pelanggan = angkadoang($_GET['kode_pelanggan']);
 
 
 echo rp(hitungSisaPlafon($kode_pelanggan));

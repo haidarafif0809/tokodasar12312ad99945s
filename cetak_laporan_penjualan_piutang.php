@@ -97,16 +97,16 @@ $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
                   <td>". $data11['no_faktur'] ."</td>
                   <td>". $data11['nama_pelanggan'] ."</td>
                   <td>". $data11['sales'] ."</td>
-                  <td  align='right' >". rp($data11['total']) ."</td>";
+                  <td>". rp($data11['total']) ."</td>";
                   if ($num_rows > 0)
                   {
-                      echo "<td align='right' >". rp($tot_bayar) ."</td>";
+                      echo "<td>". rp($tot_bayar) ."</td>";
                   }
                   else
                   {
                     echo 0;
                   }
-                  echo "<td align='right' >". rp($data11['kredit']) ."</td>
+                  echo "<td>". rp($data11['kredit']) ."</td>
                   </tr>";
 
 
@@ -117,9 +117,9 @@ $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
       <td><p style='color:red'> - </p></td>
       <td><p style='color:red'> - </p></td>
       <td><p style='color:red'> - </p></td>
-      <td><p style='color:red' align='right' > ".rp($total_akhir)." </p></td>
-      <td><p style='color:red' align='right' > ".rp($total_bayar)." </p></td>
-      <td><p style='color:red' align='right' > ".rp($total_kredit)." </p></td>";              
+      <td><p style='color:red'> ".rp($total_akhir)." </p></td>
+      <td><p style='color:red'> ".rp($total_bayar)." </p></td>
+      <td><p style='color:red'> ".rp($total_kredit)." </p></td>";              
 
 
 //Untuk Memutuskan Koneksi Ke Database
@@ -130,6 +130,7 @@ mysqli_close($db);
             </tbody>
 
       </table>
+      <hr>
 </div>
 </div>
 <br>

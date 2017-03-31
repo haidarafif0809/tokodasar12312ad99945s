@@ -34,7 +34,7 @@ if ($cek_jumlah_bulan == 1) {
  }
 //ambil bulan dari tanggal penjualan terakhir
 
- $bulan_terakhir = $db->query("SELECT MONTH(waktu_input) as bulan FROM penjualan ORDER BY id DESC LIMIT 1");
+ $bulan_terakhir = $db->query("SELECT MONTH(tanggal) as bulan FROM penjualan ORDER BY id DESC LIMIT 1");
  $v_bulan_terakhir = mysqli_fetch_array($bulan_terakhir);
 
 //ambil nomor  dari penjualan terakhir
@@ -163,11 +163,11 @@ echo $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
 
             {
               
-              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, sisa, cara_bayar, tunai, status_jual_awal, keterangan, ppn,potongan_persen) VALUES (?,?,?,?,?,?,?,?,'Lunas',?,?,?,?,?,'Tunai',?,?,?)");
+              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, kode_gudang, kode_pelanggan, total, tanggal, jam, user, sales, status, potongan, tax, sisa, cara_bayar, tunai, status_jual_awal, keterangan, ppn) VALUES (?,?,?,?,?,?,?,?,'Lunas',?,?,?,?,?,'Tunai',?,?)");
               
     // hubungkan "data" dengan prepared statements
-              $stmt->bind_param("sssissssiiisisss",
-              $no_faktur, $kode_gudang, $kode_pelanggan, $total, $tanggal_sekarang, $jam_sekarang, $user, $sales, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$potongan_persen);
+              $stmt->bind_param("sssissssiiisiss",
+              $no_faktur, $kode_gudang, $kode_pelanggan, $total, $tanggal_sekarang, $jam_sekarang, $user, $sales, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $keterangan, $ppn_input);
               
               
               $kode_pelanggan = stringdoang($_POST['kode_pelanggan']);
@@ -176,7 +176,6 @@ echo $no_faktur = $nomor."/JL/".$data_bulan_terakhir."/".$tahun_terakhir;
               $total = angkadoang($_POST['total']);
               $total2 = angkadoang($_POST['total2']);
               $potongan = angkadoang($_POST['potongan']);
-              $potongan_persen = stringdoang($_POST['potongan_persen']);
               $tax = angkadoang($_POST['tax']);
               $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
               $sisa = angkadoang($_POST['sisa']);
@@ -302,11 +301,11 @@ if ($potongan != "" || $potongan != 0 ) {
               
               
               
-              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, kode_gudang, kode_pelanggan, total, tanggal, tanggal_jt, jam, user, sales, status, potongan, tax, kredit, nilai_kredit, cara_bayar, tunai, status_jual_awal, keterangan, ppn,potongan_persen) VALUES (?,?,?,?,?,?,?,?,?,'Piutang',?,?,?,?,?,?,'Kredit',?,?,?)");
+              $stmt = $db->prepare("INSERT INTO penjualan (no_faktur, kode_gudang, kode_pelanggan, total, tanggal, tanggal_jt, jam, user, sales, status, potongan, tax, kredit, nilai_kredit, cara_bayar, tunai, status_jual_awal, keterangan, ppn) VALUES (?,?,?,?,?,?,?,?,?,'Piutang',?,?,?,?,?,?,'Kredit',?,?)");
               
 
-              $stmt->bind_param("sssisssssiiiisisss",
-              $no_faktur, $kode_gudang, $kode_pelanggan, $total , $tanggal_sekarang, $tanggal_jt, $jam_sekarang, $user, $sales, $potongan, $tax, $sisa_kredit, $sisa_kredit, $cara_bayar, $pembayaran, $keterangan, $ppn_input,$potongan_persen);
+              $stmt->bind_param("sssisssssiiiisiss",
+              $no_faktur, $kode_gudang, $kode_pelanggan, $total , $tanggal_sekarang, $tanggal_jt, $jam_sekarang, $user, $sales, $potongan, $tax, $sisa_kredit, $sisa_kredit, $cara_bayar, $pembayaran, $keterangan, $ppn_input);
               
               
               $kode_pelanggan = stringdoang($_POST['kode_pelanggan']);
@@ -315,7 +314,6 @@ if ($potongan != "" || $potongan != 0 ) {
               $total = angkadoang($_POST['total']);
               $total2 = angkadoang($_POST['total2']);
               $potongan = angkadoang($_POST['potongan']);
-              $potongan_persen = stringdoang($_POST['potongan_persen']);
               $tax = angkadoang($_POST['tax']);
               $tanggal_jt = angkadoang($_POST['tanggal_jt']);
               $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
@@ -437,6 +435,44 @@ else
 
 // coding untuk memasukan history_tbs dan menghapus tbs
     $tbs_penjualan_masuk = $db->query("INSERT INTO history_tbs_penjualan (session_id, no_faktur, kode_barang, nama_barang, jumlah_barang, satuan, harga, subtotal, potongan, tax) SELECT session_id, no_faktur, kode_barang, nama_barang, jumlah_barang, satuan, harga, subtotal, potongan, tax FROM tbs_penjualan  WHERE session_id = '$session_id' ");
+
+
+// BOT STAR AUTO      
+
+              $total = angkadoang($_POST['total']);
+
+                    
+      $url = "https://api.telegram.org/bot233675698:AAEbTKDcPH446F-bje4XIf1YJ0kcmoUGffA/sendMessage?chat_id=-129639785&text=";
+      $text = urlencode("No Faktur : ".$no_faktur."\n");
+      $pesanan_jadi = "";
+      $ambil_tbs1 = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' ORDER BY id ASC");
+      
+ while ($data12 = mysqli_fetch_array($ambil_tbs1))
+
+ {
+            $pesanan =  $data12['nama_barang']." - ".$data12['jumlah_barang']." - ".$data12['harga']."\n";
+      $pesanan_jadi = $pesanan_jadi.$pesanan;
+      
+      $ambil_tbs2 = $db->query("SELECT kode_barang FROM tbs_penjualan WHERE session_id = '$session_id' ORDER BY id DESC Limit 1");
+      $ambil_tbs3 = mysqli_fetch_array($ambil_tbs2);
+      $data_terakhir = $ambil_tbs3['kode_barang'];
+      
+      if ($data12['kode_barang'] == $data_terakhir ) 
+      {
+      $pesanan_jadi = $pesanan_jadi."Subtotal : ".$total;
+      $pesanan_terakhir =  urlencode($pesanan_jadi);
+      $url = $url.$text.$pesanan_terakhir;
+      
+      $url = str_replace(" ", "%20", $url);
+      
+
+      
+      }
+
+
+     
+     
+}
 
 
     $query3 = $db->query("DELETE  FROM tbs_penjualan WHERE session_id = '$session_id'");

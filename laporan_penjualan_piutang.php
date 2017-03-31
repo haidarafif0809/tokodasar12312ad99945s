@@ -134,7 +134,7 @@ include 'db.php';
 
 
  <br>
- <div class="table-responsive" id="respon" ><!--membuat agar ada garis pada tabel disetiap kolom-->
+ <div class="table-responsive"><!--membuat agar ada garis pada tabel disetiap kolom-->
 <table id="tableuser" class="table table-bordered table-sm">
 		<thead>
 			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
@@ -168,8 +168,7 @@ include 'db.php';
 		
 		var dari_tanggal = $("#dari_tanggal").val();
 		var sampai_tanggal = $("#sampai_tanggal").val();
-		    
-      $("#respon").show();
+		
 			$('#tableuser').DataTable().destroy();
 
 		  var dataTable = $('#tableuser').DataTable( {
@@ -223,8 +222,7 @@ include 'db.php';
 		var sampai_tanggal = $("#sampai_tanggal2").val();
 		var konsumen = $("#kd_pelanggan").val();
 		var sales = $("#sales").val();
-    
-      $("#respon").show();
+
 			$('#tableuser').DataTable().destroy();
 
 		  var dataTable = $('#tableuser').DataTable( {
@@ -287,11 +285,6 @@ $(document).ready(function(){
 
     $("#rekap_konsumen").show();
     $("#rekap_non_konsumen").hide();
-    $("#respon").hide();
-    $("#cetak_non").hide();
-    $("#btn-download-non").hide();
-    $("#cetak_true").hide();
-    $("#btn-download-true").hide();
 
     });
 
@@ -299,12 +292,6 @@ $(document).ready(function(){
   
     $("#rekap_konsumen").hide();
     $("#rekap_non_konsumen").show();
-    $("#respon").hide();
-    $("#cetak_non").hide();
-    $("#btn-download-non").hide();
-    $("#cetak_true").hide();
-    $("#btn-download-true").hide();
-
     });
 
 
