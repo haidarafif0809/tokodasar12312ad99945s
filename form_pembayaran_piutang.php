@@ -4,16 +4,9 @@
  include 'navbar.php';
  include 'db.php';
  include 'sanitasi.php';
-
-$query = $db->query("SELECT * FROM pembayaran_piutang");
  
  $session_id = session_id();
 
-
-
-$perintah50 = $db->query("SELECT * FROM tbs_pembayaran_piutang WHERE session_id = '$session_id'");
-$data50 = mysqli_fetch_array($perintah50);
-$no_faktur_penjualan = $data50['no_faktur_penjualan']; 
 
  ?>
 
@@ -134,7 +127,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
           include 'db.php';
           
           // menampilkan data yang ada pada tabel suplier
-          $query = $db->query("SELECT * FROM pelanggan ");
+          $query = $db->query("SELECT kode_pelanggan, nama_pelanggan FROM pelanggan ");
           
           // menyimpan data sementara yang ada pada $query
           while($data = mysqli_fetch_array($query))
@@ -294,8 +287,8 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
     <?php
 
     //untuk menampilkan semua data yang ada pada tabel tbs pembelian dalam DB
-    $perintah = $db->query("SELECT * FROM tbs_pembayaran_piutang 
-                WHERE session_id = '$session_id'");
+    $perintah = $db->query("SELECT id,no_faktur_penjualan,tanggal,tanggal_jt,kredit,potongan,
+      total,jumlah_bayar FROM tbs_pembayaran_piutang WHERE session_id = '$session_id'");
 
     //menyimpan data sementara yang ada pada $perintah
       while ($data1 = mysqli_fetch_array($perintah))
@@ -352,7 +345,7 @@ mysqli_close($db);
 <button type="submit" id="pembayaran" class="btn btn-info"><i class="fa fa-send"></i> Bayar</button>
 <a href="form_pembayaran_piutang.php" class="btn btn-primary" id="transaksi_baru" style="display: none"><i class="fa fa-refresh"></i> Transaksi Baru</a>
 
-<a href='batal_piutang.php?no_faktur_penjualan=<?php echo $no_faktur_penjualan; ?>' id='batal' class='btn btn-danger'><i class='fa fa-close'></i> Batal </a>
+<a href='batal_piutang.php' id='batal' class='btn btn-danger'><i class='fa fa-close'></i> Batal </a>
 
 <a href='cetak_pembayaran_piutang.php' id="cetak_piutang" style="display: none;" class="btn btn-success" target="blank"><i class="fa fa-print"> </i> Cetak Pembayaran Piutang </a>
           

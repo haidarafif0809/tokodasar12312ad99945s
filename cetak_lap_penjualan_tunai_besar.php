@@ -8,7 +8,7 @@ include 'db.php';
 
   $no_faktur = stringdoang($_GET['no_faktur']);
 
-    $select_penjualan = $db->query("SELECT p.id,p.no_faktur,p.total,p.kode_pelanggan,p.keterangan,p.cara_bayar,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.kode_gudang,p.tunai,pl.nama_pelanggan,pl.wilayah,dp.satuan,dp.jumlah_barang,dp.subtotal,dp.nama_barang,dp.harga, da.nama_daftar_akun, s.nama AS nama_satuan FROM penjualan p INNER JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan INNER JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun INNER JOIN satuan s ON dp.satuan = s.id WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
+    $select_penjualan = $db->query("SELECT p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.potongan,p.potongan_persen, pl.nama_pelanggan,pl.wilayah,da.nama_daftar_akun FROM penjualan p INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan INNER JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun  WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
     $data0 = mysqli_fetch_array($select_penjualan);
 
     $potongan = $data0['potongan'];
@@ -16,12 +16,14 @@ include 'db.php';
     $select_perusahaan = $db->query("SELECT * FROM perusahaan ");
     $data_perusahaan = mysqli_fetch_array($select_perusahaan);
 
-    $select_sum = $db->query("SELECT SUM(jumlah_barang) as total_item, SUM(subtotal) as sub_total FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
+    $select_sum = $db->query("SELECT  SUM(subtotal) as sub_total FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
     $data_sum = mysqli_fetch_array($select_sum);
-    $total_item = $data_sum['total_item'];
+    
     $t_subtotal = $data_sum['sub_total'];
 
-    $potongan_persen = $potongan / $t_subtotal * 100;
+    $potongan_persen = $data0['potongan_persen'];
+
+   
 
     $jml_dibayar = $t_subtotal - $data0['potongan'];
 
@@ -122,7 +124,7 @@ include 'db.php';
 
         $no_urut = 0;
 
-            $query5 = $db->query("SELECT nama_barang, jumlah_barang, harga, subtotal FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
+            $query5 = $db->query("SELECT nama_barang, jumlah_barang, harga, subtotal,satuan.nama AS satuan FROM detail_penjualan INNER JOIN satuan ON detail_penjualan.satuan = satuan.id WHERE no_faktur = '$no_faktur' ");
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
@@ -132,10 +134,10 @@ include 'db.php';
             echo "<tr>
             <td class='table1' align='center'>".$no_urut."</td>
             <td class='table1'>". $data5['nama_barang'] ."</td>
-            <td class='table1' align='center'>". rp($data5['jumlah_barang']) ."</td>
-            <td class='table1' align='center'>". $data0['nama_satuan'] ."</td>
-            <td class='table1' align='center'>". rp($data5['harga']) ."</td>
-            <td class='table1' align='center'>". rp($data5['subtotal']) ."</td>
+            <td class='table1' align='right'>". rp($data5['jumlah_barang']) ."</td>
+            <td class='table1' align='right'>". $data5['satuan'] ."</td>
+            <td class='table1' align='right'>". rp($data5['harga']) ."</td>
+            <td class='table1' align='right'>". rp($data5['subtotal']) ."</td>
             <tr>";
 
             }
@@ -165,15 +167,38 @@ include 'db.php';
             <td class='table1' align='right'></td>
             <td class='table1' align='right'><?php echo rp($t_subtotal); ?></td>
         </tr>
-
-        <tr>
-            <td class='table1'></td>
-            <td class='table1'>Dikurangi Potongan Harga</td>
-            <td class='table1' align='right'></td>
+        <?php 
+         if (strpos($potongan_persen, '+') == true) {
+            $subtotal_sebelum_diskon = $t_subtotal;
+            $pecahan_diskon_bertingkat = explode("+",$potongan_persen);
+            $no_urut_potongan = 0;
+            foreach ($pecahan_diskon_bertingkat as $diskon_persen ) { 
+                #code... 
+            $no_urut_potongan++;
+            $diskon_nominal = $subtotal_sebelum_diskon * $diskon_persen /100;
+            $subtotal_sebelum_diskon -=  $diskon_nominal;
+                echo "<tr>
+            <td class='table1'></td>";
+            if ($no_urut_potongan == 1 ) {
+                # code...
+                 echo "<td class='table1'>Dikurangi Potongan Harga </td>";
+            
+            }
+            else {
+                 echo "<td class='table1'>Tambahan Diskon </td>";
+            }
+           
+            echo "<td class='table1' align='right'></td>
             <td class='table1'>Disc</td>
-            <td class='table1' align='right'><?php echo persen(round($potongan_persen)); ?></td>
-            <td class='table1' align='right'><?php echo rp($data0['potongan']); ?></td>
-        </tr>
+            <td class='table1' align='right'>". persen($diskon_persen)."</td>
+            <td class='table1' align='right'>". rp($diskon_nominal). "</td>
+            </tr>";
+
+            }
+
+         }
+         ?>
+       
 
         <tr>
             <td class='table1'></td>
