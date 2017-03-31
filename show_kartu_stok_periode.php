@@ -87,12 +87,12 @@ $data = array();
 	$nestedData=array();
 
 $nestedData[] = "";
- $nestedData[] = "<p color='red'>SALDO AWAL</p>";
+ $nestedData[] = "<font color='red'>SALDO AWAL</font>";
 $nestedData[] = "";
 $nestedData[] = "";
 $nestedData[] = "";
 $nestedData[] = "";
-$nestedData[] = "<p style='color:red; text-align:right'>".rp($total_saldo)."</p>";
+$nestedData[] =  "<font color='red'>".rp($total_saldo)."</font>" ;
 
 
 $data[] = $nestedData;
@@ -142,7 +142,7 @@ if ($row['jenis_hpp'] == '1')
 				$data_beli = mysqli_fetch_array($ambil_harga_beli);
 				$harga_beli = $data_beli['harga_beli'];
 
-				$nestedData[] = "<p style='text-align:right'>".rp($harga_beli)."</p>";
+				$nestedData[] = rp($harga_beli);
 				
 			}
 			else if ($row['jenis_transaksi'] == 'Retur Penjualan') {
@@ -152,7 +152,7 @@ if ($row['jenis_hpp'] == '1')
 				$data_retur_jual = mysqli_fetch_array($ambil_harga_retur_jual);
 				$harga_retur_jual = $data_retur_jual['harga_retur_jual'];
 
-				$nestedData[] = "<p style='text-align:right'>".rp($harga_retur_jual)."</p>";
+				$nestedData[] = rp($harga_retur_jual);
 			}
 			else if ($row['jenis_transaksi'] == 'Item Masuk') {
 
@@ -161,7 +161,7 @@ if ($row['jenis_hpp'] == '1')
 				$data_masuk = mysqli_fetch_array($ambil_harga_masuk);
 				$harga_masuk = $data_masuk['harga_masuk'];
 
-				$nestedData[] = "<p style='text-align:right'>".rp($harga_masuk)."</p>";
+				$nestedData[] = rp($harga_masuk);
 			}
 			else if ($row['jenis_transaksi'] == 'Stok Opname') {
 
@@ -170,7 +170,7 @@ if ($row['jenis_hpp'] == '1')
 				$data_opname = mysqli_fetch_array($ambil_harga_opname);
 				$harga_opname = $data_opname['harga_opname'];
 
-				$nestedData[] = "<p style='text-align:right'>".rp($harga_opname)."</p>";
+				$nestedData[] = rp($harga_opname);
 			}
 			else if ($row['jenis_transaksi'] == 'Stok Awal') {
 
@@ -179,19 +179,19 @@ if ($row['jenis_hpp'] == '1')
 				$data_awal = mysqli_fetch_array($ambil_harga_awal);
 				$harga_awal = $data_awal['harga_awal'];
 
-				$nestedData[] = "<p style='text-align:right'>".rp($harga_awal)."</p>";
+				$nestedData[] = rp($harga_awal);
 			}
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERTAMBAH)
 //
-		$nestedData[] = tanggal($row['tanggal']);
+		$nestedData[] = $row['tanggal'];
 
 		$masuk = $row['jumlah_kuantitas'];
 		$total_saldo = ($total_saldo + $masuk);
 
-		$nestedData[] = "<p style='text-align:right'>".rp($masuk)."</p>";
-		$nestedData[] = "<p style='text-align:right'>0</p>";
-		$nestedData[] = "<p style='text-align:right'>".rp($total_saldo)."</p>";
+		$nestedData[] = rp($masuk);
+		$nestedData[] = "0";
+		$nestedData[] =  rp($total_saldo);
 		$data[] = $nestedData;
 	
 }
@@ -232,7 +232,7 @@ else
 				$data_jual = mysqli_fetch_array($ambil_harga_jual);
 				$harga_jual = $data_jual['harga_jual'];
 
-				$nestedData[] = "<p style='text-align:right'>".rp($harga_jual)."</p>";
+				$nestedData[] = rp($harga_jual);
 				
 			}
 			else if ($row['jenis_transaksi'] == 'Retur Pembelian') {
@@ -242,7 +242,7 @@ else
 				$data_retur_beli = mysqli_fetch_array($ambil_harga_retur_beli);
 				$harga_retur_beli = $data_retur_beli['harga_retur_beli'];
 
-				$nestedData[] = "<p style='text-align:right'>".rp($harga_retur_beli)."</p>";
+				$nestedData[] = rp($harga_retur_beli);
 			}
 			else if ($row['jenis_transaksi'] == 'Item Keluar') {
 
@@ -251,7 +251,7 @@ else
 				$data_keluar = mysqli_fetch_array($ambil_harga_keluar);
 				$harga_keluar = $data_keluar['harga_keluar'];
 
-				$nestedData[] = "<p style='text-align:right'>".rp($harga_keluar)."</p>";
+				$nestedData[] = rp($harga_keluar);
 			}
 			else if ($row['jenis_transaksi'] == 'Stok Opname') {
 
@@ -260,19 +260,19 @@ else
 				$data_opname = mysqli_fetch_array($ambil_harga_opname);
 				$harga_opname = $data_opname['harga_opname'];
 
-				$nestedData[] = "<p style='text-align:right'>".rp($harga_opname)."</p>";
+				$nestedData[] = rp($harga_opname);
 			}
 
 //LOGIKA UNTUK MENAMPILKAN HARGA DARI MASING" TRANSAKSI (JUMLAH PRODUK BERKURANG)
 
-		$nestedData[] = tanggal($row['tanggal']);
+		$nestedData[] = $row['tanggal'];
 
 		$keluar = $row['jumlah_kuantitas'];
 		$total_saldo = $total_saldo - $keluar;
 
-		$nestedData[] =	"<p style='text-align:right'>0</p>";
-		$nestedData[] = "<p style='text-align:right'>".rp($keluar)."</p>";
-		$nestedData[] = "<p style='text-align:right'>".rp($total_saldo)."</p>";
+		$nestedData[] =	"0";
+		$nestedData[] = rp($keluar);
+		$nestedData[] =  rp($total_saldo);	
 		$data[] = $nestedData;	
 
 }

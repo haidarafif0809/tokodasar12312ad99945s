@@ -81,7 +81,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 					<th style="background-color: #4CAF50; color: white;"> Subtotal </th>
 					<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 					<th style="background-color: #4CAF50; color: white;"> Tax </th>
-          <th style="background-color: #4CAF50; color: white;"> Total Akhir </th>
+          <th style="background-color: #4CAF50; color: white;"> Total </th>
 
 
 					</thead>

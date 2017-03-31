@@ -6,6 +6,9 @@ include 'db.php';
 /* Database connection end */
 
 $no_faktur = stringdoang($_POST['no_faktur']);
+$detail = $db->query("SELECT kode_barang FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
+$datadetail = mysqli_num_rows($detail);
+$kode_barang = $datadetail['kode_barang'];
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
 
@@ -32,19 +35,19 @@ $columns = array(
 );
 
 // getting total number records without any search
-$sql =" SELECT kode_barang, nama_barang ";
-$sql.=" FROM detail_penjualan WHERE no_faktur = '$no_faktur'";
+$sql =" SELECT dp.id, dp.no_faktur, dp.kode_barang, dp.nama_barang, dp.jumlah_barang / sk.konversi AS jumlah_produk, dp.jumlah_barang, dp.satuan, dp.harga, dp.potongan, dp.subtotal, dp.tax, dp.sisa, sk.id_satuan, s.nama, sa.nama AS satuan_asal, SUM(hk.sisa_barang) AS sisa_barang ";
+$sql.=" FROM detail_penjualan dp LEFT JOIN satuan_konversi sk ON dp.satuan = sk.id_satuan LEFT JOIN satuan s ON dp.satuan = s.id LEFT JOIN satuan sa ON dp.asal_satuan = sa.id LEFT JOIN hpp_keluar hk ON dp.no_faktur = hk.no_faktur AND dp.kode_barang = hk.kode_barang WHERE dp.no_faktur = '$no_faktur'";
 
 $query = mysqli_query($conn, $sql) or die("eror 1");
 $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql =" SELECT kode_barang, nama_barang";
-$sql.=" FROM detail_penjualan WHERE no_faktur = '$no_faktur'";
+$sql =" SELECT dp.id, dp.no_faktur, dp.kode_barang, dp.nama_barang, dp.jumlah_barang / sk.konversi AS jumlah_produk, dp.jumlah_barang, dp.satuan, dp.harga, dp.potongan, dp.subtotal, dp.tax, dp.sisa, sk.id_satuan, s.nama, sa.nama AS satuan_asal, SUM(hk.sisa_barang) AS sisa_barang ";
+$sql.=" FROM detail_penjualan dp LEFT JOIN satuan_konversi sk ON dp.satuan = sk.id_satuan LEFT JOIN satuan s ON dp.satuan = s.id LEFT JOIN satuan sa ON dp.asal_satuan = sa.id LEFT JOIN hpp_keluar hk ON dp.no_faktur = hk.no_faktur AND dp.kode_barang = hk.kode_barang WHERE dp.no_faktur = '$no_faktur'";
 
-    $sql.=" AND (kode_barang LIKE '".$requestData['search']['value']."%'";  
-    $sql.=" OR nama_barang LIKE '".$requestData['search']['value']."%' )";
+    $sql.=" AND (dp.kode_barang LIKE '".$requestData['search']['value']."%'";  
+    $sql.=" OR dp.nama_barang LIKE '".$requestData['search']['value']."%' )";
 
 }
 
@@ -52,7 +55,7 @@ $sql.=" FROM detail_penjualan WHERE no_faktur = '$no_faktur'";
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
         
-$sql.=" ORDER BY kode_barang ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" ORDER BY dp.kode_barang ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 /* $requestData['order'][0]['column'] contains colmun index, $requestData['order'][0]['dir'] contains order such as asc/desc  */    
 $query=mysqli_query($conn, $sql) or die("eror 3");
@@ -62,34 +65,30 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array();
 
-$inner_join_detail = $db->query("SELECT dp.id, dp.no_faktur, dp.kode_barang, dp.nama_barang, dp.jumlah_barang / sk.konversi AS jumlah_produk, dp.jumlah_barang, dp.satuan, dp.harga, dp.potongan, dp.subtotal, dp.tax, dp.sisa, sk.id_satuan, s.nama, sa.nama AS satuan_asal, SUM(hk.sisa_barang) AS sisa_barang FROM detail_penjualan dp LEFT JOIN satuan_konversi sk ON dp.satuan = sk.id_satuan LEFT JOIN satuan s ON dp.satuan = s.id LEFT JOIN satuan sa ON dp.asal_satuan = sa.id LEFT JOIN hpp_keluar hk ON dp.no_faktur = hk.no_faktur AND dp.kode_barang = hk.kode_barang LEFT JOIN penjualan p ON dp.no_faktur = p.no_faktur WHERE dp.no_faktur = '$no_faktur' AND dp.kode_barang = '$row[kode_barang]' ");
 
-$data_inner = mysqli_fetch_array($inner_join_detail);
+          $nestedData[] = $row['no_faktur'];
+          $nestedData[] = $row['kode_barang'];
+          $nestedData[] = $row['nama_barang'];
 
-
-          $nestedData[] = $data_inner['no_faktur'];
-          $nestedData[] = $data_inner['kode_barang'];
-          $nestedData[] = $data_inner['nama_barang'];
-
-          if ($data_inner['jumlah_produk'] > 0) {
-            $nestedData[] = $data_inner['jumlah_produk'];
+          if ($row['jumlah_produk'] > 0) {
+            $nestedData[] = $row['jumlah_produk'];
           }
           else{
-            $nestedData[] = $data_inner['jumlah_barang'];
+            $nestedData[] = $row['jumlah_barang'];
           }
 
-          $nestedData[] = $data_inner['nama'];
-          $nestedData[] = rp($data_inner['harga']);
-          $nestedData[] = rp($data_inner['subtotal']);
-          $nestedData[] = rp($data_inner['potongan']);
-          $nestedData[] = rp($data_inner['tax']);
+          $nestedData[] = $row['nama'];
+          $nestedData[] = rp($row['harga']);
+          $nestedData[] = rp($row['subtotal']);
+          $nestedData[] = rp($row['potongan']);
+          $nestedData[] = rp($row['tax']);
 
         if ($_SESSION['otoritas'] == 'Pimpinan'){
 
-                $nestedData[] = rp($data_inner['hpp']);
+                $nestedData[] = rp($row['hpp']);
         }
 
-          $nestedData[] = $data_inner['sisa_barang'] ." ".$data_inner['satuan_asal'];
+          $nestedData[] = $row['sisa_barang'] ." ".$row['satuan_asal'];
 
   $data[] = $nestedData;
 }

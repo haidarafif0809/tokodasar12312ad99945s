@@ -68,7 +68,7 @@ $t_barang = $cek011['total_barang'];
 ?>
 
 <div class="container">
-<center><h3><b>Data Laporan Hutang Beredar</b></h3></center>
+<center><h3><b>Data Laporan Hutang BEREDAR</b></h3></center>
 <table id="tableuser" class="table table-bordered">
     <!--thead>
       <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
