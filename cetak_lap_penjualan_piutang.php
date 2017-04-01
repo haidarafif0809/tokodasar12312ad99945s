@@ -8,7 +8,7 @@ include 'db.php';
 
   $no_faktur = stringdoang($_GET['no_faktur']);
 
-    $select_penjualan = $db->query("SELECT p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.potongan,p.potongan_persen, pl.nama_pelanggan,pl.wilayah,da.nama_daftar_akun ,p.tunai FROM penjualan p INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan INNER JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun  WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
+    $select_penjualan = $db->query("SELECT p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.tanggal_jt,p.potongan,p.potongan_persen, pl.nama_pelanggan,pl.wilayah,da.nama_daftar_akun ,p.tunai FROM penjualan p INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan INNER JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun  WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
     $data0 = mysqli_fetch_array($select_penjualan);
 
     $potongan = $data0['potongan'];
@@ -32,6 +32,9 @@ include 'db.php';
 
     $ubah_tanggal = $data0['tanggal'];
     $tanggal = date('d F Y', strtotime($ubah_tanggal));
+
+    $ganti_tanggal = $data0['tanggal_jt'];
+    $tanggal_jt = date('d F Y', strtotime($ganti_tanggal));
 
 
  ?>
@@ -83,7 +86,8 @@ include 'db.php';
     <div class="col-sm-6">
       <table>
         <tbody>
-          <tr><td width="5%"><font class="satu"> Alamat</font></td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data0['wilayah'];?></td></tr>
+          <tr><td width="20%"><font class="satu"> Alamat</font></td> <td> :&nbsp;&nbsp;</td> <td><?php echo $data0['wilayah'];?></td></tr>
+          <tr><td width="20%"><font class="satu"> Tgl. Jatuh Tempo </font></td> <td> :&nbsp;&nbsp;</td> <td><?php echo $tanggal_jt;?></td></tr>
         </tbody>
       </table>
     </div> <!--end col-sm-2-->
@@ -135,7 +139,7 @@ include 'db.php';
             <td class='table1' align='center'>".$no_urut."</td>
             <td class='table1'>". $data5['nama_barang'] ."</td>
             <td class='table1' align='right'>". rp($data5['jumlah_barang']) ."</td>
-            <td class='table1' align='right'>". $data5['satuan'] ."</td>
+            <td class='table1'align='right'>". $data5['satuan'] ."</td>
             <td class='table1' align='right'>". rp($data5['harga']) ."</td>
             <td class='table1' align='right'>". rp($data5['subtotal']) ."</td>
             <tr>";
