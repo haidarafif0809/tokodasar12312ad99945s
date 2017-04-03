@@ -61,10 +61,12 @@ $total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
 
  <table id="tableuser" class="table table-bordered table-sm">
             <thead>
-      <th style="background-color: #4CAF50; color: white;"> Tanggal </th>
       <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
       <th style="background-color: #4CAF50; color: white;"> Nama Costumer</th>
       <th style="background-color: #4CAF50; color: white;"> Sales </th>
+      <th style="background-color: #4CAF50; color: white;"> Tgl. Transaksi </th>
+      <th style="background-color: #4CAF50; color: white;"> Tgl. Jatuh Tempo </th>
+      <th style="background-color: #4CAF50; color: white;"> Usia Piutang </th>
       <th style="background-color: #4CAF50; color: white;"> Nilai Faktur </th>
       <th style="background-color: #4CAF50; color: white;"> Dibayar </th>
       <th style="background-color: #4CAF50; color: white;"> Piutang </th>
@@ -74,7 +76,7 @@ $total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
             <tbody>
             <?php
 
-          $perintah009 = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.sales,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0 ORDER BY dp.tanggal DESC ");
+          $perintah009 = $db->query("SELECT dp.id,pel.nama_pelanggan,dp.tanggal,dp.tanggal_jt, DATEDIFF(dp.tanggal_jt,DATE(NOW())) AS usia_piutang ,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.sales,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp LEFT JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' AND dp.kredit != 0 ORDER BY dp.tanggal DESC ");
                   while ($data11 = mysqli_fetch_array($perintah009))
 
                   {
@@ -93,10 +95,12 @@ $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
 
 
                   echo "<tr>
-                  <td>". $data11['tanggal'] ."</td>
                   <td>". $data11['no_faktur'] ."</td>
                   <td>". $data11['nama_pelanggan'] ."</td>
                   <td>". $data11['sales'] ."</td>
+                  <td>". $data11['tanggal'] ."</td>
+                  <td>". $data11['tanggal_jt'] ."</td>
+                  <td  align='right' >". rp($data11['usia_piutang']) ." Hari</td>
                   <td  align='right' >". rp($data11['total']) ."</td>";
                   if ($num_rows > 0)
                   {
@@ -117,6 +121,8 @@ $tot_bayar = $kel_bayar['total_bayar'] + $Dp;
       <td><p style='color:red'> - </p></td>
       <td><p style='color:red'> - </p></td>
       <td><p style='color:red'> - </p></td>
+      <td><p style='color:red'> - </p></td>
+      <td><p style='color:red' align='right'> - </p></td>
       <td><p style='color:red' align='right' > ".rp($total_akhir)." </p></td>
       <td><p style='color:red' align='right' > ".rp($total_bayar)." </p></td>
       <td><p style='color:red' align='right' > ".rp($total_kredit)." </p></td>";              

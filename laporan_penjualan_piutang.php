@@ -60,7 +60,7 @@ include 'db.php';
 <form class="form-inline" role="form">
 				
 			<div class="form-group"> 
- 				<select name="kode_pelanggan" id="kd_pelanggan" class="form-control" required="" >
+ 				<select name="kode_pelanggan" id="kd_pelanggan" class="form-control chosen" required="" >
               <option value='semua' >Semua Konsumen</option>
 				  <?php 
 				    
@@ -88,7 +88,7 @@ include 'db.php';
    				 </select>
 			</div>
 <div class="form-group"> 
-<select style="font-size:15px; height:35px" name="sales" id="sales" class="form-control" required="">
+<select style="font-size:15px; height:35px" name="sales" id="sales" class="form-control chosen" required="">
               <option value='semua' >Semua Sales</option>
   <?php 
     
@@ -137,11 +137,13 @@ include 'db.php';
  <div class="table-responsive" id="respon" ><!--membuat agar ada garis pada tabel disetiap kolom-->
 <table id="tableuser" class="table table-bordered table-sm">
 		<thead>
-			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 			<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
 			<th style="background-color: #4CAF50; color: white;"> Nama Konsumen</th>
 			<th style="background-color: #4CAF50; color: white;"> Sales </th>
-			<th style="background-color: #4CAF50; color: white;"> Nilai Faktur </th>
+      <th style="background-color: #4CAF50; color: white;"> Tgl. Transaksi</th>
+      <th style="background-color: #4CAF50; color: white;"> Tgl. Jatuh Tempo</th>
+      <th style="background-color: #4CAF50; color: white;"> Umur Piutang </th>
+      <th style="background-color: #4CAF50; color: white;"> Nilai Faktur </th>
 			<th style="background-color: #4CAF50; color: white;"> Dibayar </th>
 			<th style="background-color: #4CAF50; color: white;"> Piutang </th>
 						
@@ -275,9 +277,7 @@ include 'db.php';
 
 
 
-      <script type="text/javascript">
-      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});   
-      </script>
+     
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -285,6 +285,8 @@ $(document).ready(function(){
 
     $("#per_konsumen").click(function(){    
 
+    $("#kd_pelanggan").chosen("destroy");
+    $("#sales").chosen("destroy");
     $("#rekap_konsumen").show();
     $("#rekap_non_konsumen").hide();
     $("#respon").hide();
@@ -292,6 +294,9 @@ $(document).ready(function(){
     $("#btn-download-non").hide();
     $("#cetak_true").hide();
     $("#btn-download-true").hide();
+
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!",search_contains:true});   
+
 
     });
 

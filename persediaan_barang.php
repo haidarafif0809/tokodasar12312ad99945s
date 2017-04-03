@@ -531,7 +531,7 @@ $total_akhir_hpp = $total_akhir_hpp + $total_hpp;
 
                                             <td class='edit-jual-3' data-id-3='".$data1['id']."'><span id='text-jual-3-".$data1['id']."'>". rp($data1['harga_jual3']) ."</span> <input type='hidden' id='input-jual-3-".$data1['id']."' value='".$data1['harga_jual3']."' class='input_jual_3' data-id-3='".$data1['id']."' autofocus=''></td>";
 
-            echo "<td>". $total_hpp ."</td>";
+            echo "<td align='right'>". rp($total_hpp) ."</td>";
 
             
 
