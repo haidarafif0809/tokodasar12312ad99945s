@@ -139,7 +139,6 @@ include 'db.php';
                    else{
                    
                    $query_konversi = $db->query("SELECT konversi FROM satuan_konversi WHERE kode_produk = '$data5[kode_barang]' AND id_satuan = '$data5[id_satuan]'");
-                   echo "SELECT konversi FROM satuan_konversi WHERE kode_produk = '$data5[kode_barang]' AND id_satuan = '$data5[satuan]'";
                    $data_konversi = mysqli_fetch_array($query_konversi);
                    
                    $jumlah_produk = $data5['jumlah_barang'] / $data_konversi['konversi'];
