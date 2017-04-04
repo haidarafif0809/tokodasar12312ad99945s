@@ -11,17 +11,6 @@ include 'db.php';
     $query0 = $db->query("SELECT s.nama,p.id,p.no_faktur,p.total,p.kode_pelanggan,p.keterangan,p.cara_bayar,p.tanggal,p.tanggal_jt,p.jam,p.user,p.sales,p.kode_meja,p.status,p.potongan,p.tax,p.sisa,p.kredit,p.kode_gudang,p.tunai,pl.nama_pelanggan,pl.wilayah,dp.satuan,dp.jumlah_barang,dp.subtotal,dp.nama_barang,dp.harga, dp.asal_satuan, dp.kode_barang, da.nama_daftar_akun FROM penjualan p INNER JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan INNER JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun INNER JOIN satuan s ON dp.satuan = s.id WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
      $data_inner = mysqli_fetch_array($query0);
 
-     if ($data_inner['satuan'] == $data_inner['asal_satuan']) {
-      $jumlah_produk = $data_inner['jumlah_barang'];
-     }
-     else{
-
-      $query_konversi = $db->query("SELECT konversi FROM satuan_konversi WHERE kode_produk = '$data_inner[kode_barang]' AND id_satuan = '$data_inner[satuan]'");
-      $data_konversi = mysqli_fetch_array($query_konversi);
-
-      $jumlah_produk = $data_inner['jumlah_barang'] / $data_konversi['konversi'];
-
-     }
 
 
     $query1 = $db->query("SELECT * FROM perusahaan ");
@@ -129,10 +118,22 @@ include 'db.php';
 
         $no_urut = 0;
 
-            $query5 = $db->query("SELECT kode_barang, nama_barang, jumlah_barang FROM detail_penjualan WHERE no_faktur = '$no_faktur' ");
+            $query5 = $db->query("SELECT nama_barang, jumlah_barang, harga, kode_barang, satuan AS id_satuan, asal_satuan, subtotal,satuan.nama AS satuan FROM detail_penjualan INNER JOIN satuan ON detail_penjualan.satuan = satuan.id WHERE no_faktur = '$no_faktur' ");
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
+
+                   if ($data5['id_satuan'] == $data5['asal_satuan']) {
+                   $jumlah_produk = $data5['jumlah_barang'];
+                   }
+                   else{
+                   
+                   $query_konversi = $db->query("SELECT konversi FROM satuan_konversi WHERE kode_produk = '$data5[kode_barang]' AND id_satuan = '$data5[id_satuan]'");
+                   $data_konversi = mysqli_fetch_array($query_konversi);
+                   
+                   $jumlah_produk = $data5['jumlah_barang'] / $data_konversi['konversi'];
+                   
+                   }
 
               $no_urut ++;
               $kode = $db->query("SELECT satuan FROM barang WHERE kode_barang = '$data5[kode_barang]' ");
@@ -143,7 +144,7 @@ include 'db.php';
             <td class='table1' align='center'>".$no_urut."</td>
             <td class='table1'>". $data5['nama_barang'] ."</td>
             <td class='table1' align='right'>". rp($jumlah_produk) ."</td>
-            <td class='table1'>". $data_inner['nama'] ."</td>
+            <td class='table1'>". $data5['satuan'] ."</td>
             <td class='table1'> </td>
             <tr>";
 
