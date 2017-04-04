@@ -61,7 +61,7 @@ include 'db.php';
   <tbody>
 
       <tr><td><font class="satu">No Invoice</font></td> <td>:</td> <td><font class="satu"><?php echo $data_inner['no_faktur']; ?></font> </tr>
-      <tr><td ><font class="satu">Dikirim ke</font></td> <td>:</td> <td><font class="satu"> <?php echo $data_inner['keterangan']; ?> </font></td></tr>      
+      <tr><td ><font class="satu">Dikirim ke</font></td> <td>:</td> <td><font class="satu"> <?php echo $data_inner['wilayah']; ?> </font></td></tr>      
       <tr><td><font class="satu"> <br> Kepada Yth</td> <td> <br> :&nbsp;&nbsp;</td> <td> <br> <?php echo $data_inner['nama_pelanggan']; ?> </td></tr> 
       
 
