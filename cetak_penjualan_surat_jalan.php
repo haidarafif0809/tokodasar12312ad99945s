@@ -88,16 +88,30 @@ include 'db.php';
 </table>
 
 
+<!--STYLE UNTUK TABLE -->
+    <style type="text/css">
+      th,td{
+        padding: 1px;
+      }
+
+
+    .table1, .th, .td {
+        border: 1px solid black;
+        font-size: 15px;
+        font: verdana;
+    }
+    </style>
+
+
 <br>
-<table id="tableuser" class="table table-bordered table-sm">
+<table id="tableuser" class="table1">
         <thead>
-            <th class="table" style="width: 3%"> <center> No. </center> </th>
-            <th class="table" style="width: 50%"> <center> Nama Barang </center> </th>
-            <th class="table" style="width: 5%"> <center> Jumlah </center> </th>
-            <th class="table" style="width: 5%"> <center> Satuan </center> </th>
-            <th class="table" style="width: 15%"> <center> Keterangan </center> </th>
-        
-            
+            <th class="table1" style="width: 5%"> <center> No. </center> </th>
+            <th class="table1" style="width: 65%"> <center> Nama Barang </center> </th>
+            <th class="table1" style="width: 5%"> <center> Jumlah </center> </th>
+            <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
+            <th class="table1" style="width: 10%"> <center> Keterangan </center> </th>
+                    
         </thead>
         <tbody>
         <?php
@@ -115,11 +129,11 @@ include 'db.php';
               $satuan = $satuan_b['satuan'];
 
             echo "<tr>
-            <td align='center'>".$no_urut."</td>
-            <td>". $data5['nama_barang'] ."</td>
-            <td align='right'>". rp($data5['jumlah_barang']) ."</td>
-            <td>". $data_inner['nama'] ."</td>
-            <td> </td>
+            <td class='table1' align='center'>".$no_urut."</td>
+            <td class='table1'>". $data5['nama_barang'] ."</td>
+            <td class='table1' align='right'>". rp($data5['jumlah_barang']) ."</td>
+            <td class='table1'>". $data_inner['nama'] ."</td>
+            <td class='table1'> </td>
             <tr>";
 
             }
@@ -133,11 +147,6 @@ mysqli_close($db);
 
     </table>
 
-<style type="text/css">
-  .garis_bawah {
-     border-bottom: 1px solid black;
-}
-</style>
 
 </style>
 
