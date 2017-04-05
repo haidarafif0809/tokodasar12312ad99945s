@@ -36,9 +36,9 @@ $tot_akhir = $cek02['tot_akhir'];
 
 ?>
 
-<div class="container">
-                 <h3> <b> LAPORAN PENJUALAN DETAIL </b></h3>
-<table id="table_lap_penjualan_detail" class="table table-bordered table-sm">
+
+ <h3> <b> LAPORAN PENJUALAN DETAIL </b></h3>
+<table border="1">
           <thead>
           <th > Nomor Faktur </th>
           <th > Kode Barang </th>
@@ -57,17 +57,17 @@ $tot_akhir = $cek02['tot_akhir'];
           <tbody>
            <?php
 
-if ($kategori == 'semua')
-{
-  $perintah1 = $db->query("SELECT dp.tanggal,s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ORDER BY dp.no_faktur DESC ");
-}
-else
-{
+  if ($kategori == 'semua')
+  {
+    $perintah1 = $db->query("SELECT dp.tanggal,s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' ORDER BY dp.no_faktur DESC ");
+  }
+  else
+  {
 
-  $perintah1 = $db->query("SELECT dp.tanggal,s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id LEFT JOIN barang br ON dp.kode_barang = br.kode_barang WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'  AND br.kategori = '$kategori' ORDER BY dp.no_faktur DESC ");
+    $perintah1 = $db->query("SELECT dp.tanggal,s.nama,dp.no_faktur,dp.kode_barang,dp.nama_barang,dp.jumlah_barang,dp.satuan,dp.harga,dp.subtotal,dp.potongan,dp.tax,dp.hpp,dp.sisa FROM detail_penjualan dp LEFT JOIN satuan s ON dp.satuan = s.id LEFT JOIN barang br ON dp.kode_barang = br.kode_barang WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'  AND br.kategori = '$kategori' ORDER BY dp.no_faktur DESC ");
 
-}
-              while( $row=mysqli_fetch_array($perintah1) ) {  // preparing an array
+  }
+    while( $row=mysqli_fetch_array($perintah1) ) {  // preparing an array
 
     $pilih_konversi = $db->query("SELECT $row[jumlah_barang] / sk.konversi AS jumlah_konversi, sk.harga_pokok / sk.konversi AS harga_konversi, sk.id_satuan, b.satuan,sk.konversi FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$row[satuan]' AND sk.kode_produk = '$row[kode_barang]'");
                 $data_konversi = mysqli_fetch_array($pilih_konversi);
@@ -138,7 +138,3 @@ echo "<tr>";
 
       </table>
 
-</div>
-</div>
-
-     </div>

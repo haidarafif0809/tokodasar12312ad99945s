@@ -235,35 +235,34 @@ nama_gudang FROM gudang");
 
 
 <!-- Modal Hapus data -->
-<div id="modal_hapus" class="modal fade" role="dialog">
+<div id="modal_usia_plafon" class="modal " role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Konfirmsi Hapus Data Tbs Penjualan</h4>
+        <h4 class="modal-title">Penjualan Yang Sudah Melewati Batas Usia Plafon</h4>
       </div>
       <div class="modal-body">
-   <p>Apakah Anda yakin Ingin Menghapus Data ini ?</p>
-   <form >
-    <div class="form-group">
-     <input type="text" id="nama-barang" class="form-control" readonly=""> 
-     <input type="hidden" id="id_hapus" class="form-control" >
-     <input type="hidden" id="kode_hapus" class="form-control" >
-    </div>
-   
-   </form>
-   
-  <div class="alert alert-success" style="display:none">
-   <strong>Berhasil!</strong> Data berhasil Di Hapus
-  </div>
+            <table class="table table-bordered" id="table-jatuh-tempo">
+              <thead>
+                <th>Tanggal</th>
+                <th>No Faktur</th>
+                <th>Total</th>
+                <th>Sisa Piutang</th>
+                <th>Jatuh Tempo</th>
+              </thead>
+              <tbody id="tbody-jatuh-tempo"> 
+                
+              </tbody>
+            </table>
+
  
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-info" id="btn_jadi_hapus"> <span class='glyphicon glyphicon-ok-sign'> </span> Ya</button>
-        <button type="button" class="btn btn-warning" data-dismiss="modal"> <span class='glyphicon glyphicon-remove-sign'> </span>Batal</button>
+        <button type="button" class="btn btn-warning" data-dismiss="modal"> <span class='glyphicon glyphicon-remove-sign'> </span>Tutup</button>
       </div>
     </div>
 
@@ -1327,7 +1326,6 @@ $("#kode_barang").focus();
         var sisa_kredit = total - pembayaran;
 
 
-     $("#total1").val('');
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
@@ -1338,6 +1336,7 @@ $("#kode_barang").focus();
  {
 
   alert("Jumlah Pembayaran Tidak Mencukupi");
+
 
  }
 
@@ -1471,7 +1470,6 @@ alert("Silakan Bayar Piutang");
         var sisa_kredit = total - pembayaran;
 
 
-     $("#total1").val('');
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
@@ -1658,11 +1656,30 @@ alert("Silakan Bayar Piutang");
   if (data == 1) {
 
   //Cek Flafon sesuai dengan kode pelanggan / ID Pelanggannya
-   $.post("cek_flafon.php",{kredit:kredit,kode_pelanggan:kode_pelanggan},function(data) {
+  $.getJSON("cek_flafon.php",{kredit:kredit,kode_pelanggan:kode_pelanggan},function(data) {
 
-    if(data == 1)
+    if(data.status == 2)
     {
-      alert("Anda Tidak Bisa Melakukan Transaksi Piutang, sisa plafon : "+sisa_piutang);
+      alert("Anda Tidak Bisa Melakukan Transaksi Piutang, sisa plafon : "+sisa_piutang+" dan Ada penjualan yang sudah melewat batas usia plafon");
+
+      $("#tbody-jatuh-tempo").find("tr").remove();
+
+       $.each(data.data_penjualan, function(i, item) {
+
+     
+        var tr_penjualan_lewat_usia_plafon = "<tr><td>"+ data.data_penjualan[i].tanggal+"</td><td>"+ data.data_penjualan[i].no_faktur+"</td><td>"+ data.data_penjualan[i].total+"</td><td>"+ data.data_penjualan[i].kredit+"</td><td>"+ data.data_penjualan[i].tanggal_jt+"</td></tr>"
+
+         $("#tbody-jatuh-tempo").prepend(tr_penjualan_lewat_usia_plafon);
+
+       });
+
+       $("#table-jatuh-tempo").DataTable();
+
+      $("#modal_usia_plafon").modal('show');
+
+    }
+    else if(data.status == 1){
+         alert("Anda Tidak Bisa Melakukan Transaksi Piutang, sisa plafon : "+sisa_piutang+" ");
     }
     else
     {
@@ -1812,8 +1829,8 @@ $("#cari_produk_penjualan").click(function(){
             var t_tax = ((parseInt(total_kurang_potongan,10) * parseInt(tax,10)) / 100);
             var total_akhir = parseInt(total_kurang_potongan, 10) + parseInt(t_tax,10);
 
-            $("#total1").val(tandaPemisahTitik(parseInt(total_akhir)));
-            $("#potongan_penjualan").val(tandaPemisahTitik(parseInt(total_potongan_nominal)));
+            $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));
+            $("#potongan_penjualan").val(tandaPemisahTitik(Math.round(total_potongan_nominal)));
         } 
         else {
 
@@ -1829,8 +1846,8 @@ $("#cari_produk_penjualan").click(function(){
               }
               else {
 
-                  $("#total1").val(tandaPemisahTitik(parseInt(total_akhir)));
-                  $("#potongan_penjualan").val(tandaPemisahTitik(parseInt(potongan_nominal)));
+                  $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));
+                  $("#potongan_penjualan").val(tandaPemisahTitik(Math.round(potongan_nominal)));
               }
             
         }
@@ -1855,8 +1872,8 @@ $("#cari_produk_penjualan").click(function(){
              var hasil_akhir = parseInt(sisa_potongan, 10) + parseInt(t_tax,10);
 
         
-        $("#total1").val(tandaPemisahTitik(parseInt(hasil_akhir)));
-        $("#potongan_persen").val(parseInt(potongan_persen));
+        $("#total1").val(tandaPemisahTitik(Math.round(hasil_akhir)));
+        $("#potongan_persen").val(Math.round(potongan_persen));
 
       }); // end  $("#potongan_penjualan").keyup(function(){
         
@@ -1885,7 +1902,7 @@ $("#cari_produk_penjualan").click(function(){
               var total_akhir = parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(t_total,10))))) + Math.round(parseInt(t_tax,10));
               
               
-              $("#total1").val(tandaPemisahTitik(total_akhir));
+              $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));
 
               if (tax > 100) {
                 alert ('Jumlah Tax Tidak Boleh Lebih Dari 100%');
@@ -1894,7 +1911,7 @@ $("#cari_produk_penjualan").click(function(){
               }
         
 
-        $("#tax_rp").val(parseInt(t_tax));
+        $("#tax_rp").val(tandaPemisahTitik(Math.round(t_tax)));
 
 
         });

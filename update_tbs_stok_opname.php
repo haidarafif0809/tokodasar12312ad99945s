@@ -55,7 +55,7 @@ $selisih_fisik = angkadoang($_POST['selisih_fisik']);
 $query = $db->prepare("UPDATE tbs_stok_opname SET fisik = ?, selisih_harga = ?, selisih_fisik = ?, hpp = ? WHERE id = ?");
 
 $query->bind_param("iiiii",
-	 $jumlah_baru, $selisih_harga, $selisih_fisik, $jumlah_hpp, $id);
+     $jumlah_baru, $selisih_harga, $selisih_fisik, $jumlah_hpp, $id);
 
 $query->execute();
 

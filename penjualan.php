@@ -654,11 +654,38 @@ mysqli_close($db);  */
 		var kode_meja = $("#kode_meja").val();
 		
 		
-		$(".tr-id-"+id).remove();
-		$("#modal_hapus").modal('hide');
-		$.post("hapus_data_penjualan.php",{id:id,no_faktur:no_faktur,kode_meja:kode_meja},function(data){
 
-		
+		$.post("hapus_data_penjualan.php",{id:id,no_faktur:no_faktur,kode_meja:kode_meja},function(data){
+    
+    $("#modal_hapus").modal('hide');
+    $('#table_penjualan').DataTable().destroy();
+            var dataTable = $('#table_penjualan').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ordering": false,
+          "ajax":{
+            url :"datatable_penjualan.php", // json datasource
+               "data": function ( d ) {
+                  d.status = $("#status").val();
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+                  type: "post",   // method  , by default get
+            error: function(){  // error handling
+              $(".tbody").html("");
+
+             $("#table_penjualan").append('<tbody class="tbody"><tr><th colspan="3">Tidak Ada Data Yang Ditemukan</th></tr></tbody>');
+
+              $("#table_penjualan_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[21]+'');
+            },
+
+        } );
+
 		});
 		
 		
