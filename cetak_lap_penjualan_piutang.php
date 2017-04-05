@@ -128,17 +128,29 @@ include 'db.php';
 
         $no_urut = 0;
 
-            $query5 = $db->query("SELECT nama_barang, jumlah_barang, harga, subtotal,satuan.nama AS satuan FROM detail_penjualan INNER JOIN satuan ON detail_penjualan.satuan = satuan.id WHERE no_faktur = '$no_faktur' ");
+            $query5 = $db->query("SELECT nama_barang, jumlah_barang, harga,  kode_barang,  asal_satuan, satuan AS id_satuan,  subtotal,satuan.nama AS satuan FROM detail_penjualan INNER JOIN satuan ON detail_penjualan.satuan = satuan.id WHERE no_faktur = '$no_faktur' ");
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
+
+                   if ($data5['id_satuan'] == $data5['asal_satuan']) {
+                   $jumlah_produk = $data5['jumlah_barang'];
+                   }
+                   else{
+                   
+                   $query_konversi = $db->query("SELECT konversi FROM satuan_konversi WHERE kode_produk = '$data5[kode_barang]' AND id_satuan = '$data5[id_satuan]'");
+                   $data_konversi = mysqli_fetch_array($query_konversi);
+                   
+                   $jumlah_produk = $data5['jumlah_barang'] / $data_konversi['konversi'];
+                   
+                   }
 
               $no_urut ++;
 
             echo "<tr>
             <td class='table1' align='center'>".$no_urut."</td>
             <td class='table1'>". $data5['nama_barang'] ."</td>
-            <td class='table1' align='right'>". rp($data5['jumlah_barang']) ."</td>
+            <td class='table1' align='right'>". rp($jumlah_produk) ."</td>
             <td class='table1'align='right'>". $data5['satuan'] ."</td>
             <td class='table1' align='right'>". rp($data5['harga']) ."</td>
             <td class='table1' align='right'>". rp($data5['subtotal']) ."</td>

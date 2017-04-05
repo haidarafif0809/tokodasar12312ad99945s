@@ -1326,7 +1326,6 @@ $("#kode_barang").focus();
         var sisa_kredit = total - pembayaran;
 
 
-     $("#total1").val('');
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
@@ -1337,6 +1336,7 @@ $("#kode_barang").focus();
  {
 
   alert("Jumlah Pembayaran Tidak Mencukupi");
+
 
  }
 
@@ -1470,7 +1470,6 @@ alert("Silakan Bayar Piutang");
         var sisa_kredit = total - pembayaran;
 
 
-     $("#total1").val('');
      $("#pembayaran_penjualan").val('');
      $("#sisa_pembayaran_penjualan").val('');
      $("#kredit").val('');
@@ -1830,8 +1829,8 @@ $("#cari_produk_penjualan").click(function(){
             var t_tax = ((parseInt(total_kurang_potongan,10) * parseInt(tax,10)) / 100);
             var total_akhir = parseInt(total_kurang_potongan, 10) + parseInt(t_tax,10);
 
-            $("#total1").val(tandaPemisahTitik(parseInt(total_akhir)));
-            $("#potongan_penjualan").val(tandaPemisahTitik(parseInt(total_potongan_nominal)));
+            $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));
+            $("#potongan_penjualan").val(tandaPemisahTitik(Math.round(total_potongan_nominal)));
         } 
         else {
 
@@ -1847,8 +1846,8 @@ $("#cari_produk_penjualan").click(function(){
               }
               else {
 
-                  $("#total1").val(tandaPemisahTitik(parseInt(total_akhir)));
-                  $("#potongan_penjualan").val(tandaPemisahTitik(parseInt(potongan_nominal)));
+                  $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));
+                  $("#potongan_penjualan").val(tandaPemisahTitik(Math.round(potongan_nominal)));
               }
             
         }
@@ -1873,8 +1872,8 @@ $("#cari_produk_penjualan").click(function(){
              var hasil_akhir = parseInt(sisa_potongan, 10) + parseInt(t_tax,10);
 
         
-        $("#total1").val(tandaPemisahTitik(parseInt(hasil_akhir)));
-        $("#potongan_persen").val(parseInt(potongan_persen));
+        $("#total1").val(tandaPemisahTitik(Math.round(hasil_akhir)));
+        $("#potongan_persen").val(Math.round(potongan_persen));
 
       }); // end  $("#potongan_penjualan").keyup(function(){
         
@@ -1903,7 +1902,7 @@ $("#cari_produk_penjualan").click(function(){
               var total_akhir = parseInt(bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah(t_total,10))))) + Math.round(parseInt(t_tax,10));
               
               
-              $("#total1").val(tandaPemisahTitik(total_akhir));
+              $("#total1").val(tandaPemisahTitik(Math.round(total_akhir)));
 
               if (tax > 100) {
                 alert ('Jumlah Tax Tidak Boleh Lebih Dari 100%');
@@ -1912,7 +1911,7 @@ $("#cari_produk_penjualan").click(function(){
               }
         
 
-        $("#tax_rp").val(parseInt(t_tax));
+        $("#tax_rp").val(tandaPemisahTitik(Math.round(t_tax)));
 
 
         });

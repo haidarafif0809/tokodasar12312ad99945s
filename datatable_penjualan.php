@@ -159,7 +159,15 @@ else{
 
 
 if ($row['status'] == 'Piutang') {
-	$nestedData[] = "<a href='cetak_lap_penjualan_piutang.php?no_faktur=".$row['no_faktur']."' id='cetak_piutang' class='btn btn-warning' target='blank'>Cetak Piutang</a>";
+		$nestedData[] ="<div class='dropdown'>
+				<button class='btn btn-warning dropdown-toggle' type='button' data-toggle='dropdown' style='width:150px'> Cetak Piutang <span class='caret'></span></button>
+				
+				<ul class='dropdown-menu'>
+				<li><a href='cetak_lap_penjualan_piutang.php?no_faktur=".$row['no_faktur']."' target='blank'> Cetak Piutang </a></li> 
+				<li><a href='cetak_penjualan_surat_jalan.php?no_faktur=".$row['no_faktur']."' target='blank'> Cetak Surat Jalan </a></li>
+				</ul>
+				</div>";
+
 }
 
 else{
