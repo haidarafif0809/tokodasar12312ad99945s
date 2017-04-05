@@ -117,7 +117,7 @@ include 'db.php';
             <th class="table1" style="width: 5%"> <center> No. </center> </th>
             <th class="table1" style="width: 65%"> <center> Nama Barang </center> </th>
             <th class="table1" style="width: 5%"> <center> Jumlah </center> </th>
-            <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
+            <th class="table1" style="width: 10%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 10%"> <center> Harga Satuan </center> </th>
             <th class="table1" style="width: 10%"> <center> Harga Jual </center> </th>        
             
@@ -133,27 +133,37 @@ include 'db.php';
             while ($data5 = mysqli_fetch_array($query5))
             {
 
-                   if ($data5['id_satuan'] == $data5['asal_satuan']) {
-                   $jumlah_produk = $data5['jumlah_barang'];
-                   }
-                   else{
-                   
-                   $query_konversi = $db->query("SELECT konversi FROM satuan_konversi WHERE kode_produk = '$data5[kode_barang]' AND id_satuan = '$data5[id_satuan]'");
-                   echo "SELECT konversi FROM satuan_konversi WHERE kode_produk = '$data5[kode_barang]' AND id_satuan = '$data5[satuan]'";
-                   $data_konversi = mysqli_fetch_array($query_konversi);
-                   
-                   $jumlah_produk = $data5['jumlah_barang'] / $data_konversi['konversi'];
-                   
-                   }
+               $pilih_konversi = $db->query("SELECT $data5[jumlah_barang] / sk.konversi AS jumlah_konversi, sk.harga_pokok / sk.konversi AS harga_konversi, sk.id_satuan, b.satuan,sk.konversi FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$data5[id_satuan]' AND sk.kode_produk = '$data5[kode_barang]'");
+                $data_konversi = mysqli_fetch_array($pilih_konversi);
+
+            $query900 = $db->query("SELECT nama FROM satuan WHERE id = '$data_konversi[satuan]'");
+            $cek011 = mysqli_fetch_array($query900);
+
+
+                if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") 
+                {             
+                   $jumlah_barang = $data_konversi['jumlah_konversi'];
+                   $konver = $jumlah_barang * $data_konversi['konversi'];
+                }
+                else{
+                  $jumlah_barang = $data5['jumlah_barang'];
+                  $konver = "";
+                }
+
 
               $no_urut ++;
 
             echo "<tr>
             <td class='table1' align='center'>".$no_urut."</td>
             <td class='table1'>". $data5['nama_barang'] ."</td>
-            <td class='table1' align='right'>". rp($jumlah_produk) ."</td>
-            <td class='table1'align='right'>". $data5['satuan'] ."</td>
-            <td class='table1' align='right'>". rp($data5['harga']) ."</td>
+            <td class='table1' align='right'>". rp($jumlah_barang) ."</td>";
+            if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") {                
+            echo "<td class='table1' align='right'>". $data5['satuan'] ." ( ".$konver." ".$cek011['nama']." ) </td>";
+            }
+            else{
+              echo "<td class='table1' align='right'>". $data5['satuan'] ."</td>";
+            }
+            echo "<td class='table1' align='right'>". rp($data5['harga']) ."</td>
             <td class='table1' align='right'>". rp($data5['subtotal']) ."</td>
             <tr>";
 
