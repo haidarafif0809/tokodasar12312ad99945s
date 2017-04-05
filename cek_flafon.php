@@ -18,8 +18,6 @@ $plafon_usia = $data_plafon['flafon_usia'];
 
  $status_boleh_jual = 0;
 
-
-
  	// untuk menentukan apakah pelanggan ini memakai sistem plafon nominal atau tidak
 	if ($plafon == '' OR $plafon == 0) {
 		# code...
@@ -38,7 +36,7 @@ $plafon_usia = $data_plafon['flafon_usia'];
 	}
 	else {
 
-		$query_piutang = $db->query("SELECT no_faktur,total,kredit,tanggal,tanggal_jt FROM `penjualan` WHERE status = 'Piutang' AND kode_pelanggan = '$kode_pelanggan' HAVING DATEDIFF(DATE(NOW()),tanggal_jt) > '$plafon_usia'  ");
+		$query_piutang = $db->query("SELECT no_faktur,total,kredit,tanggal,tanggal_jt FROM `penjualan` WHERE status = 'Piutang' AND kode_pelanggan = '$kode_pelanggan' HAVING DATEDIFF(DATE(NOW()),tanggal) > '$plafon_usia'  ");
 
 		 $jumlah_piutang_lewat_usia_plafon = mysqli_num_rows($query_piutang);
 
