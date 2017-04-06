@@ -11,9 +11,7 @@ include 'db.php';
     $select_penjualan = $db->query("SELECT p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.potongan,p.potongan_persen, pl.nama_pelanggan,pl.wilayah,da.nama_daftar_akun FROM penjualan p INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan INNER JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun  WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
     $data0 = mysqli_fetch_array($select_penjualan);
 
-    $potongan = $data0['potongan'];
-
-    $select_perusahaan = $db->query("SELECT * FROM perusahaan ");
+    $select_perusahaan = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
     $data_perusahaan = mysqli_fetch_array($select_perusahaan);
 
     $select_sum = $db->query("SELECT  SUM(subtotal) as sub_total FROM detail_penjualan WHERE no_faktur = '$no_faktur'");
