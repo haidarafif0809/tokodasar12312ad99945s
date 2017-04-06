@@ -888,15 +888,15 @@ if (kode_barang != '')
       var jumlah_barang = $("#jumlah_barang").val();
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
+      var ber_stok = $("#ber_stok").val();
       var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
       
-
-
+      
+        if (ber_stok != 'Jasa'){
       $.post("cek_stok_konversi_penjualan.php", {jumlah_barang:jumlah_barang,satuan_konversi:satuan_konversi,kode_barang:kode_barang,id_produk:id_produk},function(data){
 
-      
 
           if (data < 0) {
             alert("Jumlah Melebihi Stok");
@@ -904,8 +904,8 @@ if (kode_barang != '')
           $("#satuan_konversi").val(prev);
 
           }
-
       });
+    }//if (ber_stok != 'Jasa'){
     });
   });
 </script>
@@ -918,13 +918,16 @@ if (kode_barang != '')
       var jumlah_barang = $("#jumlah_barang").val();
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
+      var ber_stok = $("#ber_stok").val();
       var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
 
+      if (ber_stok != 'Jasa'){
       $.post("cek_stok_konversi_penjualan.php",
         {jumlah_barang:jumlah_barang,satuan_konversi:satuan_konversi,kode_barang:kode_barang,
         id_produk:id_produk},function(data){
+
 
           if (data < 0) {
             alert("Jumlah Melebihi Stok");
@@ -932,8 +935,10 @@ if (kode_barang != '')
           $("#satuan_konversi").val(prev);
 
           }
+    
 
       });
+}//if (ber_stok != 'Jasa'){
     });
   });
 </script>
@@ -1094,7 +1099,7 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
     var ppn = $("#ppn").val();
     var stok = parseInt(jumlahbarang,10) - parseInt(jumlah_barang,10);
 
-   var subtotal = parseInt(jumlah_barang, 10) *  parseInt(harga, 10) - parseInt(potongan, 10);
+   var subtotal = parseInt(jumlah_barang, 10) *  parseInt(harga_baru, 10) - parseInt(potongan, 10);
 
    //end data produk
    // data per faktur 
@@ -2253,7 +2258,7 @@ $(function() {
 
        
        
-          $.post("cek_barang_penjualan.php",{kode_barang: kode_barang}, function(data){
+          $.post("cek_barang_penjualan.php",{kode_barang:kode_barang}, function(data){
           $("#jumlahbarang").val(data);
           });
 

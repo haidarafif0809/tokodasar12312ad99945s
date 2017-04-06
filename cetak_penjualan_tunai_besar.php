@@ -150,9 +150,14 @@ include 'db.php';
             echo "<tr>
             <td class='table1' align='center'>".$no_urut."</td>
             <td class='table1'>". $data5['nama_barang'] ."</td>
-            <td class='table1' align='right'>". rp($jumlah_barang) ."</td>
-            <td class='table1' align='right'>". $data5['satuan'] ." ( ".$konver." ".$cek011['nama']." ) </td>
-            <td class='table1' align='right'>". rp($data5['harga']) ."</td>
+            <td class='table1' align='right'>". rp($jumlah_barang) ."</td>";
+             if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") {                
+            echo "<td class='table1' align='right'>". $data5['satuan'] ." ( ".$konver." ".$cek011['nama']." ) </td>";
+            }
+            else{
+              echo "<td class='table1' align='right'>". $data5['satuan'] ."</td>";
+            }
+           echo "<td class='table1' align='right'>". rp($data5['harga']) ."</td>
             <td class='table1' align='right'>". rp($data5['subtotal']) ."</td>
             <tr>";
 
