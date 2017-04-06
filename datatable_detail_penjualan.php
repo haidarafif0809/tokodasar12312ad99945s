@@ -62,7 +62,11 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
   $nestedData=array();
 
-$inner_join_detail = $db->query("SELECT dp.id, dp.no_faktur, dp.kode_barang, dp.nama_barang, dp.jumlah_barang / sk.konversi AS jumlah_produk, dp.jumlah_barang, dp.satuan, dp.harga, dp.potongan, dp.subtotal, dp.tax, dp.sisa, sk.id_satuan, s.nama, sa.nama AS satuan_asal, SUM(hk.sisa_barang) AS sisa_barang FROM detail_penjualan dp LEFT JOIN satuan_konversi sk ON dp.satuan = sk.id_satuan LEFT JOIN satuan s ON dp.satuan = s.id LEFT JOIN satuan sa ON dp.asal_satuan = sa.id LEFT JOIN hpp_keluar hk ON dp.no_faktur = hk.no_faktur AND dp.kode_barang = hk.kode_barang LEFT JOIN penjualan p ON dp.no_faktur = p.no_faktur WHERE dp.no_faktur = '$no_faktur' AND dp.kode_barang = '$row[kode_barang]' ");
+$inner_join_detail = $db->query("SELECT dp.id, dp.no_faktur, dp.kode_barang, dp.nama_barang, dp.jumlah_barang / sk.konversi AS jumlah_produk, dp.jumlah_barang, dp.satuan, dp.harga, dp.potongan, dp.subtotal, dp.tax, dp.sisa, sk.id_satuan, s.nama, sa.nama AS satuan_asal, SUM(hk.sisa_barang) AS sisa_barang 
+  FROM detail_penjualan dp LEFT JOIN satuan_konversi sk ON dp.kode_barang = sk.kode_produk  AND dp.satuan = sk.id_satuan
+  LEFT JOIN satuan s ON dp.satuan = s.id LEFT JOIN satuan sa ON dp.asal_satuan = sa.id 
+  LEFT JOIN hpp_keluar hk ON dp.no_faktur = hk.no_faktur AND dp.kode_barang = hk.kode_barang 
+  LEFT JOIN penjualan p ON dp.no_faktur = p.no_faktur WHERE dp.no_faktur = '$no_faktur' AND dp.kode_barang = '$row[kode_barang]' ");
 
 $data_inner = mysqli_fetch_array($inner_join_detail);
 
@@ -71,11 +75,11 @@ $data_inner = mysqli_fetch_array($inner_join_detail);
           $nestedData[] = $data_inner['kode_barang'];
           $nestedData[] = $data_inner['nama_barang'];
 
-          if ($data_inner['jumlah_produk'] > 0) {
-            $nestedData[] = $data_inner['jumlah_produk'];
+          if ($data_inner['jumlah_produk'] < 1) {
+            $nestedData[] = $data_inner['jumlah_barang'];
           }
           else{
-            $nestedData[] = $data_inner['jumlah_barang'];
+            $nestedData[] = $data_inner['jumlah_produk'];
           }
 
           $nestedData[] = $data_inner['nama'];
