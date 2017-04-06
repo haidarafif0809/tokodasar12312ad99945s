@@ -102,14 +102,14 @@ if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] !=
 else
      {
           echo "<td>".$row['nama']."</td>";
-        }
-     
-  echo "<td>". $row['harga']."</td>";
-  echo " <td>". $subtotal."</td>";
-  echo " <td>". $row['potongan']."</td>";
-  echo "<td>". $row['tax']."</td>";
-  echo "<td>". $row['subtotal']."</td>";
-  echo "</tr>";
+     }
+  echo "
+  <td>". rp($row['harga'])."</td>
+  <td>". rp($subtotal)."</td>
+  <td>". rp($row['potongan'])."</td>
+  <td>". rp($row['tax'])."</td>
+  <td>". rp($row['subtotal'] + $row['tax'])."</td>
+  </tr>";
 
       }
 

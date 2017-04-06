@@ -81,15 +81,16 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
                    $jumlah_barang = $row['jumlah_barang'];
                    }
 
+
           $nestedData[] = $row['no_faktur'];
           $nestedData[] = $row['kode_barang'];
           $nestedData[] = $row['nama_barang'];
           $nestedData[] = $jumlah_barang;
           $nestedData[] = $row['nama'];
           $nestedData[] = rp($row['harga']);
-          $nestedData[] = rp($row['subtotal']);
           $nestedData[] = rp($row['potongan']);
           $nestedData[] = rp($row['tax']);
+          $nestedData[] = rp($row['subtotal']);
           $nestedData[] = $data_hpp['sisa_hpp'] ." ".$row['satuan_asal'];
 
   $data[] = $nestedData;
