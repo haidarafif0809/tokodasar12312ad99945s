@@ -181,10 +181,9 @@ include 'sanitasi.php';
 <div class="form-group col-sm-2">
           <label>PPN</label>
           <select name="ppn" id="ppn" class="form-control">
-            <option value="<?php echo $ppn; ?>"><?php echo $ppn; ?></option>  
+            <option value="Non">Non</option>  
             <option value="Include">Include</option>  
             <option value="Exclude">Exclude</option>
-            <option value="Non">Non</option>          
           </select>
 </div>
 
@@ -2263,23 +2262,8 @@ $(function() {
 <script type="text/javascript">
     $(document).ready(function(){
 
-var ppn_input = $("#ppn_input").val();
-
-      if (ppn_input == "Include"){
-
-      $("#tax").attr("disabled", true);
-      $("#tax1").attr("disabled", false);
-  }
-
-  else if (ppn_input == "Exclude") {
-    $("#tax1").attr("disabled", true);
-      $("#tax").attr("disabled", false);
-  }
-  else{
-
     $("#tax1").attr("disabled", true);
       $("#tax").attr("disabled", true);
-  }
 
     $("#ppn").change(function(){
 
@@ -2306,6 +2290,9 @@ var ppn_input = $("#ppn_input").val();
   });
   });
 </script>
+
+
+
 <script> 
     shortcut.add("f2", function() {
         // Do something
