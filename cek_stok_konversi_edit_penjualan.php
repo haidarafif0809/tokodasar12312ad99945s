@@ -14,12 +14,14 @@ include 'persediaan.function.php';
 
 
 
+$queryy = $db->query("SELECT SUM(sisa) AS total_sisa FROM hpp_masuk WHERE kode_barang = '$kode_barang' ");
+$dataaa = mysqli_fetch_array($queryy);
 
 
 $queryyy = $db->query("SELECT IFNULL(dp.jumlah_barang,0) AS jumlah_detail ,IFNULL(tp.jumlah_barang,0) AS jumlah_tbs FROM detail_penjualan dp LEFT JOIN tbs_penjualan tp ON dp.no_faktur = tp.no_faktur WHERE dp.kode_barang = '$kode_barang' AND dp.no_faktur = '$no_faktur'");
 $data000 = mysqli_fetch_array($queryyy);
 
-$stok_barang = cekStokHpp($kode_barang);
+$stok_barang = $dataaa['total_sisa'];
 
 $sisa_barang = ($stok_barang + $data000['jumlah_detail']) - $data000['jumlah_tbs'];
 

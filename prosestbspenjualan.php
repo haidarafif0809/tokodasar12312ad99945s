@@ -77,7 +77,7 @@
 
     $tax_persen = $x - $hasil_tax2;
 
-    $query9 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$sales' AND kode_produk = '$kode_barang'");
+    $query9 = $db->query("SELECT jumlah_prosentase,jumlah_uang FROM fee_produk WHERE nama_petugas = '$sales' AND kode_produk = '$kode_barang'");
     $cek9 = mysqli_fetch_array($query9);
     $prosentase = $cek9['jumlah_prosentase'];
     $nominal = $cek9['jumlah_uang'];
@@ -86,7 +86,7 @@
 
     if ($prosentase != 0){
       
-      $query90 = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND kode_barang = '$kode_barang'");
+      $query90 = $db->query("SELECT  kode_barang FROM tbs_penjualan WHERE session_id = '$session_id' AND kode_barang = '$kode_barang'");
       $cek01 = mysqli_num_rows($query90);
 
       $cek90 = mysqli_fetch_array($query90);
@@ -123,7 +123,7 @@
 
     elseif ($nominal != 0) {
 
-      $query900 = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND kode_barang = '$kode_barang'");
+      $query900 = $db->query("SELECT kode_barang FROM tbs_penjualan WHERE session_id = '$session_id' AND kode_barang = '$kode_barang'");
       $cek011 = mysqli_num_rows($query900);
 
       $cek900 = mysqli_fetch_array($query900);
@@ -155,14 +155,8 @@
     }
 
 
-
-
-$cek = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode_barang' AND session_id = '$session_id'");
-
-$jumlah = mysqli_num_rows($cek);
-
   
-$cek = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode_barang' AND session_id = '$session_id'");
+$cek = $db->query("SELECT kode_barang FROM tbs_penjualan WHERE kode_barang = '$kode_barang' AND session_id = '$session_id'");
 
 $jumlah = mysqli_num_rows($cek);
     
