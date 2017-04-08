@@ -2146,7 +2146,7 @@ $("#cari_produk_penjualan").click(function(){
         else {
 
           var potongan_nominal = ((total * potongan_persen) / 100);
-          var total_kurang_potongan = total - potongan_nominal;
+          var total_kurang_potongan = parseInt(total,10) - Math.round(potongan_nominal);
           var t_tax = ((parseInt(total_kurang_potongan,10) * parseInt(tax,10)) / 100);
 
           var total_akhir = parseInt(total_kurang_potongan, 10) + parseInt(t_tax,10);
