@@ -14,6 +14,7 @@
     $user = $_SESSION['nama'];
     $potongan = stringdoang($_POST['potongan']);
     $level_harga = stringdoang($_POST['level_harga']);
+    $ber_stok = stringdoang($_POST['ber_stok']);
 
     
 
@@ -185,17 +186,18 @@ $jumlah = mysqli_num_rows($cek);
     }
     else
     {
-            $perintah = $db->prepare("INSERT INTO tbs_penjualan (session_id,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax) VALUES (?,?,
-            ?,?,?,?,?,?,?)");
+            $perintah = $db->prepare("INSERT INTO tbs_penjualan (session_id,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,potongan,tax,tipe_barang) VALUES (?,?,
+            ?,?,?,?,?,?,?,?)");
             
             
-            $perintah->bind_param("sssisiiis",
-            $session_id, $kode_barang, $nama_barang, $jumlah_barang, $satuan, $harga, $subtotal, $potongan_tampil, $tax_persen);
+            $perintah->bind_param("sssisiiiss",
+            $session_id, $kode_barang, $nama_barang, $jumlah_barang, $satuan, $harga, $subtotal, $potongan_tampil, $tax_persen, $ber_stok);
             
             
             $kode_barang = stringdoang($_POST['kode_barang']);
             $jumlah_barang = angkadoang($_POST['jumlah_barang']); 
             $nama_barang = stringdoang($_POST['nama_barang']);
+            $ber_stok = stringdoang($_POST['ber_stok']);
             $satuan = stringdoang($_POST['satuan']);
             $tax = angkadoang($_POST['tax']);
             $subtotal = $harga * $jumlah_barang - $potongan_jadi;

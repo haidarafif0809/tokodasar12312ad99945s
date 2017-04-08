@@ -214,12 +214,12 @@ $jumlah = mysqli_num_rows($cek);
     }
     else
     {
-            $perintah = $db->prepare("INSERT INTO tbs_penjualan (session_id,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal) VALUES (?,?,
-            ?,?,?,?,?)");
+            $perintah = $db->prepare("INSERT INTO tbs_penjualan (session_id,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,tipe_barang) VALUES (?,?,
+            ?,?,?,?,?,?)");
             
             
-            $perintah->bind_param("sssisii",
-            $session_id, $kode_barang, $nama_barang, $jumlah_barang, $satuan, $harga, $a);
+            $perintah->bind_param("sssisiis",
+            $session_id, $kode_barang, $nama_barang, $jumlah_barang, $satuan, $harga, $a, $ber_stok);
            
             
             
@@ -332,12 +332,12 @@ $jumlah = mysqli_num_rows($cek);
     }
     else
     {
-            $perintah = $db->prepare("INSERT INTO tbs_penjualan (session_id,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal) VALUES (?,?,
-            ?,?,?,?,?)");
+            $perintah = $db->prepare("INSERT INTO tbs_penjualan (session_id,kode_barang,nama_barang,jumlah_barang,satuan,harga,subtotal,tipe_barang) VALUES (?,?,
+            ?,?,?,?,?,?)");
             
             
-            $perintah->bind_param("sssisii",
-            $session_id, $kode_barang, $nama_barang, $jumlah_barang, $satuan, $harga, $a);
+            $perintah->bind_param("sssisiis",
+            $session_id, $kode_barang, $nama_barang, $jumlah_barang, $satuan, $harga, $a, $ber_stok);
            
             
             
