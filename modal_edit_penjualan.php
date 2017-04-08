@@ -76,19 +76,8 @@ while( $row=mysqli_fetch_array($query) ) {
 
 //pencarian stok dari persediaan function dan dikurangi stok yang di tbs sekarang
             // select detail penjualan dan tbs_penjualan
-            $query_tbs_penjualan = $db->query("SELECT dp.jumlah_barang AS jumlah_detail ,tp.jumlah_barang AS jumlah_tbs, dp.satuan  FROM detail_penjualan dp LEFT JOIN tbs_penjualan tp ON dp.no_faktur = tp.no_faktur WHERE dp.kode_barang = '$row[kode_barang]' AND dp.no_faktur = '$no_faktur' ");
-            $data_tbs_penjualan = mysqli_fetch_array($query_tbs_penjualan);
-            // select detail penjualan dan tbs_penjualan
-
-                //data konversi
-                 $query_satuan_konversi = $db->query("SELECT konversi FROM satuan_konversi WHERE id_satuan = '$data_tbs_penjualan[satuan]' AND kode_produk = '$row[kode_barang]'");
-                $data_satuan_konversi = mysqli_fetch_array($query_satuan_konversi);
-                //data konversi
-
-                $jumlah_tbs = $data_tbs_penjualan['jumlah_tbs'] * $data_satuan_konversi['konversi'];
 
                 $stok_barang = cekStokHpp($row["kode_barang"]);
-                $sisa_barang = ($stok_barang + $data_tbs_penjualan['jumlah_detail']) - $jumlah_tbs;
 
    
 
@@ -117,7 +106,7 @@ while( $row=mysqli_fetch_array($query) ) {
         $nestedData[] = "0";
         }
     else{
-        $nestedData[] = $sisa_barang;
+        $nestedData[] = $stok_barang;
         }
 
     $nestedData[] = $row["nama_satuan"];
