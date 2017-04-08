@@ -1438,6 +1438,7 @@ alert("Silakan Bayar Piutang");
 
   if (data == 1) {
 
+//PERINTAH UNUTK MEN CEK APAKAH STOK PROUDK MASIH ADA ATAU TIDAK MENCUKUPI
     $.getJSON("cek_status_stok_penjualan.php?session_id="+session_id, function(result){
       if (result.status == 0) {
 
@@ -1613,6 +1614,7 @@ alert("Silakan Bayar Piutang");
 
   if (data == 1) {
 
+//PERINTAH UNUTK MEN CEK APAKAH STOK PROUDK MASIH ADA ATAU TIDAK MENCUKUPI
       $.getJSON("cek_status_stok_penjualan.php?session_id="+session_id, function(result){
 
         if (result.status == 0) {
@@ -1767,6 +1769,7 @@ alert("Silakan Bayar Piutang");
 
   if (data == 1) {
 
+//PERINTAH UNUTK MEN CEK APAKAH STOK PROUDK MASIH ADA ATAU TIDAK MENCUKUPI
     $.getJSON("cek_status_stok_penjualan.php?session_id="+session_id, function(result){
 
       if (result.status == 0) {
@@ -2578,6 +2581,7 @@ function myFunction(event) {
 
   if (data == 1) {
 
+//PERINTAH UNUTK MEN CEK APAKAH STOK PROUDK MASIH ADA ATAU TIDAK MENCUKUPI
       $.getJSON("cek_status_stok_penjualan.php?session_id="+session_id, function(result){
 
         if (result.status == 0) {

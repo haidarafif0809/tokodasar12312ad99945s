@@ -56,7 +56,7 @@ if($c->isCached($kode_barang)) {
     $satuan = stringdoang($result['satuan']);
 }
 else {
-$query = $db->query("SELECT * FROM barang WHERE kode_barang = '$kode_barang'");
+$query = $db->query("SELECT kode_barang, nama_barang, harga_beli, harga_jual, harga_jual2, harga_jual3, satuan, kategori, gudang, status, suplier, stok_awal, stok_opname, foto, limit_stok, over_stok FROM barang WHERE kode_barang = '$kode_barang'");
 while ($data = $query->fetch_array()) {
  # code...
     // store an array
@@ -106,7 +106,7 @@ else if ($level_harga == 'Level 3')
 }
 
 $stok_barang = $ambil_sisa['jumlah_barang'] - $jumlah_barang;
-
+$user = $_SESSION['nama'];
 
 if ($ber_stok == 'Barang' OR $ber_stok == 'barang') {
     
@@ -120,7 +120,7 @@ if ($ber_stok == 'Barang' OR $ber_stok == 'barang') {
       $a = $harga * $jumlah_barang;
     // display the cached array
 
-    $query9 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$sales' AND kode_produk = '$kode_barang'");
+    $query9 = $db->query("SELECT jumlah_prosentase, jumlah_uang FROM fee_produk WHERE nama_petugas = '$sales' AND kode_produk = '$kode_barang'");
     $cek9 = mysqli_fetch_array($query9);
     $prosentase = $cek9['jumlah_prosentase'];
     $nominal = $cek9['jumlah_uang'];
@@ -129,7 +129,7 @@ if ($ber_stok == 'Barang' OR $ber_stok == 'barang') {
 
     if ($prosentase != 0){
       
-      $query90 = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND kode_barang = '$kode_barang'");
+      $query90 = $db->query("SELECT jumlah_barang, kode_barang FROM tbs_penjualan WHERE session_id = '$session_id' AND kode_barang = '$kode_barang'");
       $cek01 = mysqli_num_rows($query90);
 
       $cek90 = mysqli_fetch_array($query90);
@@ -163,7 +163,7 @@ if ($ber_stok == 'Barang' OR $ber_stok == 'barang') {
 
         elseif ($nominal != 0) {
 
-              $query900 = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND kode_barang = '$kode_barang'");
+              $query900 = $db->query("SELECT jumlah_barang, kode_barang FROM tbs_penjualan WHERE session_id = '$session_id' AND kode_barang = '$kode_barang'");
               $cek011 = mysqli_num_rows($query900);
 
               $cek900 = mysqli_fetch_array($query900);
@@ -196,7 +196,7 @@ if ($ber_stok == 'Barang' OR $ber_stok == 'barang') {
 
 
  
-$cek = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode_barang' AND session_id = '$session_id'");
+$cek = $db->query("SELECT jumlah_barang, kode_barang FROM tbs_penjualan WHERE kode_barang = '$kode_barang' AND session_id = '$session_id'");
 
 $jumlah = mysqli_num_rows($cek);
     
@@ -238,7 +238,7 @@ else{
   $a = $harga * $jumlah_barang;
     // display the cached array
 
-    $query9 = $db->query("SELECT * FROM fee_produk WHERE nama_petugas = '$sales' AND kode_produk = '$kode_barang'");
+    $query9 = $db->query("SELECT jumlah_prosentase, jumlah_uang FROM fee_produk WHERE nama_petugas = '$sales' AND kode_produk = '$kode_barang'");
     $cek9 = mysqli_fetch_array($query9);
     $prosentase = $cek9['jumlah_prosentase'];
     $nominal = $cek9['jumlah_uang'];
@@ -247,7 +247,7 @@ else{
 
     if ($prosentase != 0){
       
-      $query90 = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND kode_barang = '$kode_barang'");
+      $query90 = $db->query("SELECT jumlah_barang, kode_barang FROM tbs_penjualan WHERE session_id = '$session_id' AND kode_barang = '$kode_barang'");
       $cek01 = mysqli_num_rows($query90);
 
       $cek90 = mysqli_fetch_array($query90);
@@ -281,7 +281,7 @@ else{
 
         elseif ($nominal != 0) {
 
-              $query900 = $db->query("SELECT * FROM tbs_penjualan WHERE session_id = '$session_id' AND kode_barang = '$kode_barang'");
+              $query900 = $db->query("SELECT jumlah_barang, kode_barang FROM tbs_penjualan WHERE session_id = '$session_id' AND kode_barang = '$kode_barang'");
               $cek011 = mysqli_num_rows($query900);
 
               $cek900 = mysqli_fetch_array($query900);
@@ -314,7 +314,7 @@ else{
 
 
  
-$cek = $db->query("SELECT * FROM tbs_penjualan WHERE kode_barang = '$kode_barang' AND session_id = '$session_id'");
+$cek = $db->query("SELECT kode_barang FROM tbs_penjualan WHERE kode_barang = '$kode_barang' AND session_id = '$session_id'");
 
 $jumlah = mysqli_num_rows($cek);
     
