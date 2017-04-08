@@ -16,7 +16,9 @@ include 'sanitasi.php';
  $total = $data['total_penjualan'];
  $total_sub = ($total - $diskon) + $pajak;
 
-if ($total_sub == $total_akhir) {
+ $sub_total = round($total_sub);
+
+if ($sub_total == $total_akhir) {
 		echo "1";
 	}
 	else{

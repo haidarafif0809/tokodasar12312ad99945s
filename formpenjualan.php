@@ -1111,17 +1111,18 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
 
       });
 //pembaruan datatable
-     
-     });
-}
-
-        
-        $.get("cek_total_seluruh.php",
+      $.get("cek_total_seluruh.php",
         function(data){
         $("#total2").val(data);
         $("#total1").val(data);
 
         });
+
+     });
+}
+
+        
+
 
 });
 
