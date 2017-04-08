@@ -1080,6 +1080,7 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
         $("#kode_barang").val('');
         $("#nama_barang").val('');
         $("#harga_produk").val('');
+        $("#harga_baru").val('');
         $("#ber_stok").val('');
         $("#jumlah_barang").val('');
         $("#potongan1").val('');
@@ -1248,6 +1249,11 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
   alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
   }
 
+  else if (harga_baru == '' ){
+  alert("Harga Baru Tidak Boleh Kosong");
+       $("#harga_baru").focus();
+  }
+
 
   else if (jumlah_barang == ''){
   alert("Jumlah Barang Harus Diisi");
@@ -1302,6 +1308,7 @@ $("#kode_barang").focus();
      $("#kode_barang").val('');
      $("#nama_barang").val('');
      $("#harga_produk").val('');
+     $("#harga_baru").val('');
      $("#ber_stok").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
@@ -1333,6 +1340,7 @@ $("#kode_barang").focus();
      $("#kode_barang").val('');
      $("#nama_barang").val('');
      $("#harga_produk").val('');
+     $("#harga_baru").val('');
      $("#ber_stok").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
@@ -2509,7 +2517,8 @@ $(document).on('click','.btn-hapus-tbs',function(e){
 
         $(".tr-id-"+id+"").remove();
         $("#pembayaran_penjualan").val('');
-        
+        $("#harga_baru").val('');
+
         }
         });
       }
@@ -2940,9 +2949,17 @@ $(document).ready(function(){
                 
             }
             
+                      
 
+                      if (jumlah_baru == 0 || jumlah_baru == '') {
+                              alert("Jumlah barang tidak boleh nol atau kosong");
+                              $("#input-jumlah-"+id+"").val(jumlah_lama);
+                              $("#text-jumlah-"+id+"").text(jumlah_lama);
+                              $("#text-jumlah-"+id+"").show();
+                              $("#input-jumlah-"+id+"").attr("type", "hidden");
+                        }
 
-                      if (ber_stok == 'Jasa') {
+                      else if (ber_stok == 'Jasa') {
 
                            $("#text-jumlah-"+id+"").show();
                            $("#text-jumlah-"+id+"").text(jumlah_baru);
