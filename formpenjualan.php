@@ -312,6 +312,50 @@ nama_gudang FROM gudang");
   </div>
 </div><!-- end of modal edit data  -->
 
+<style>
+
+  tr:nth-child(even){background-color: #f2f2f2}
+
+</style>
+
+<!-- MODAL PRODUK STOK HABIS -->
+<div id="modal_barang_tidak_bisa_dijual" class="modal " role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Produk Yang Tidak Bisa Di Jual</h4>
+      </div>
+      <div class="modal-body">
+            <center>
+            <table class="table table-bordered table-sm">
+                  <thead> <!-- untuk memberikan nama pada kolom tabel -->
+
+                      <th style='background-color: #4CAF50; color: white;'>Kode Produk</th>
+                      <th style='background-color: #4CAF50; color: white;'>Nama Produk</th>
+                      <th style='background-color: #4CAF50; color: white;'>Jumlah Yang Akan Di Jual</th>
+                      <th style='background-color: #4CAF50; color: white;'>Stok Saat Ini</th>
+                  
+                  
+                  </thead> <!-- tag penutup tabel -->
+                  <tbody id="tbody-barang-jual">
+                    
+                  </tbody>
+            </table>
+            </center>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div><!-- END OF MODAL PRODUK STOK HABIS  -->
+
+
 <!-- membuat form prosestbspenjual -->
 
 <form id="form_barcode" class="form-inline">
@@ -410,52 +454,19 @@ nama_gudang FROM gudang");
                 
                 <div class="table-responsive"> <!--tag untuk membuat garis pada tabel-->  
                 <span id="table-baru">  
-                <table id="tableuser" class="table table-sm">
+                <table id="tabel_tbs_penjualan" class="table table-sm">
                 <thead>
                 <th> Kode  </th>
                 <th style="width:1000%"> Nama </th>
                 <th> Jumlah </th>
                 <th> Satuan </th>
-                <th> Harga </th>
-               
-                <th> Potongan </th>
-                <th> Pajak </th>
-                 <th> Subtotal </th>
+                <th align="right"> Harga </th>
+                <th align="right"> Potongan</th>
+                <th align="right"> Pajak </th>
+                <th align="right"> Subtotal </th>
                 <th> Hapus </th>
                 
                 </thead>
-                
-                <tbody id="tbody">
-                <?php
-                
-                //menampilkan semua data yang ada pada tabel tbs penjualan dalam DB
-                $perintah = $db->query("SELECT tp.id,tp.kode_barang,tp.satuan,tp.nama_barang,tp.jumlah_barang,tp.harga,tp.subtotal,tp.potongan,tp.tax,s.nama,bb.berkaitan_dgn_stok FROM tbs_penjualan tp INNER JOIN satuan s ON tp.satuan = s.id INNER JOIN barang bb ON tp.kode_barang = bb.kode_barang WHERE tp.session_id = '$session_id'");
-                
-                //menyimpan data sementara yang ada pada $perintah
-                
-                while ($data1 = mysqli_fetch_array($perintah))
-                {
-                //menampilkan data
-                echo "<tr class='tr-kode-". $data1['kode_barang'] ." tr-id-". $data1['id'] ."' data-kode-barang='".$data1['kode_barang']."'>
-                <td style='font-size:15px'>". $data1['kode_barang'] ."</td>
-                <td style='font-size:15px;'>". $data1['nama_barang'] ."</td>
-                <td style='font-size:15px' align='right' class='edit-jumlah' data-id='".$data1['id']."'><span id='text-jumlah-".$data1['id']."'>". $data1['jumlah_barang'] ."</span> <input type='hidden' id='input-jumlah-".$data1['id']."' value='".$data1['jumlah_barang']."' class='input_jumlah' data-id='".$data1['id']."' autofocus='' data-kode='".$data1['kode_barang']."' data-berstok = '".$data1['berkaitan_dgn_stok']."'  data-harga='".$data1['harga']."' data-satuan='".$data1['satuan']."' > </td>
-                <td style='font-size:15px'>". $data1['nama'] ."</td>
-                <td style='font-size:15px' align='right'>". rp($data1['harga']) ."</td>
-               
-                <td style='font-size:15px' align='right'><span id='text-potongan-".$data1['id']."'>". rp($data1['potongan']) ."</span></td>
-                <td style='font-size:15px' align='right'><span id='text-tax-".$data1['id']."'>". rp($data1['tax']) ."</span></td>
-                 <td style='font-size:15px' align='right'><span id='text-subtotal-".$data1['id']."'>". rp($data1['subtotal']) ."</span></td>";
-
-               echo "<td style='font-size:15px'> <button class='btn btn-danger btn-sm btn-hapus-tbs' id='btn-hapus-".$data1['id']."' data-id='". $data1['id'] ."' data-kode-barang='". $data1['kode_barang'] ."' data-barang='". $data1['nama_barang'] ."' data-subtotal='". $data1['subtotal'] ."'>Hapus</button> </td> 
-
-                </tr>";
-
-
-                }
-
-                ?>
-                </tbody>
                 
                 </table>
                 </span>
@@ -798,6 +809,39 @@ $(document).ready(function(){
  </script>
 
 
+
+<script type="text/javascript">
+   $(document).on('ready', function (e) {                
+// START DATATABLE AJAX START TBS PENJUALAN
+      $('#tabel_tbs_penjualan').DataTable().destroy();
+
+            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"datatable_tbs_penjualan.php", // json datasource
+               type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            },
+           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+            $(nRow).attr('class','tr-id-'+aData[9]+'');         
+
+            }   
+
+      });
+
+});
+ </script>
+
+
 <!--untuk memasukkan perintah java script-->
 <script type="text/javascript">
 
@@ -888,15 +932,15 @@ if (kode_barang != '')
       var jumlah_barang = $("#jumlah_barang").val();
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
+      var ber_stok = $("#ber_stok").val();
       var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
       
-
-
+      
+        if (ber_stok != 'Jasa'){
       $.post("cek_stok_konversi_penjualan.php", {jumlah_barang:jumlah_barang,satuan_konversi:satuan_konversi,kode_barang:kode_barang,id_produk:id_produk},function(data){
 
-      
 
           if (data < 0) {
             alert("Jumlah Melebihi Stok");
@@ -904,8 +948,8 @@ if (kode_barang != '')
           $("#satuan_konversi").val(prev);
 
           }
-
       });
+    }//if (ber_stok != 'Jasa'){
     });
   });
 </script>
@@ -918,13 +962,16 @@ if (kode_barang != '')
       var jumlah_barang = $("#jumlah_barang").val();
       var satuan_konversi = $("#satuan_konversi").val();
       var kode_barang = $("#kode_barang").val();
+      var ber_stok = $("#ber_stok").val();
       var kode_barang = kode_barang.substr(0, kode_barang.indexOf('('));
       var id_produk = $("#id_produk").val();
       var prev = $("#satuan_produk").val();
 
+      if (ber_stok != 'Jasa'){
       $.post("cek_stok_konversi_penjualan.php",
         {jumlah_barang:jumlah_barang,satuan_konversi:satuan_konversi,kode_barang:kode_barang,
         id_produk:id_produk},function(data){
+
 
           if (data < 0) {
             alert("Jumlah Melebihi Stok");
@@ -932,8 +979,10 @@ if (kode_barang != '')
           $("#satuan_konversi").val(prev);
 
           }
+    
 
       });
+}//if (ber_stok != 'Jasa'){
     });
   });
 </script>
@@ -1028,16 +1077,41 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
 
         $(".tr-kode-"+kode_barang+"").remove();
         $("#ppn").attr("disabled", true);
-        $("#tbody").prepend(data);    
         $("#kode_barang").val('');
         $("#nama_barang").val('');
         $("#harga_produk").val('');
+        $("#harga_baru").val('');
         $("#ber_stok").val('');
         $("#jumlah_barang").val('');
         $("#potongan1").val('');
         $("#tax1").val('');
       
+  //pembaruan datatable
+     $('#tabel_tbs_penjualan').DataTable().destroy();
 
+            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"datatable_tbs_penjualan.php", // json datasource
+               type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            },
+           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+            $(nRow).attr('class','tr-id-'+aData[9]+'');         
+
+            }   
+
+      });
+//pembaruan datatable
      
      });
 }
@@ -1065,7 +1139,7 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
 
    <script>
    //untuk menampilkan data yang diambil pada form tbs penjualan berdasarkan id=formtambahproduk
-  $("#submit_produk").click(function(){
+  $(document).on('click', '#submit_produk', function (e) {
     // data untuk produk
     var no_faktur = $("#nomor_faktur_penjualan").val();
     var kode_pelanggan = $("#kd_pelanggan").val();
@@ -1094,7 +1168,7 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
     var ppn = $("#ppn").val();
     var stok = parseInt(jumlahbarang,10) - parseInt(jumlah_barang,10);
 
-   var subtotal = parseInt(jumlah_barang, 10) *  parseInt(harga, 10) - parseInt(potongan, 10);
+   var subtotal = parseInt(jumlah_barang, 10) *  parseInt(harga_baru, 10) - parseInt(potongan, 10);
 
    //end data produk
    // data per faktur 
@@ -1174,6 +1248,11 @@ $.post("barcode.php",{kode_barang:kode_barang,sales:sales,level_harga:level_harg
   alert("Anda Tidak Bisa Menambahkan Barang Yang Sudah Ada, Silakan Edit atau Pilih Barang Yang Lain !");
   }
 
+  else if (harga_baru == '' ){
+  alert("Harga Baru Tidak Boleh Kosong");
+       $("#harga_baru").focus();
+  }
+
 
   else if (jumlah_barang == ''){
   alert("Jumlah Barang Harus Diisi");
@@ -1195,15 +1274,40 @@ $("#kode_barang").focus();
    $("#total1").val(tandaPemisahTitik(total_akhir));
     $("#total2").val(tandaPemisahTitik(subtotal_penjualan));
   $("#potongan_penjualan").val(tandaPemisahTitik(parseInt(total_potongan_nominal)));
- $.post("prosestbspenjualan.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan,sales:sales, level_harga:level_harga},function(data){
+ $.post("prosestbspenjualan.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,potongan:potongan,tax:tax,satuan:satuan,sales:sales, level_harga:level_harga,ber_stok:ber_stok},function(data){
      
-  
+  //pembaruan datatable
+     $('#tabel_tbs_penjualan').DataTable().destroy();
+
+            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"datatable_tbs_penjualan.php", // json datasource
+               type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            },
+           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+            $(nRow).attr('class','tr-id-'+aData[9]+'');         
+
+            }   
+
+      });
+//pembaruan datatable
 
      $("#ppn").attr("disabled", true);
-     $("#tbody").prepend(data);
      $("#kode_barang").val('');
      $("#nama_barang").val('');
-      $("#harga_produk").val('');
+     $("#harga_produk").val('');
+     $("#harga_baru").val('');
      $("#ber_stok").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
@@ -1228,18 +1332,46 @@ $("#kode_barang").focus();
     $("#total2").val(tandaPemisahTitik(subtotal_penjualan));
     $("#potongan_penjualan").val(tandaPemisahTitik(parseInt(total_potongan_nominal)));
 
-    $.post("prosestbspenjualan.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,level_harga:level_harga,potongan:potongan,tax:tax,satuan:satuan,sales:sales},function(data){
+    $.post("prosestbspenjualan.php",{no_faktur:no_faktur,kode_barang:kode_barang,nama_barang:nama_barang,jumlah_barang:jumlah_barang,harga:harga,harga_baru:harga_baru,level_harga:level_harga,potongan:potongan,tax:tax,satuan:satuan,sales:sales,ber_stok:ber_stok},function(data){
      
 
       $("#ppn").attr("disabled", true);
-     $("#tbody").prepend(data);    
      $("#kode_barang").val('');
      $("#nama_barang").val('');
      $("#harga_produk").val('');
+     $("#harga_baru").val('');
      $("#ber_stok").val('');
      $("#jumlah_barang").val('');
      $("#potongan1").val('');
      $("#tax1").val('');
+
+
+  //pembaruan datatable
+     $('#tabel_tbs_penjualan').DataTable().destroy();
+
+            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"datatable_tbs_penjualan.php", // json datasource
+               type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            },
+           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+            $(nRow).attr('class','tr-id-'+aData[9]+'');         
+
+            }   
+
+      });
+//pembaruan datatable
 
      
      });
@@ -1389,26 +1521,85 @@ alert("Silakan Bayar Piutang");
 
   if (data == 1) {
 
- $.post("proses_bayar_jual.php",{total2:total2,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input},function(info) {
+//PERINTAH UNUTK MEN CEK APAKAH STOK PROUDK MASIH ADA ATAU TIDAK MENCUKUPI
+    $.getJSON("cek_status_stok_penjualan.php?session_id="+session_id, function(result){
+      if (result.status == 0) {
+
+         $.post("proses_bayar_jual.php",{total2:total2,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input},function(info) {
 
 
-     $("#table-baru").html(info);
-     var no_faktur = info;
-     $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
-     $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar.php?no_faktur='+no_faktur+'');
-     $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_faktur+'');
-     $("#alert_berhasil").show();
-     $("#cetak_tunai").show();
-     $("#cetak_tunai_besar").show('');
-     $("#cetak_surat_jalan").show('');
-     $("#pembayaran_penjualan").val('');
-     $("#sisa_pembayaran_penjualan").val('');
-     $("#kredit").val('');
-    
-       
-   });
+             var no_faktur = info;
+             $("#cetak_tunai").attr('href', 'cetak_penjualan_tunai.php?no_faktur='+no_faktur+'');
+             $("#cetak_tunai_besar").attr('href', 'cetak_penjualan_tunai_besar.php?no_faktur='+no_faktur+'');
+             $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_faktur+'');
+             $("#alert_berhasil").show();
+             $("#cetak_tunai").show();
+             $("#cetak_tunai_besar").show('');
+             $("#cetak_surat_jalan").show('');
+             $("#pembayaran_penjualan").val('');
+             $("#sisa_pembayaran_penjualan").val('');
+             $("#kredit").val('');
+            
+              //pembaruan datatable
+     $('#tabel_tbs_penjualan').DataTable().destroy();
 
-  }
+            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"datatable_tbs_penjualan.php", // json datasource
+               type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            },
+           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+            $(nRow).attr('class','tr-id-'+aData[9]+'');         
+
+            }   
+
+      });
+//pembaruan datatable
+
+               
+           });
+
+      }
+      else{
+
+             $("#penjualan").show();
+             $("#simpan_sementara").show();
+             $("#cetak_langsung").show();
+             $("#batal_penjualan").show(); 
+             $("#piutang").show();
+             $("#transaksi_baru").hide();
+
+              alert("Tidak Bisa Melakukan Penjualan, Ada Stok Produk Yang Habis");
+
+              $("#tbody-barang-jual").find("tr").remove();
+
+                $.each(result.barang, function(i, item) {
+
+                  var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
+                    
+                  $("#tbody-barang-jual").prepend(tr_barang);
+
+             });
+
+             $("#modal_barang_tidak_bisa_dijual").modal('show');
+
+      }
+
+    }); // END cek_status_stok_penjualan.php
+
+
+  }// END if cek_subtotal_penjualan.php
   else{
     alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
         window.location.href="formpenjualan.php";
@@ -1532,28 +1723,86 @@ alert("Silakan Bayar Piutang");
 
   if (data == 1) {
 
-   $.post("proses_bayar_tunai_cetak_langsung.php",{total2:total2,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input},function(info) {
-  
-     $("#table-baru").html(info);
-     var no_fak = info;
-     $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_fak+'');
-     
-     $("#alert_berhasil").show();
-     $("#cetak_surat_jalan").show();
-     $("#pembayaran_penjualan").val('');
-     $("#sisa_pembayaran_penjualan").val('');
-     $("#kredit").val('');
-    
-    var win = window.open('cetak_penjualan_tunai.php?no_faktur='+no_fak+'');
-     if (win) { 
-    
-    win.focus(); 
-  } else { 
-    
-    alert('Mohon Izinkan PopUps Pada Website Ini !'); }    
-    
-       
-   });
+//PERINTAH UNUTK MEN CEK APAKAH STOK PROUDK MASIH ADA ATAU TIDAK MENCUKUPI
+      $.getJSON("cek_status_stok_penjualan.php?session_id="+session_id, function(result){
+
+        if (result.status == 0) {
+              
+              $.post("proses_bayar_tunai_cetak_langsung.php",{total2:total2,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,harga:harga,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input},function(info) {
+              
+                 var no_fak = info;
+                 $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_fak+'');
+                 
+                 $("#alert_berhasil").show();
+                 $("#cetak_surat_jalan").show();
+                 $("#pembayaran_penjualan").val('');
+                 $("#sisa_pembayaran_penjualan").val('');
+                 $("#kredit").val('');
+
+    //pembaruan datatable
+     $('#tabel_tbs_penjualan').DataTable().destroy();
+
+            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"datatable_tbs_penjualan.php", // json datasource
+               type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            },
+           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+            $(nRow).attr('class','tr-id-'+aData[9]+'');         
+
+            }   
+
+      });
+//pembaruan datatable
+                
+                var win = window.open('cetak_penjualan_tunai.php?no_faktur='+no_fak+'');
+                 if (win) { 
+                
+                win.focus(); 
+              } else { 
+                
+                alert('Mohon Izinkan PopUps Pada Website Ini !'); }    
+                
+                   
+               });
+        }
+        else{
+
+               $("#penjualan").show();
+               $("#simpan_sementara").show();
+               $("#cetak_langsung").show();
+               $("#batal_penjualan").show(); 
+               $("#piutang").show();
+               $("#transaksi_baru").hide();
+
+                alert("Tidak Bisa Melakukan Penjualan, Ada Stok Produk Yang Habis");
+
+                $("#tbody-barang-jual").find("tr").remove();
+
+                  $.each(result.barang, function(i, item) {
+
+                    var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
+                      
+                    $("#tbody-barang-jual").prepend(tr_barang);
+
+               });
+
+               $("#modal_barang_tidak_bisa_dijual").modal('show');
+
+        } // END IF cek_status_stok_penjualan.php
+
+      });
   
 
   }
@@ -1655,72 +1904,133 @@ alert("Silakan Bayar Piutang");
 
   if (data == 1) {
 
-  //Cek Flafon sesuai dengan kode pelanggan / ID Pelanggannya
-  $.getJSON("cek_flafon.php",{kredit:kredit,kode_pelanggan:kode_pelanggan},function(data) {
+//PERINTAH UNUTK MEN CEK APAKAH STOK PROUDK MASIH ADA ATAU TIDAK MENCUKUPI
+    $.getJSON("cek_status_stok_penjualan.php?session_id="+session_id, function(result){
 
-    if(data.status == 2)
-    {
-      alert("Anda Tidak Bisa Melakukan Transaksi Piutang, sisa plafon : "+sisa_piutang+" dan Ada penjualan yang sudah melewat batas usia plafon");
+      if (result.status == 0) {
 
-      $("#tbody-jatuh-tempo").find("tr").remove();
+          //Cek Flafon sesuai dengan kode pelanggan / ID Pelanggannya
+          $.getJSON("cek_flafon.php",{kredit:kredit,kode_pelanggan:kode_pelanggan},function(data) {
 
-       $.each(data.data_penjualan, function(i, item) {
+            if(data.status == 2)
+            {
+              alert("Anda Tidak Bisa Melakukan Transaksi Piutang, sisa plafon : "+sisa_piutang+" dan Ada penjualan yang sudah melewat batas usia plafon");
 
-     
-        var tr_penjualan_lewat_usia_plafon = "<tr><td>"+ data.data_penjualan[i].tanggal+"</td><td>"+ data.data_penjualan[i].no_faktur+"</td><td>"+ data.data_penjualan[i].total+"</td><td>"+ data.data_penjualan[i].kredit+"</td><td>"+ data.data_penjualan[i].tanggal_jt+"</td></tr>"
+              $("#tbody-jatuh-tempo").find("tr").remove();
 
-         $("#tbody-jatuh-tempo").prepend(tr_penjualan_lewat_usia_plafon);
+               $.each(data.data_penjualan, function(i, item) {
 
-       });
+             
+                var tr_penjualan_lewat_usia_plafon = "<tr><td>"+ data.data_penjualan[i].tanggal+"</td><td>"+ data.data_penjualan[i].no_faktur+"</td><td>"+ data.data_penjualan[i].total+"</td><td>"+ data.data_penjualan[i].kredit+"</td><td>"+ data.data_penjualan[i].tanggal_jt+"</td></tr>"
 
-       $("#table-jatuh-tempo").DataTable();
+                 $("#tbody-jatuh-tempo").prepend(tr_penjualan_lewat_usia_plafon);
 
-      $("#modal_usia_plafon").modal('show');
+               });
 
-    }
-    else if(data.status == 1){
-         alert("Anda Tidak Bisa Melakukan Transaksi Piutang, sisa plafon : "+sisa_piutang+" ");
-    }
-    else
-    {
-      //END BREAK Cek Flafon sesuai dengan kode pelanggan / ID Pelanggannya
-  
-       $.post("proses_bayar_jual.php",{total2:total2,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input},function(info) {
+               $("#table-jatuh-tempo").DataTable();
 
-            var no_faktur = info;
-            $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang.php?no_faktur='+no_faktur+'');
-            $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_faktur+'');
-            $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_faktur+'');
-            $("#table-baru").html(info);
-            $("#alert_berhasil").show();
-            $("#pembayaran_penjualan").val('');
-            $("#sisa_pembayaran_penjualan").val('');
-            $("#kredit").val('');
-            $("#potongan_penjualan").val('');
-            $("#potongan_persen").val('');
-            $("#tanggal_jt").val('');
-            $("#cetak_piutang").show();
-            $("#cetak_surat_jalan").show();
-            $("#tax").val('');
-            
-       
-             $("#total1").val('');
-       $("#pembayaran_penjualan").val('');
-       $("#sisa_pembayaran_penjualan").val('');
-       $("#kredit").val('');
-       $("#tanggal_jt").val('');
-          $("#piutang").hide();
-        $("#cetak_langsung").hide();
-        $("#simpan_sementara").hide();
-        $("#batal_penjualan").hide();
-        $("#penjualan").hide();
-        $("#transaksi_baru").show();
-       
-       });
-         } // else dari cek flafon
- }); // end fungsi cek flafon
+              $("#modal_usia_plafon").modal('show');
+
+            }
+            else if(data.status == 1){
+              alert("Anda Tidak Bisa Melakukan Transaksi Piutang, sisa plafon : "+sisa_piutang+" ");
+            }
+            else
+            {
+              //END BREAK Cek Flafon sesuai dengan kode pelanggan / ID Pelanggannya
+          
+               $.post("proses_bayar_jual.php",{total2:total2,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input},function(info) {
+
+                     var no_faktur = info;
+                     $("#cetak_piutang").attr('href', 'cetak_penjualan_piutang.php?no_faktur='+no_faktur+'');
+                     $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_faktur+'');
+                     $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_faktur+'');
+                     $("#alert_berhasil").show();
+                     $("#pembayaran_penjualan").val('');
+                     $("#sisa_pembayaran_penjualan").val('');
+                     $("#kredit").val('');
+                     $("#potongan_penjualan").val('');
+                     $("#potongan_persen").val('');
+                     $("#tanggal_jt").val('');
+                     $("#cetak_piutang").show();
+                     $("#cetak_surat_jalan").show();
+                     $("#tax").val('');
+                     
+                     
+                     $("#total1").val('');
+                     $("#pembayaran_penjualan").val('');
+                     $("#sisa_pembayaran_penjualan").val('');
+                     $("#kredit").val('');
+                     $("#tanggal_jt").val('');
+                     $("#piutang").hide();
+                     $("#cetak_langsung").hide();
+                     $("#simpan_sementara").hide();
+                     $("#batal_penjualan").hide();
+                     $("#penjualan").hide();
+                     $("#transaksi_baru").show();
+
+
+     //pembaruan datatable
+     $('#tabel_tbs_penjualan').DataTable().destroy();
+
+            var dataTable = $('#tabel_tbs_penjualan').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "info":     false,
+            "language": { "emptyTable":     "My Custom Message On Empty Table" },
+            "ajax":{
+              url :"datatable_tbs_penjualan.php", // json datasource
+               type: "post",  // method  , by default get
+              error: function(){  // error handling
+                $(".tbody").html("");
+                $("#tabel_tbs_penjualan").append('<tbody class="tbody"><tr><th colspan="3"></th></tr></tbody>');
+                $("#tableuser_processing").css("display","none");
+                
+              }
+            },
+           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+
+            $(nRow).attr('class','tr-id-'+aData[9]+'');         
+
+            }   
+
+      });
+//pembaruan datatable
+               
+               });
+                 } // else dari cek flafon
+         }); // end fungsi cek flafon
+
+      }
+      else{
+
+             $("#penjualan").show();
+             $("#simpan_sementara").show();
+             $("#cetak_langsung").show();
+             $("#batal_penjualan").show(); 
+             $("#piutang").show();
+             $("#transaksi_baru").hide();
+
+              alert("Tidak Bisa Melakukan Penjualan, Ada Stok Produk Yang Habis");
+
+              $("#tbody-barang-jual").find("tr").remove();
+
+                $.each(result.barang, function(i, item) {
+
+                  var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
+                    
+                  $("#tbody-barang-jual").prepend(tr_barang);
+
+             });
+
+             $("#modal_barang_tidak_bisa_dijual").modal('show');
+
+      } // END IF cek_status_stok_penjualan.php
+
+    });
 
   }
+
   else{
     alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
         window.location.href="formpenjualan.php";
@@ -2206,7 +2516,8 @@ $(document).on('click','.btn-hapus-tbs',function(e){
 
         $(".tr-id-"+id+"").remove();
         $("#pembayaran_penjualan").val('');
-        
+        $("#harga_baru").val('');
+
         }
         });
       }
@@ -2253,7 +2564,7 @@ $(function() {
 
        
        
-          $.post("cek_barang_penjualan.php",{kode_barang: kode_barang}, function(data){
+          $.post("cek_barang_penjualan.php",{kode_barang:kode_barang}, function(data){
           $("#jumlahbarang").val(data);
           });
 
@@ -2431,27 +2742,63 @@ function myFunction(event) {
 
  $.post("cek_subtotal_penjualan.php",{total:total,session_id:session_id,potongan:potongan,tax:tax,},function(data) {
 
-  if (data == "Oke") {
-       $.post("proses_simpan_barang.php",{total2:total2,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input},function(info) {
+  if (data == 1) {
 
-        
-            $("#table-baru").html(info);
-            var no_faktur = info;
-            $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_faktur+'');
-            $("#alert_berhasil").show(); 
-            $("#transaksi_baru").show();           
-            $("#cetak_surat_jalan").show();
-            $("#pembayaran_penjualan").val('');
-            $("#sisa_pembayaran_penjualan").val('');
-            $("#kredit").val('');
-            $("#potongan_penjualan").val('');
-            $("#potongan_persen").val('');
-            $("#tanggal_jt").val('');
-            $("#tax").val('');
+//PERINTAH UNUTK MEN CEK APAKAH STOK PROUDK MASIH ADA ATAU TIDAK MENCUKUPI
+      $.getJSON("cek_status_stok_penjualan.php?session_id="+session_id, function(result){
+
+        if (result.status == 0) {
+
+            $.post("proses_simpan_barang.php",{total2:total2,session_id:session_id,no_faktur:no_faktur,sisa_pembayaran:sisa_pembayaran,kredit:kredit,kode_pelanggan:kode_pelanggan,tanggal_jt:tanggal_jt,total:total,potongan:potongan,potongan_persen:potongan_persen,tax:tax,cara_bayar:cara_bayar,pembayaran:pembayaran,sisa:sisa,sisa_kredit:sisa_kredit,total_hpp:total_hpp,sales:sales,kode_gudang:kode_gudang,keterangan:keterangan,ber_stok:ber_stok,ppn_input:ppn_input},function(info) {
+
             
-       
-       
-       });
+                $("#table-baru").html(info);
+                var no_faktur = info;
+                $("#cetak_surat_jalan").attr('href', 'cetak_penjualan_surat_jalan.php?no_faktur='+no_faktur+'');
+                $("#alert_berhasil").show(); 
+                $("#transaksi_baru").show();           
+                $("#cetak_surat_jalan").show();
+                $("#pembayaran_penjualan").val('');
+                $("#sisa_pembayaran_penjualan").val('');
+                $("#kredit").val('');
+                $("#potongan_penjualan").val('');
+                $("#potongan_persen").val('');
+                $("#tanggal_jt").val('');
+                $("#tax").val('');
+                
+           
+           
+           });
+            
+        }
+        else{
+
+               $("#penjualan").show();
+               $("#simpan_sementara").show();
+               $("#cetak_langsung").show();
+               $("#batal_penjualan").show(); 
+               $("#piutang").show();
+               $("#transaksi_baru").hide();
+
+                alert("Tidak Bisa Melakukan Penjualan, Ada Stok Produk Yang Habis");
+
+                $("#tbody-barang-jual").find("tr").remove();
+
+                  $.each(result.barang, function(i, item) {
+
+                    var tr_barang = "<tr><td>"+ result.barang[i].kode_barang+"</td><td>"+ result.barang[i].nama_barang+"</td><td>"+ result.barang[i].jumlah_jual+"</td><td>"+ result.barang[i].stok+"</td></tr>"
+                      
+                    $("#tbody-barang-jual").prepend(tr_barang);
+
+               });
+
+               $("#modal_barang_tidak_bisa_dijual").modal('show');
+
+        } // END IF cek_status_stok_penjualan.php
+
+      });
+
+
   }
   else{
     alert("Maaf Subtotal Penjualan Tidak Sesuai, Silakan Tunggu Sebentar!");       
@@ -2601,9 +2948,17 @@ $(document).ready(function(){
                 
             }
             
+                      
 
+                      if (jumlah_baru == 0 || jumlah_baru == '') {
+                              alert("Jumlah barang tidak boleh nol atau kosong");
+                              $("#input-jumlah-"+id+"").val(jumlah_lama);
+                              $("#text-jumlah-"+id+"").text(jumlah_lama);
+                              $("#text-jumlah-"+id+"").show();
+                              $("#input-jumlah-"+id+"").attr("type", "hidden");
+                        }
 
-                      if (ber_stok == 'Jasa') {
+                      else if (ber_stok == 'Jasa') {
 
                            $("#text-jumlah-"+id+"").show();
                            $("#text-jumlah-"+id+"").text(jumlah_baru);

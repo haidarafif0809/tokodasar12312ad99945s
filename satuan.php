@@ -5,12 +5,7 @@ include 'navbar.php';
 include 'sanitasi.php';
 include 'db.php';
 
-
-$query = $db->query("SELECT * FROM satuan");
-
-
-
- ?>
+?>
 
 
 
@@ -24,8 +19,7 @@ include 'db.php';
 $pilih_akses_satuan_tambah = $db->query("SELECT satuan_tambah FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND satuan_tambah = '1'");
 $satuan_tambah = mysqli_num_rows($pilih_akses_satuan_tambah);
 
-
-    if ($satuan_tambah > 0){
+if ($satuan_tambah > 0){
 // Trigger the modal with a button -->
 echo '<button type="button" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"> </i> SATUAN</button>';
 
@@ -45,33 +39,26 @@ echo '<button type="button" class="btn btn-info " data-toggle="modal" data-targe
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Tambah Data Satuan</h4>
-      </div>
-      <div class="modal-body">
-<form role="form">
-   <div class="form-group">
-					
-
-					<div class="form-group">
-					<label> Satuan </label><br>
-					<input type="text" name="nama" id="nama_satuan" class="form-control" autocomplete="off" required="" >
-					</div>
-
-     
-   </div>
-   
-   
-   					<button type="submit" id="submit_tambah" class="btn btn-primary"><span class='glyphicon glyphicon-plus'> </span> Tambah</button>
-</form>
-				
-				<div class="alert alert-success" style="display:none">
-				<strong>Berhasil!</strong> Data berhasil Di Tambah
-				</div>
-  </div>
-				<div class ="modal-footer">
-				<button type ="button"  class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-  </div>
+       	 <h4 class="modal-title">Tambah Data Satuan</h4>
+     	 	</div>
+     		 	<div class="modal-body">
+					<form role="form">
+   						<div class="form-group">
+							<div class="form-group">
+							<label> Satuan </label><br>
+							<input type="text" name="nama" id="nama_satuan" class="form-control" autocomplete="off" required="" >
+							</div>
+  						    </div>
+   							<button type="submit" id="submit_tambah" class="btn btn-primary"><span class='glyphicon glyphicon-plus'> </span> Tambah</button>
+					</form>
+						<div class="alert alert-success" style="display:none">
+						<strong>Berhasil!</strong> Data berhasil Di Tambah
+						</div>
+  			    </div>
+				 <div class ="modal-footer">
+				 <button type ="button"  class="btn btn-default" data-dismiss="modal">Close</button>
+			    </div>
+ 	 </div>
 
   </div>
 </div><!-- end of modal buat data  -->
@@ -157,109 +144,52 @@ echo '<button type="button" class="btn btn-info " data-toggle="modal" data-targe
   </div>
 </div><!-- end of modal edit data  -->
 
-<style>
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-th, td {
-    text-align: left;
-    padding: 8px;
-}
-
-tr:nth-child(even){background-color: #f2f2f2}
-
-th {
-    background-color: #4CAF50;
-    color: white;
-}
-</style>
-
 <div class="table-responsive">
 <span id="table-baru">
-<table id="tableuser" class="table table-bordered">
+<table id="tabel_satuan" class="table table-bordered table-sm">
 		<thead>
 			<th> Satuan </th>
-
-
-<?php 
-include 'db.php';
-
-$pilih_akses_satuan_hapus = $db->query("SELECT satuan_hapus FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND satuan_hapus = '1'");
-$satuan_hapus = mysqli_num_rows($pilih_akses_satuan_hapus);
-
-
-    if ($satuan_hapus > 0){
-			echo "<th> Hapus </th>";
-
-		}
-?>
-
-<?php 
-include 'db.php';
-
-$pilih_akses_satuan_edit = $db->query("SELECT satuan_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND satuan_edit = '1'");
-$satuan_edit = mysqli_num_rows($pilih_akses_satuan_edit);
-
-
-    if ($satuan_edit > 0){
-			echo "<th> Edit </th>";
-		}
-?>
-			
+			<th> Hapus </th>
+			<th> Edit </th>		
 		</thead>
-		
-		<tbody>
-		<?php
-
-		
-			while ($data = mysqli_fetch_array($query))
-			{
-			echo "<tr class='tr-id-".$data['id']."'>
-			<td>". $data['nama'] ."</td>";
-
-
-include 'db.php';
-
-$pilih_akses_satuan_hapus = $db->query("SELECT satuan_hapus FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND satuan_hapus = '1'");
-$satuan_hapus = mysqli_num_rows($pilih_akses_satuan_hapus);
-
-
-    if ($satuan_hapus > 0){
-			echo "<td> <button class='btn btn-danger btn-hapus' data-id='". $data['id'] ."' data-satuan='". $data['nama'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>";
-		}
-
-include 'db.php';
-
-$pilih_akses_satuan_edit = $db->query("SELECT satuan_edit FROM otoritas_master_data WHERE id_otoritas = '$_SESSION[otoritas_id]' AND satuan_edit = '1'");
-$satuan_edit = mysqli_num_rows($pilih_akses_satuan_edit);
-
-
-    if ($satuan_edit > 0){
-			
-
-			echo "<td><button class='btn btn-success btn-edit' data-satuan='". $data['nama'] ."' data-id='". $data['id'] ."' > <span class='glyphicon glyphicon-edit'> </span> Edit </button> </td>
-
-			</tr>";
-		}
-			}
-		?>
-		</tbody>
-
 	</table>
 </span>
 </div>
 </div>
 
+ <script type="text/javascript">
+  // ajax table penjualan
+    $(document).ready(function(){
 
-							 
+        $("#tabel_satuan").DataTable().destroy();
+          var dataTable = $('#tabel_satuan').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_satuan.php", // json datasource
+            "data": function ( d ) {
+                  d.status = status;
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#tabel_satuan").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[3]+'');
+            },
 
+      }); 
+  });
+</script>
 
 <script>
     $(document).ready(function(){
-
-
 //fungsi untuk menambahkan data
 		$("#submit_tambah").click(function(){
 		var nama = $("#nama_satuan").val();
@@ -279,11 +209,35 @@ $satuan_edit = mysqli_num_rows($pilih_akses_satuan_edit);
 		if (data != '') {
 		$("#nama_satuan").val('');
 		$(".alert").show('fast');
-		$("#table-baru").load('tabel-satuan.php');
 		
 		setTimeout(tutupalert, 2000);
 		$(".modal").modal("hide");
 		}
+
+		        $("#tabel_satuan").DataTable().destroy();
+          var dataTable = $('#tabel_satuan').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_satuan.php", // json datasource
+            "data": function ( d ) {
+                  d.status = status;
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#tabel_satuan").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[3]+'');
+            },
+
+      }); 
 		
 		
 		});
@@ -329,7 +283,7 @@ $(document).on('click', '#btn_jadi_hapus', function (e) {
 // end fungsi hapus data
 
 //fungsi edit data 
-		$(".btn-edit").click(function(){
+		$(document).on('click', '.btn-edit', function (e) {
 		
 		$("#modal_edit").modal('show');
 		var nama = $(this).attr("data-satuan"); 
@@ -347,10 +301,34 @@ $(document).on('click', '#btn_jadi_hapus', function (e) {
 		$.post("updatesatuan.php",{id:id,nama:nama},function(data){
 		if (data == 'sukses') {
 		$(".alert").show('fast');
-		$("#table-baru").load('tabel-satuan.php');
-		setTimeout(tutupmodal, 2000);
-		setTimeout(tutupalert, 2000);
+		$("#modal_edit").modal('hide');
+
 		
+		        $("#tabel_satuan").DataTable().destroy();
+          var dataTable = $('#tabel_satuan').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax":{
+            url :"datatable_satuan.php", // json datasource
+            "data": function ( d ) {
+                  d.status = status;
+                  // d.custom = $('#myInput').val();
+                  // etc
+              },
+            type: "post",  // method  , by default get
+            error: function(){  // error handling
+              $(".employee-grid-error").html("");
+              $("#tabel_satuan").append('<tbody class="employee-grid-error"><tr><th colspan="3">Data Tidak Ditemukan.. !!</th></tr></tbody>');
+              $("#employee-grid_processing").css("display","none");
+              
+            }
+          },
+              "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+              $(nRow).attr('class','tr-id-'+aData[3]+'');
+            },
+
+      }); 
+
 		}
 		});
 		});
@@ -375,14 +353,6 @@ $(document).on('click', '#btn_jadi_hapus', function (e) {
 		}
 		
 
-
-</script>
-
-<script type="text/javascript">
-	
-  $(function () {
-  $(".table").dataTable({ordering :false });
-  });
 
 </script>
 

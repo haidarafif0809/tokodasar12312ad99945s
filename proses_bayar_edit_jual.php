@@ -29,26 +29,37 @@ $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
             
             {
 
-            $select_hpp_keluar = $db->query("SELECT * FROM hpp_keluar WHERE no_faktur = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' AND sisa_barang != jumlah_kuantitas ");
+            $select_hpp_keluar = $db->query("SELECT kode_barang FROM hpp_keluar WHERE no_faktur = '$nomor_faktur' AND kode_barang = '$data[kode_barang]' AND sisa_barang != jumlah_kuantitas ");
             $row_hpp_keluar = mysqli_num_rows($select_hpp_keluar);
 
             if ($row_hpp_keluar == 0) {
 
                 $delete_detail_penjualan = $db->query("DELETE FROM detail_penjualan WHERE no_faktur = '$nomor_faktur' AND kode_barang = '$data[kode_barang]'");
             
-            $pilih_konversi = $db->query("SELECT  sk.konversi * $data[jumlah_barang] AS jumlah_konversi, $data[harga] * $data[jumlah_barang] / sk.konversi AS harga_konversi, sk.id_satuan, b.satuan FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$data[satuan]' AND kode_produk = '$data[kode_barang]'");
+            $pilih_konversi = $db->query("SELECT  sk.konversi * $data[jumlah_barang] AS jumlah_konversi,  $data[subtotal] / ($data[jumlah_barang] * sk.konversi) AS harga_konversi, sk.id_satuan, b.satuan FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$data[satuan]' AND kode_produk = '$data[kode_barang]'");
             $data_konversi = mysqli_fetch_array($pilih_konversi);
-            
-            if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") {
-            $harga = $data_konversi['harga_konversi'];
-            $jumlah_barang = $data_konversi['jumlah_konversi'];
-            $satuan = $data_konversi['satuan'];
+            $data_rows = mysqli_num_rows($pilih_konversi);
+
+
+             if ($data_rows > 0) {
+                if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") {
+                $harga = $data_konversi['harga_konversi'];
+                $jumlah_barang = $data_konversi['jumlah_konversi'];
+                $satuan = $data_konversi['satuan'];
+                }
+                else{
+                $harga = $data['harga'];
+                $jumlah_barang = $data['jumlah_barang'];
+                $satuan = $data['satuan'];
+                }
+
             }
             else{
             $harga = $data['harga'];
             $jumlah_barang = $data['jumlah_barang'];
             $satuan = $data['satuan'];
             }
+
                $query2 = "INSERT INTO detail_penjualan (no_faktur, tanggal, jam, kode_barang, nama_barang, jumlah_barang, asal_satuan,satuan, harga, subtotal, potongan, tax, sisa)
                VALUES ('$data[no_faktur]', '$tanggal','$jam_sekarang', '$data[kode_barang]', '$data[nama_barang]', '$jumlah_barang', '$satuan','$data[satuan]', '$harga', '$data[subtotal]', '$data[potongan]', '$data[tax]', '$jumlah_barang')";
 
@@ -61,14 +72,11 @@ $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
                        
             } 
 
-            else {
-                
-            }
-            
-            
-    
+            }//end while 
 
-            }
+
+            $select_setting_akun = $db->query("SELECT * FROM setting_akun");
+            $ambil_setting = mysqli_fetch_array($select_setting_akun);
 
             if ($sisa_kredit == 0 ) 
             
@@ -76,12 +84,12 @@ $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
                 echo "1";
             
             // buat prepared statements
-            $stmt2 = $db->prepare("UPDATE penjualan SET no_faktur = ?, kode_gudang = ?, kode_pelanggan = ?, total = ?, tanggal = ?, jam = ?, user = ?, sales = ?, status = 'Lunas', potongan = ?, tax = ?, sisa = ?, kredit='0', cara_bayar = ?, tunai = ?, status_jual_awal = 'Tunai', ppn = ? WHERE no_faktur = ?");
+            $stmt2 = $db->prepare("UPDATE penjualan SET no_faktur = ?, kode_gudang = ?, kode_pelanggan = ?, total = ?, tanggal = ?, jam = ?, user = ?, sales = ?, status = 'Lunas', potongan = ?, potongan_persen = ? , tax = ?, sisa = ?, kredit='0', cara_bayar = ?, tunai = ?, status_jual_awal = 'Tunai', ppn = ? WHERE no_faktur = ?");
             
             
             // hubungkan "data" dengan prepared statements
-            $stmt2->bind_param("sssissssiiisiss", 
-            $nomor_faktur, $kode_gudang, $kode_pelanggan, $total, $tanggal, $jam_sekarang , $user, $sales, $potongan, $tax, $sisa, $cara_bayar, $pembayaran, $ppn_input, $nomor_faktur);
+            $stmt2->bind_param("sssissssisiisiss", 
+            $nomor_faktur, $kode_gudang, $kode_pelanggan, $total, $tanggal, $jam_sekarang , $user, $sales, $potongan,$potongan_persen, $tax, $sisa, $cara_bayar, $pembayaran, $ppn_input, $nomor_faktur);
 
             
             // siapkan "data" query
@@ -90,6 +98,7 @@ $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
             $total = angkadoang($_POST['total']);
             $total2 = angkadoang($_POST['total2']);
             $potongan = angkadoang($_POST['potongan']);
+            $potongan_persen = stringdoang($_POST['potongan_persen']);
             $tax = angkadoang($_POST['tax']);
             $ppn_input = stringdoang($_POST['ppn_input']);
             $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
@@ -115,9 +124,6 @@ $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
             
             $stmt2->execute();    
 
-
-$select_setting_akun = $db->query("SELECT * FROM setting_akun");
-$ambil_setting = mysqli_fetch_array($select_setting_akun);
 
 $select = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_keluar WHERE no_faktur = '$nomor_faktur'");
 $ambil = mysqli_fetch_array($select);
@@ -206,12 +212,12 @@ if ($potongan != "" || $potongan != 0 ) {
 
             {
             echo "2";
-            $stmt2 = $db->prepare("UPDATE penjualan SET no_faktur = ?,  kode_gudang = ?, kode_pelanggan = ?, total = ?, tanggal = ?, jam = ?, tanggal_jt = ?, user = ?, sales = ?, status = 'Piutang', potongan = ?, tax = ?, sisa = '0', kredit = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Kredit', ppn = ? WHERE no_faktur = ?");
+            $stmt2 = $db->prepare("UPDATE penjualan SET no_faktur = ?,  kode_gudang = ?, kode_pelanggan = ?, total = ?, tanggal = ?, jam = ?, tanggal_jt = ?, user = ?, sales = ?, status = 'Piutang', potongan = ?,potongan_persen = ? , tax = ?, sisa = '0', kredit = ?, cara_bayar = ?, tunai = ?, status_jual_awal = 'Kredit', ppn = ? WHERE no_faktur = ?");
             
             
             // hubungkan "data" dengan prepared statements
-            $stmt2->bind_param("sssisssssiiisiss", 
-            $nomor_faktur, $kode_gudang, $kode_pelanggan, $total , $tanggal, $jam_sekarang, $tanggal_jt, $user, $sales, $potongan, $tax, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input, $nomor_faktur);
+            $stmt2->bind_param("sssisssssisiisiss", 
+            $nomor_faktur, $kode_gudang, $kode_pelanggan, $total , $tanggal, $jam_sekarang, $tanggal_jt, $user, $sales, $potongan, $potongan_persen , $tax, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input, $nomor_faktur);
             
             // siapkan "data" query
             $nomor_faktur = stringdoang($_POST['no_faktur']);
@@ -219,6 +225,8 @@ if ($potongan != "" || $potongan != 0 ) {
             $total = angkadoang($_POST['total']);
             $total2 = angkadoang($_POST['total2']);
             $potongan = angkadoang($_POST['potongan']);
+            $potongan_persen = stringdoang($_POST['potongan_persen']);
+
             $tax = angkadoang($_POST['tax']);
             $ppn_input = stringdoang($_POST['ppn_input']);
             $tanggal_jt = angkadoang($_POST['tanggal_jt']);
@@ -235,12 +243,6 @@ if ($potongan != "" || $potongan != 0 ) {
             // jalankan query
             $stmt2->execute(); 
             
-
-
-              
-$select_setting_akun = $db->query("SELECT * FROM setting_akun");
-$ambil_setting = mysqli_fetch_array($select_setting_akun);
-
 $select = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_keluar WHERE no_faktur = '$nomor_faktur'");
 $ambil = mysqli_fetch_array($select);
 
@@ -326,80 +328,9 @@ if ($potongan != "" || $potongan != 0 ) {
 }
 
 
-    // cek query
-if (!$stmt2) 
-      {
-        die('Query Error : '.$db->errno.
-          ' - '.$db->error);
-      }
+  $perintah2 = $db->query("DELETE FROM tbs_penjualan WHERE no_faktur = '$nomor_faktur'");
 
-else 
-      {
-    
-      }
-            
-            
-            
-            
-
-       
-// BOT STAR AUTO      
-
-              $total = angkadoang($_POST['total']);
-
-                    
-      $url = "https://api.telegram.org/bot233675698:AAEbTKDcPH446F-bje4XIf1YJ0kcmoUGffA/sendMessage?chat_id=-129639785&text=";
-      $text = urlencode("No Faktur : ".$nomor_faktur."\n");
-      $pesanan_jadi = "";
-      $ambil_tbs1 = $db->query("SELECT * FROM tbs_penjualan WHERE no_faktur = '$nomor_faktur' ORDER BY id ASC");
-      
- while ($data12 = mysqli_fetch_array($ambil_tbs1))
-
- {
-            $pesanan =  $data12['nama_barang']." - ".$data12['jumlah_barang']." - ".$data12['harga']."\n";
-      $pesanan_jadi = $pesanan_jadi.$pesanan;
-      
-      $ambil_tbs2 = $db->query("SELECT kode_barang FROM tbs_penjualan WHERE no_faktur = '$nomor_faktur' ORDER BY id DESC Limit 1");
-      $ambil_tbs3 = mysqli_fetch_array($ambil_tbs2);
-      $data_terakhir = $ambil_tbs3['kode_barang'];
-      
-      if ($data12['kode_barang'] == $data_terakhir ) 
-      {
-      $pesanan_jadi = $pesanan_jadi."Subtotal : ".$total;
-      $pesanan_terakhir =  urlencode($pesanan_jadi);
-      $url = $url.$text.$pesanan_terakhir;
-      
-      $url = str_replace(" ", "%20", $url);
-      
-
-      
-      }
-
-
-     
-     
-}
-
-
-    
-            
-            $perintah2 = $db->query("DELETE FROM tbs_penjualan WHERE no_faktur = '$nomor_faktur'");
-
-
-
-    // cek query
-if (!$stmt2) {
-   die('Query Error : '.$db->errno.
-   ' - '.$db->error);
-}
-else {
-
-}
-
-
-
-
-    echo "Success";
+     echo "Success";
 
 //Untuk Memutuskan Koneksi Ke Database
 mysqli_close($db);   

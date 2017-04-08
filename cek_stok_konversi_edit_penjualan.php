@@ -2,12 +2,16 @@
 
 
 include 'db.php';
+include 'sanitasi.php';
+include 'persediaan.function.php';
 
- $satuan_konversi = $_POST['satuan_konversi'];
- $jumlah_barang = $_POST['jumlah_barang'];
- $kode_barang = $_POST['kode_barang'];
- $id_produk = $_POST['id_produk'];
- $no_faktur = $_POST['no_faktur'];
+
+ $satuan_konversi = stringdoang($_POST['satuan_konversi']);
+ $jumlah_barang = stringdoang($_POST['jumlah_barang']);
+ $kode_barang = stringdoang($_POST['kode_barang']);
+ $id_produk = stringdoang($_POST['id_produk']);
+ $no_faktur = stringdoang($_POST['no_faktur']);
+
 
 
 $queryy = $db->query("SELECT SUM(sisa) AS total_sisa FROM hpp_masuk WHERE kode_barang = '$kode_barang' ");
@@ -17,7 +21,7 @@ $dataaa = mysqli_fetch_array($queryy);
 $queryyy = $db->query("SELECT IFNULL(dp.jumlah_barang,0) AS jumlah_detail ,IFNULL(tp.jumlah_barang,0) AS jumlah_tbs FROM detail_penjualan dp LEFT JOIN tbs_penjualan tp ON dp.no_faktur = tp.no_faktur WHERE dp.kode_barang = '$kode_barang' AND dp.no_faktur = '$no_faktur'");
 $data000 = mysqli_fetch_array($queryyy);
 
-$stok_barang = $dataaa['total_sisa'];
+$stok_barang = cekStokHpp($kode_barang);
 
 $sisa_barang = ($stok_barang + $data000['jumlah_detail']) - $data000['jumlah_tbs'];
 

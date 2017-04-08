@@ -5,7 +5,7 @@ include 'db.php';
 include 'sanitasi.php';
 
 // mengirim data no faktur menggunakan metode POST
- $no_faktur = $_POST['no_faktur'];
+ $no_faktur = stringdoang($_POST['no_faktur']);
 
 
 // menampilakn hasil penjumlah subtotal ALIAS total penjualan dari tabel tbs_penjualan berdasarkan data no faktur
@@ -16,9 +16,8 @@ include 'sanitasi.php';
  $total = $data['total_penjualan'];
 
 
-$a =  intval($total);
+echo  $total;
 
-echo rp($a);
 
         //Untuk Memutuskan Koneksi Ke Database
 
