@@ -522,14 +522,22 @@ $total_akhir_hpp = $total_akhir_hpp + $total_hpp;
         echo "<tr>
 			<td>". $data1['kode_barang'] ."</td>
 			<td>". $data1['nama_barang'] ."</td>
-			<td class='edit-beli' data-id='".$data1['id']."'><span id='text-beli-".$data1['id']."'>". rp($data1['harga_beli']) ."</span> <input type='hidden' id='input-beli-".$data1['id']."' value='".$data1['harga_beli']."' class='input_beli' data-id='".$data1['id']."' autofocus=''> </td>
+			<td class='edit-beli' data-id='".$data1['id']."'><span id='text-beli-".$data1['id']."'>". rp($data1['harga_beli']) ."</span> 
+            <input type='hidden' id='input-beli-".$data1['id']."' value='".$data1['harga_beli']."' class='input_beli' 
+            data-id='".$data1['id']."' data-kode='".$data1['kode_barang']."' autofocus=''> </td>
 
 			<td>".persen($f)."</td>
-			<td class='edit-jual' data-id='".$data1['id']."'><span id='text-jual-".$data1['id']."'>". rp($data1['harga_jual']) ."</span> <input type='hidden' id='input-jual-".$data1['id']."' value='".$data1['harga_jual']."' class='input_jual' data-id='".$data1['id']."' autofocus=''></td>
+			<td class='edit-jual' data-id='".$data1['id']."'><span id='text-jual-".$data1['id']."'>". rp($data1['harga_jual']) ."</span> 
+            <input type='hidden' id='input-jual-".$data1['id']."' value='".$data1['harga_jual']."' class='input_jual' 
+            data-id='".$data1['id']."' data-kode='".$data1['kode_barang']."' autofocus=''></td>
 
-                                            <td class='edit-jual-2' data-id-2='".$data1['id']."'><span id='text-jual-2-".$data1['id']."'>". rp($data1['harga_jual2']) ."</span> <input type='hidden' id='input-jual-2-".$data1['id']."' value='".$data1['harga_jual2']."' class='input_jual_2' data-id-2='".$data1['id']."' autofocus=''></td>
+            <td class='edit-jual-2' data-id-2='".$data1['id']."'><span id='text-jual-2-".$data1['id']."'>". rp($data1['harga_jual2']) ."</span> 
+            <input type='hidden' id='input-jual-2-".$data1['id']."' value='".$data1['harga_jual2']."' class='input_jual_2' 
+            data-id-2='".$data1['id']."' data-kode='".$data1['kode_barang']."' autofocus=''></td>
 
-                                            <td class='edit-jual-3' data-id-3='".$data1['id']."'><span id='text-jual-3-".$data1['id']."'>". rp($data1['harga_jual3']) ."</span> <input type='hidden' id='input-jual-3-".$data1['id']."' value='".$data1['harga_jual3']."' class='input_jual_3' data-id-3='".$data1['id']."' autofocus=''></td>";
+            <td class='edit-jual-3' data-id-3='".$data1['id']."'><span id='text-jual-3-".$data1['id']."'>". rp($data1['harga_jual3']) ."</span> 
+            <input type='hidden' id='input-jual-3-".$data1['id']."' value='".$data1['harga_jual3']."' class='input_jual_3' 
+            data-id-3='".$data1['id']."' data-kode='".$data1['kode_barang']."' autofocus=''></td>";
 
             echo "<td align='right'>". rp($total_hpp) ."</td>";
 
@@ -546,17 +554,19 @@ else {
 }
 
 // SATUAN
-			echo "<td class='edit-satuan' data-id='".$data1['id']."'><span id='text-satuan-".$data1['id']."'>". $data1['nama'] ."</span> <select style='display:none' id='select-satuan-".$data1['id']."' value='".$data1['id']."' class='select-satuan' data-id='".$data1['id']."' autofocus=''>";
+echo "<td class='edit-satuan' data-id='".$data1['id']."'><span id='text-satuan-".$data1['id']."'>". $data1['nama'] ."</span> 
+<select style='display:none' id='select-satuan-".$data1['id']."' value='".$data1['id']."' class='select-satuan' 
+data-id='".$data1['id']."' data-kode='".$data1['kode_barang']."' autofocus=''>";
 
 
 echo '<option value="'. $data1['satuan'] .'"> '. $data1['nama'] .'</option>';
 
-     $query2 = $db->query("SELECT * FROM satuan");
+     $query2 = $db->query("SELECT id,nama FROM satuan");
 
     while($data2 = mysqli_fetch_array($query2))
     {
     
-   echo ' <option value="'.$data2['id'] .'">'.$data2["nama"] .'</option>';
+   echo ' <option id="nama-satuan-'.$data2['id'].'" data-nama="'.$data2['nama'].'" value="'.$data2['id'] .'">'.$data2["nama"] .'</option>';
     }
 
 
@@ -565,12 +575,14 @@ echo '<option value="'. $data1['satuan'] .'"> '. $data1['nama'] .'</option>';
 
 
 //KATEGORI
-		echo "<td class='edit-kategori' data-id='".$data1['id']."'><span id='text-kategori-".$data1['id']."'>". $data1['kategori'] ."</span> <select style='display:none' id='select-kategori-".$data1['id']."' value='".$data1['kategori']."' class='select-kategori' data-id='".$data1['id']."' autofocus=''>";
+echo "<td class='edit-kategori' data-id='".$data1['id']."'><span id='text-kategori-".$data1['id']."'>". $data1['kategori'] ."</span> 
+<select style='display:none' id='select-kategori-".$data1['id']."' value='".$data1['kategori']."' 
+class='select-kategori' data-id='".$data1['id']."' data-kode='".$data1['kode_barang']."' autofocus=''>";
 
 
 echo '<option value="'. $data1['kategori'] .'"> '. $data1['kategori'] .'</option>';
 
-     $query2 = $db->query("SELECT * FROM kategori");
+     $query2 = $db->query("SELECT nama_kategori FROM kategori");
 
     while($data2 = mysqli_fetch_array($query2))
     {
@@ -715,7 +727,7 @@ $(document).ready(function() {
                              <script type="text/javascript">
                                  
 //fungsi hapus data 
-                                $(".btn-hapus").click(function(){
+                                $(document).on('click','.btn-hapus',function(e){
                                 var nama = $(this).attr("data-nama");
                                 var id = $(this).attr("data-id");
                                 $("#data_barang").val(nama);
@@ -725,19 +737,16 @@ $(document).ready(function() {
                                 
                                 });
                                 
-                                
-                                $("#btn_jadi_hapus").click(function(){
-                                
+                                $(document).on('click','#btn_jadi_hapus',function(e){
+                               
                                 var id = $("#id_hapus").val();
-                                
-                                $.post("hapusbarang.php",{id:id},function(data){
-                                if (data != "") {
-                                $("#table_baru").load('tabel-barang.php');
+                                var kode_barang = $(".tr-id-"+id).attr("data-kode");
+
                                 $("#modal_hapus").modal('hide');
-                                
-                                }
-                                
-                                
+                                $(".tr-id-"+id).remove();
+
+                                $.post("hapusbarang.php",{id:id,kode_barang:kode_barang},function(data){
+                                                            
                                 });
                                 
                                 });
@@ -748,14 +757,9 @@ $(document).ready(function() {
                              </script>
 
 
-
-
-
-
-
                              <script type="text/javascript">
                                  
-                                 $(".edit-beli").dblclick(function(){
+                                $(document).on('dblclick','.edit-beli',function(e){
 
                                     var id = $(this).attr("data-id");
 
@@ -765,17 +769,19 @@ $(document).ready(function() {
 
                                  });
 
-                                 $(".input_beli").blur(function(){
+                                $(document).on('blur','.input_beli',function(e){
 
                                     var id = $(this).attr("data-id");
 
                                     var input_beli = $(this).val();
 
+                                    var kode_barang = $("#input-beli-"+id).attr("data-kode");
 
-                                    $.post("update_barang.php",{id:id, input_beli:input_beli,jenis_edit:"harga_beli"},function(data){
+
+                                    $.post("update_barang.php",{id:id, input_beli:input_beli,kode_barang:kode_barang,jenis_edit:"harga_beli"},function(data){
 
                                     $("#text-beli-"+id+"").show();
-                                    $("#text-beli-"+id+"").text(input_beli);
+                                    $("#text-beli-"+id+"").text(tandaPemisahTitik(input_beli));
 
                                     $("#input-beli-"+id+"").attr("type", "hidden");           
 
@@ -788,7 +794,7 @@ $(document).ready(function() {
 
                              <script type="text/javascript">
                                  
-                                 $(".edit-jual").dblclick(function(){
+                                $(document).on('dblclick','.edit-jual',function(e){
 
                                     var id = $(this).attr("data-id");
 
@@ -798,17 +804,19 @@ $(document).ready(function() {
 
                                  });
 
-                                 $(".input_jual").blur(function(){
+                                $(document).on('blur','.input_jual',function(e){
 
                                     var id = $(this).attr("data-id");
 
                                     var input_jual = $(this).val();
 
+                                    var kode_barang = $("#input-jual-"+id).attr("data-kode");
 
-                                    $.post("update_barang.php",{id:id, input_jual:input_jual,jenis_edit:"harga_jual"},function(data){
+
+                                    $.post("update_barang.php",{id:id, input_jual:input_jual,kode_barang:kode_barang,jenis_edit:"harga_jual"},function(data){
 
                                     $("#text-jual-"+id+"").show();
-                                    $("#text-jual-"+id+"").text(input_jual);
+                                    $("#text-jual-"+id+"").text(tandaPemisahTitik(input_jual));
 
                                     $("#input-jual-"+id+"").attr("type", "hidden");           
 
@@ -819,7 +827,7 @@ $(document).ready(function() {
 
                              <script type="text/javascript">
                                  
-                                 $(".edit-jual-2").dblclick(function(){
+                                $(document).on('dblclick','.edit-jual-2',function(e){
 
                                     var id = $(this).attr("data-id-2");
 
@@ -829,17 +837,19 @@ $(document).ready(function() {
 
                                  });
 
-                                 $(".input_jual_2").blur(function(){
+                                $(document).on('blur','.input_jual_2',function(e){
 
                                     var id = $(this).attr("data-id-2");
 
                                     var input_jual_2 = $(this).val();
 
+                                    var kode_barang = $("#input-jual-2-"+id).attr("data-kode");
 
-                                    $.post("update_barang.php",{id:id, input_jual_2:input_jual_2,jenis_edit_2:"harga_jual_2"},function(data){
+
+                                    $.post("update_barang.php",{id:id, input_jual_2:input_jual_2,kode_barang:kode_barang,jenis_edit:"harga_jual_2"},function(data){
 
                                     $("#text-jual-2-"+id+"").show();
-                                    $("#text-jual-2-"+id+"").text(input_jual_2);
+                                    $("#text-jual-2-"+id+"").text(tandaPemisahTitik(input_jual_2));
 
                                     $("#input-jual-2-"+id+"").attr("type", "hidden");           
 
@@ -850,7 +860,7 @@ $(document).ready(function() {
 
                             <script type="text/javascript">
                                  
-                                 $(".edit-jual-3").dblclick(function(){
+                                $(document).on('dblclick','.edit-jual-3',function(e){
 
                                     var id = $(this).attr("data-id-3");
 
@@ -860,17 +870,19 @@ $(document).ready(function() {
 
                                  });
 
-                                 $(".input_jual_3").blur(function(){
+                                $(document).on('blur','.input_jual_3',function(e){
 
                                     var id = $(this).attr("data-id-3");
 
                                     var input_jual_3 = $(this).val();
 
+                                    var kode_barang = $("#input-jual-3-"+id).attr("data-kode");
 
-                                    $.post("update_barang.php",{id:id, input_jual_3:input_jual_3,jenis_edit_3:"harga_jual_3"},function(data){
+
+                                    $.post("update_barang.php",{id:id, input_jual_3:input_jual_3,kode_barang:kode_barang,jenis_edit:"harga_jual_3"},function(data){
 
                                     $("#text-jual-3-"+id+"").show();
-                                    $("#text-jual-3-"+id+"").text(input_jual_3);
+                                    $("#text-jual-3-"+id+"").text(tandaPemisahTitik(input_jual_3));
 
                                     $("#input-jual-3-"+id+"").attr("type", "hidden");           
 
@@ -882,7 +894,8 @@ $(document).ready(function() {
 
                               <script type="text/javascript">
                                  
-                                 $(".edit-kategori").dblclick(function(){
+                                $(document).on('dblclick','.edit-kategori',function(e){
+
 
                                     var id = $(this).attr("data-id");
 
@@ -892,14 +905,16 @@ $(document).ready(function() {
 
                                  });
 
-                                 $(".select-kategori").blur(function(){
+                                $(document).on('blur','.select-kategori',function(e){
 
                                     var id = $(this).attr("data-id");
 
                                     var select_kategori = $(this).val();
 
+                                    var kode_barang = $("#select-kategori-"+id).attr("data-kode");
 
-                                    $.post("update_barang.php",{id:id, select_kategori:select_kategori,jenis_select:"kategori"},function(data){
+
+                                    $.post("update_barang.php",{id:id, select_kategori:select_kategori,kode_barang:kode_barang,jenis_edit:"kategori"},function(data){
 
                                     $("#text-kategori-"+id+"").show();
                                     $("#text-kategori-"+id+"").text(select_kategori);
@@ -914,7 +929,7 @@ $(document).ready(function() {
 
                               <script type="text/javascript">
                                  
-                                 $(".edit-gudang").dblclick(function(){
+                                $(document).on('dblclick','.edit-gudang',function(e){
 
                                     var id = $(this).attr("data-id");
 
@@ -924,14 +939,15 @@ $(document).ready(function() {
 
                                  });
 
-                                 $(".select-gudang").blur(function(){
+                                $(document).on('blur','.select-gudang',function(e){
 
                                     var id = $(this).attr("data-id");
 
                                     var select_gudang = $(this).val();
-                                    var nama_gudang = $(this).attr('');
 
-                                    $.post("update_barang.php",{id:id, select_gudang:select_gudang,jenis_select:"gudang"},function(data){
+                                    var kode_barang = $("#select-gudang-"+id).attr("data-kode");
+
+                                    $.post("update_barang.php",{id:id, select_gudang:select_gudang,kode_barang:kode_barang,jenis_edit:"gudang"},function(data){
 
                                     $("#text-gudang-"+id+"").show();
                                     $("#text-gudang-"+id+"").text(select_gudang);
@@ -947,7 +963,7 @@ $(document).ready(function() {
 
                              <script type="text/javascript">
                                  
-                                 $(".edit-satuan").dblclick(function(){
+                                $(document).on('dblclick','.edit-satuan',function(e){
 
                                     var id = $(this).attr("data-id");
 
@@ -957,17 +973,19 @@ $(document).ready(function() {
 
                                  });
 
-                                 $(".select-satuan").blur(function(){
+                                $(document).on('blur','.select-satuan',function(e){
 
                                     var id = $(this).attr("data-id");
 
                                     var select_satuan = $(this).val();
+                                    var kode_barang = $("#select-satuan-"+id).attr("data-kode");
+                                    var nama_satuan = $("#nama-satuan-"+select_satuan).attr("data-nama");
 
 
-                                    $.post("update_barang.php",{id:id, select_satuan:select_satuan,jenis_select:"satuan"},function(data){
+                                    $.post("update_barang.php",{id:id, select_satuan:select_satuan,kode_barang:kode_barang,jenis_edit:"satuan"},function(data){
 
                                     $("#text-satuan-"+id+"").show();
-                                    $("#text-satuan-"+id+"").text(select_satuan);
+                                    $("#text-satuan-"+id+"").text(nama_satuan);
 
                                     $("#select-satuan-"+id+"").hide();           
 
@@ -980,7 +998,7 @@ $(document).ready(function() {
 
                              <script type="text/javascript">
                                  
-                                 $(".edit-status").dblclick(function(){
+                                $(document).on('dblclick','.edit-status',function(e){
 
                                     var id = $(this).attr("data-id");
 
@@ -990,14 +1008,16 @@ $(document).ready(function() {
 
                                  });
 
-                                 $(".select-status").blur(function(){
+                                $(document).on('blur','.select-status',function(e){
 
                                     var id = $(this).attr("data-id");
 
                                     var select_status = $(this).val();
 
+                                    var kode_barang = $("#select-status-"+id).attr("data-kode");
 
-                                    $.post("update_barang.php",{id:id, select_status:select_status,jenis_select:"status"},function(data){
+
+                                    $.post("update_barang.php",{id:id, select_status:select_status,kode_barang:kode_barang,jenis_edit:"status"},function(data){
 
                                     $("#text-status-"+id+"").show();
                                     $("#text-status-"+id+"").text(select_status);
@@ -1012,7 +1032,7 @@ $(document).ready(function() {
 
                              <script type="text/javascript">
                                  
-                                 $(".edit-berstok").dblclick(function(){
+                                $(document).on('dblclick','.edit-berstok',function(e){
 
                                     var id = $(this).attr("data-id");
 
@@ -1022,14 +1042,15 @@ $(document).ready(function() {
 
                                  });
 
-                                 $(".select-berstok").blur(function(){
+                                $(document).on('blur','.select-berstok',function(e){
 
                                     var id = $(this).attr("data-id");
 
                                     var select_berstok = $(this).val();
+                                    var kode_barang = $("#select-berstok-"+id).attr("data-kode");
 
 
-                                    $.post("update_barang.php",{id:id, select_berstok:select_berstok,jenis_select:"berkaitan_dgn_stok"},function(data){
+                                    $.post("update_barang.php",{id:id, select_berstok:select_berstok,kode_barang:kode_barang,jenis_edit:"berkaitan_dgn_stok"},function(data){
 
                                     $("#text-berstok-"+id+"").show();
                                     $("#text-berstok-"+id+"").text(select_berstok);
@@ -1045,7 +1066,7 @@ $(document).ready(function() {
 
                               <script type="text/javascript">
                                  
-                                 $(".edit-suplier").dblclick(function(){
+                                $(document).on('dblclick','.edit-suplier',function(e){
 
                                     var id = $(this).attr("data-id");
 
@@ -1055,14 +1076,15 @@ $(document).ready(function() {
 
                                  });
 
-                                 $(".select-suplier").blur(function(){
+                                $(document).on('blur','.select-suplier',function(e){
 
                                     var id = $(this).attr("data-id");
 
                                     var select_suplier = $(this).val();
 
+                                    var kode_barang = $("#select-suplier-"+id).attr("data-kode");
 
-                                    $.post("update_barang.php",{id:id, select_suplier:select_suplier,jenis_select:"suplier"},function(data){
+                                    $.post("update_barang.php",{id:id, select_suplier:select_suplier,kode_barang:kode_barang,jenis_edit:"suplier"},function(data){
 
                                     $("#text-suplier-"+id+"").show();
                                     $("#text-suplier-"+id+"").text(select_suplier);
@@ -1077,7 +1099,7 @@ $(document).ready(function() {
 
                              <script type="text/javascript">
                                  
-                                 $(".edit-limit").dblclick(function(){
+                                $(document).on('dblclick','.edit-limit',function(e){
 
                                     var id = $(this).attr("data-id");
 
@@ -1087,14 +1109,15 @@ $(document).ready(function() {
 
                                  });
 
-                                 $(".input_limit").blur(function(){
+                                $(document).on('blur','.input_limit',function(e){
 
                                     var id = $(this).attr("data-id");
 
                                     var input_limit = $(this).val();
 
+                                    var kode_barang = $("#input-limit-"+id).attr("data-kode");
 
-                                    $.post("update_barang.php",{id:id, input_limit:input_limit,jenis_limit:"limit_stok"},function(data){
+                                    $.post("update_barang.php",{id:id, input_limit:input_limit,kode_barang:kode_barang,jenis_edit:"limit_stok"},function(data){
 
                                     $("#text-limit-"+id+"").show();
                                     $("#text-limit-"+id+"").text(input_limit);
@@ -1108,7 +1131,7 @@ $(document).ready(function() {
 
                              <script type="text/javascript">
                                  
-                                 $(".edit-over").dblclick(function(){
+                                $(document).on('dblclick','.edit-over',function(e){
 
                                     var id = $(this).attr("data-id");
 
@@ -1118,14 +1141,15 @@ $(document).ready(function() {
 
                                  });
 
-                                 $(".input_over").blur(function(){
+                                $(document).on('blur','.input_over',function(e){
 
                                     var id = $(this).attr("data-id");
 
                                     var input_over = $(this).val();
 
+                                    var kode_barang = $("#input-over-"+id+"").attr("data-kode");
 
-                                    $.post("update_barang.php",{id:id, input_over:input_over,jenis_over:"over_stok"},function(data){
+                                    $.post("update_barang.php",{id:id, input_over:input_over,kode_barang:kode_barang,jenis_edit:"over_stok"},function(data){
 
                                     $("#text-over-"+id+"").show();
                                     $("#text-over-"+id+"").text(input_over);
