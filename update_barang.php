@@ -1,12 +1,11 @@
 <?php
-	// memasukan file db.php
+  // memasukan file db.php
     include 'sanitasi.php';
     include 'db.php';
     include 'cache_folder/cache.class.php';
 
     // mengrim data dengan menggunakan metode POST
     $id = angkadoang($_POST['id']);
-    $input_beli = angkadoang($_POST['input_beli']);
     $jenis_edit = stringdoang($_POST['jenis_edit']);
     echo $kode_barang = stringdoang($_POST['kode_barang']);
 
@@ -19,7 +18,11 @@
     // hapus cache
       $cache->erase($kode_barang);
 
+
+
 if ($jenis_edit == 'harga_beli') {
+
+      $input_beli = angkadoang($_POST['input_beli']);
 
        $query =$db->prepare("UPDATE barang SET harga_beli = ?  WHERE id = ?");
 
@@ -42,11 +45,9 @@ else
 }
 
 
- $id = angkadoang($_POST['id']);
-    $input_jual = angkadoang($_POST['input_jual']);
-    $jenis_edit = stringdoang($_POST['jenis_edit']);
-
 if ($jenis_edit == 'harga_jual') {
+
+    $input_jual = angkadoang($_POST['input_jual']);
 
        $query =$db->prepare("UPDATE barang SET harga_jual = ?  WHERE id = ?");
 
@@ -68,11 +69,9 @@ else
 
 }
 
- $id = angkadoang($_POST['id']);
+if ($jenis_edit == 'harga_jual_2') {    
     $input_jual_2 = angkadoang($_POST['input_jual_2']);
-    $jenis_edit_2 = stringdoang($_POST['jenis_edit_2']);
 
-if ($jenis_edit_2 == 'harga_jual_2') {
 
        $query =$db->prepare("UPDATE barang SET harga_jual2 = ?  WHERE id = ?");
 
@@ -95,11 +94,9 @@ else
 }
 
 
- $id = angkadoang($_POST['id']);
-    $input_jual_3 = angkadoang($_POST['input_jual_3']);
-    $jenis_edit_3 = stringdoang($_POST['jenis_edit_3']);
 
-if ($jenis_edit_3 == 'harga_jual_3') {
+if ($jenis_edit == 'harga_jual_3') {
+    $input_jual_3 = angkadoang($_POST['input_jual_3']);
 
        $query =$db->prepare("UPDATE barang SET harga_jual3 = ?  WHERE id = ?");
 
@@ -123,12 +120,10 @@ else
 
 
 
-    $id = angkadoang($_POST['id']);
+
+    if ($jenis_edit == 'kategori') {
+
     $select_kategori = stringdoang($_POST['select_kategori']);
-    $jenis_select = stringdoang($_POST['jenis_select']);
-
-
-    if ($jenis_select == 'kategori') {
 
        $query =$db->prepare("UPDATE barang SET kategori = ?  WHERE id = ?");
 
@@ -151,12 +146,9 @@ else
 }
 
 
-    $id = angkadoang($_POST['id']);
+    if ($jenis_edit == 'berkaitan_dgn_stok') {
+
     $select_berstok = stringdoang($_POST['select_berstok']);
-    $jenis_select = stringdoang($_POST['jenis_select']);
-
-
-    if ($jenis_select == 'berkaitan_dgn_stok') {
 
        $query =$db->prepare("UPDATE barang SET berkaitan_dgn_stok = ?  WHERE id = ?");
 
@@ -179,12 +171,8 @@ else
 }
 
 
-    $id = angkadoang($_POST['id']);
+    if ($jenis_edit == 'satuan') {
     $select_satuan = stringdoang($_POST['select_satuan']);
-    $jenis_select = stringdoang($_POST['jenis_select']);
-
-
-    if ($jenis_select == 'satuan') {
 
        $query =$db->prepare("UPDATE barang SET satuan = ?  WHERE id = ?");
 
@@ -208,12 +196,8 @@ else
         
       
 
-    $id = angkadoang($_POST['id']);
+    if ($jenis_edit == 'status') {
     $select_status = stringdoang($_POST['select_status']);
-    $jenis_select = stringdoang($_POST['jenis_select']);
-
-
-    if ($jenis_select == 'status') {
 
        $query =$db->prepare("UPDATE barang SET status = ?  WHERE id = ?");
 
@@ -235,13 +219,9 @@ else
 
 }  
        
-        
-    $id = angkadoang($_POST['id']);
+
+    if ($jenis_edit == 'suplier') {
     $select_suplier = stringdoang($_POST['select_suplier']);
-    $jenis_select = stringdoang($_POST['jenis_select']);
-
-
-    if ($jenis_select == 'suplier') {
 
        $query =$db->prepare("UPDATE barang SET suplier = ?  WHERE id = ?");
 
@@ -264,17 +244,14 @@ else
 }  
 
 
-    $id = angkadoang($_POST['id']);
+
+    if ($jenis_edit == 'limit_stok') {
     $input_limit = stringdoang($_POST['input_limit']);
-    $jenis_limit = angkadoang($_POST['jenis_limit']);
-
-
-    if ($jenis_limit == 'limit_stok') {
 
        $query =$db->prepare("UPDATE barang SET limit_stok = ?  WHERE id = ?");
 
        $query->bind_param("ii",
-        $jenis_limit, $id);
+        $input_limit, $id);
 
 
         $query->execute();
@@ -292,17 +269,14 @@ else
 }  
 
 
-    $id = angkadoang($_POST['id']);
+    if ($jenis_edit == 'over_stok') {
+
     $input_over = stringdoang($_POST['input_over']);
-    $jenis_over = angkadoang($_POST['jenis_over']);
-
-
-    if ($jenis_over == 'over_stok') {
 
        $query =$db->prepare("UPDATE barang SET over_stok = ?  WHERE id = ?");
 
        $query->bind_param("ii",
-        $jenis_over, $id);
+        $input_over, $id);
 
 
         $query->execute();
@@ -320,12 +294,8 @@ else
 }  
 
 
-    $id = angkadoang($_POST['id']);
+    if ($jenis_edit == 'gudang') {
     $select_gudang = stringdoang($_POST['select_gudang']);
-    $jenis_select = stringdoang($_POST['jenis_select']);
-
-
-    if ($jenis_select == 'gudang') {
 
        $query =$db->prepare("UPDATE barang SET gudang = ?  WHERE id = ?");
 
@@ -346,6 +316,36 @@ else
 }
 
 }  
+
+
+$query = $db->query("SELECT * FROM barang ");
+while ($data = $query->fetch_array()) {
+ # code...
+    // store an array
+    $cache->store($data['kode_barang'], array(
+    'kode_barang' => $data['kode_barang'],
+      'nama_barang' => $data['nama_barang'],
+      'harga_beli' => $data['harga_beli'],
+      'harga_jual' => $data['harga_jual'],
+      'harga_jual2' => $data['harga_jual2'],
+      'harga_jual3' => $data['harga_jual3'],
+      'kategori' => $data['kategori'],
+      'suplier' => $data['suplier'],
+      'limit_stok' => $data['limit_stok'],
+      'over_stok' => $data['over_stok'],
+      'berkaitan_dgn_stok' => $data['berkaitan_dgn_stok'],
+      'status' => $data['status'],
+      'satuan' => $data['satuan'],
+      'id' => $data['id'],
+
+    ));
+
+
+
+}
+
+      $cache->retrieve($kode_barang);
+
 
 
   //Untuk Memutuskan Koneksi Ke Database
