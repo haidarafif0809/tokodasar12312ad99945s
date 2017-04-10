@@ -6,49 +6,43 @@ include 'db.php';
 
 $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
+$kategori = stringdoang($_GET['kategori']);
 
-    $query1 = $db->query("SELECT * FROM perusahaan ");
+    $query1 = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
     $data1 = mysqli_fetch_array($query1);
 
+    if ($kategori == "Semua Kategori") {
+      # JIKA SEMUA KATEGORI
+      
+      $query_sum_jumlah_nilai_detail_jual = $db->query("SELECT SUM(subtotal) AS total_subtotal , SUM(jumlah_barang) AS total_barang FROM detail_penjualan 
+      WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
 
+      $perintah_tampil = $db->query("SELECT b.kategori,pel.nama_pelanggan,pel.kode_pelanggan AS code_card,p.tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit 
+      FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang
+      WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' GROUP BY p.no_faktur ");
 
+    }
+    else
+    {
 
-//menampilkan seluruh data yang ada pada tabel penjualan
-$perintah0 = $db->query("SELECT * FROM detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$data0 = mysqli_fetch_array($perintah0);
+      $query_sum_jumlah_nilai_detail_jual = $db->query("SELECT SUM(dp.subtotal) AS total_subtotal , SUM(dp.jumlah_barang) AS total_barang FROM detail_penjualan dp 
+      LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal' 
+      AND b.kategori = '$kategori'  ");
+      
+      $perintah_tampil = $db->query("SELECT b.kategori,pel.nama_pelanggan,pel.kode_pelanggan AS code_card,p.tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit 
+      FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang
+      WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND b.kategori = '$kategori' GROUP BY p.no_faktur ");
+    }
 
+    $data_sum_jumlah_nilai_detail_jual = mysqli_fetch_array($query_sum_jumlah_nilai_detail_jual);
 
+      $total_potongan = 0;
+      $total_tax = 0;
+      $total_akhir = 0;
+      $total_kredit = 0;
 
-$query01 = $db->query("SELECT SUM(potongan) AS total_potongan FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$cek01 = mysqli_fetch_array($query01);
-$total_potongan = $cek01['total_potongan'];
-
-$query20 = $db->query("SELECT SUM(tax) AS total_tax FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$cek20 = mysqli_fetch_array($query20);
-$total_tax = $cek20['total_tax'];
-
-$query02 = $db->query("SELECT SUM(total) AS total_akhir FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$cek02 = mysqli_fetch_array($query02);
-$total_akhir = $cek02['total_akhir'];
-
-
-$query30 = $db->query("SELECT SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$cek30 = mysqli_fetch_array($query30);
-$total_kredit = $cek30['total_kredit'];
-
-$query15 = $db->query("SELECT SUM(subtotal) AS total_subtotal FROM 
-detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$cek15 = mysqli_fetch_array($query15);
-$t_subtotal = $cek15['total_subtotal'];
-
-$query011 = $db->query("SELECT SUM(jumlah_barang) AS total_barang FROM
-detail_penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal'");
-$cek011 = mysqli_fetch_array($query011);
-$t_barang = $cek011['total_barang'];
-
-
-
-
+    $t_subtotal = $data_sum_jumlah_nilai_detail_jual['total_subtotal'];
+    $t_barang = $data_sum_jumlah_nilai_detail_jual['total_barang'];
 
  ?>
 <div class="container">
@@ -73,6 +67,7 @@ $t_barang = $cek011['total_barang'];
   <tbody>
 
       <tr><td  width="20%">PERIODE</td> <td> &nbsp;:&nbsp; </td> <td> <?php echo tanggal($dari_tanggal); ?> s/d <?php echo tanggal($sampai_tanggal); ?></td>
+      <tr><td  width="20%">KATEGORI</td> <td> &nbsp;:&nbsp; </td> <td> <?php echo $kategori; ?> </td>
       </tr>
             
   </tbody>
@@ -92,6 +87,7 @@ $t_barang = $cek011['total_barang'];
             <thead>
                   <th> Nomor Faktur </th>                  
                   <th> Tanggal </th>
+                  <th> Kategori </th>
                   <th> Kode Pelanggan</th>
                   <th> Jumlah Barang </th>
                   <th> Subtotal </th>
@@ -106,8 +102,7 @@ $t_barang = $cek011['total_barang'];
             <tbody>
             <?php
 
-                  $perintah009 = $db->query("SELECT pel.nama_pelanggan,dp.tanggal,dp.no_faktur,dp.kode_pelanggan,dp.total,dp.jam,dp.user,dp.status,dp.potongan,dp.tax,dp.sisa,dp.kredit FROM penjualan dp INNER JOIN pelanggan pel ON dp.kode_pelanggan = pel.kode_pelanggan WHERE dp.tanggal >= '$dari_tanggal' AND dp.tanggal <= '$sampai_tanggal'");
-                  while ($data11 = mysqli_fetch_array($perintah009))
+                  while ($data11 = mysqli_fetch_array($perintah_tampil))
 
                   {
                         //menampilkan data
@@ -120,19 +115,29 @@ $t_barang = $cek011['total_barang'];
                         $cek10 = mysqli_fetch_array($query10);
                         $total_subtotal = $cek10['total_subtotal'];
 
-                        $bayar_tunai = $data11['total'] - $data11['kredit']; 
+                        // hitung total kredit
+                        $total_kredit = $total_kredit + $data11['kredit'];
+                        #hitung total potongan
+                        $total_potongan =$total_potongan + $data11['potongan'];
+
+                        #hitung total pajak
+                        $total_tax = $total_tax + $data11['tax'];
+
+                        #hitung total akhir
+                        $total_akhir = $total_akhir + $data11['total'];
                         
                   echo "<tr>
                   <td>". $data11['no_faktur'] ."</td>
                   <td>". $data11['tanggal'] ."</td>
+                  <td>". $data11['kategori'] ."</td>
                   <td>". $data11['kode_pelanggan'] ." ". $data11['nama_pelanggan'] ."</td>
-                  <td>". $total_barang ."</td>
-                  <td>". rp($total_subtotal) ."</td>
-                  <td>". rp($data11['potongan']) ."</td>
-                  <td>". rp($data11['tax']) ."</td>
-                  <td>". rp($data11['total']) ."</td>
-                  <td>". rp($bayar_tunai) ."</td>
-                  <td>". rp($data11['kredit']) ."</td>
+                  <td align='right'>". $total_barang ."</td>
+                  <td align='right'>". rp($total_subtotal) ."</td>
+                  <td align='right'>". rp($data11['potongan']) ."</td>
+                  <td align='right'>". rp($data11['tax']) ."</td>
+                  <td align='right'>". rp($data11['total']) ."</td>
+                  <td align='right'>". rp($data11['tunai']) ."</td>
+                  <td align='right'>". rp($data11['kredit']) ."</td>
                   </tr>";
 
 
@@ -152,7 +157,7 @@ $t_barang = $cek011['total_barang'];
 </div>
 <br>
 
-<div class="col-sm-7">
+<div class="col-sm-6">
 </div>
 
 
@@ -161,7 +166,7 @@ $t_barang = $cek011['total_barang'];
 </div>
 
 
-<div class="col-sm-3">
+<div class="col-sm-2">
         
  <table>
   <tbody>
