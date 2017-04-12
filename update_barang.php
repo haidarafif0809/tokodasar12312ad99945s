@@ -2,11 +2,21 @@
   // memasukan file db.php
     include 'sanitasi.php';
     include 'db.php';
+    include 'cache_folder/cache.class.php'; 
 
     // mengrim data dengan menggunakan metode POST
     $id = angkadoang($_POST['id']);
     $jenis_edit = stringdoang($_POST['jenis_edit']);
    $kode_barang = stringdoang($_POST['kode_barang']);
+
+
+    // membuat objek cache 
+      $cache = new Cache(); 
+ 
+    // setting default cache  
+      $cache->setCache('produk'); 
+    $jenis_edit = stringdoang($_POST['jenis_edit']); 
+   $kode_barang = stringdoang($_POST['kode_barang']); 
 
 
 
@@ -18,8 +28,6 @@
 if ($jenis_edit == 'harga_beli') {
     
     $input_beli = angkadoang($_POST['input_beli']);
-
-      $input_beli = angkadoang($_POST['input_beli']);
 
        $query =$db->prepare("UPDATE barang SET harga_beli = ?  WHERE id = ?");
 
@@ -326,7 +334,7 @@ else
 // UPDATE GUDANG  
 
 
-$query = $db->query("SELECT * FROM barang ");
+$query = $db->query("SELECT * FROM barang WHERE kode_barang = '$kode_barang' ");
 while ($data = $query->fetch_array()) {
  # code...
     // store an array
