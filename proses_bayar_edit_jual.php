@@ -48,8 +48,8 @@ $waktu = $tanggal." ".$jam_sekarang;
  // siapkan "data" query
            
 
-$select_kode_pelanggan = $db->query("SELECT id,nama_pelanggan FROM pelanggan WHERE id = '$kode_pelanggan'");
-$ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
+        $select_kode_pelanggan = $db->query("SELECT id,nama_pelanggan FROM pelanggan WHERE id = '$kode_pelanggan'");
+        $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
             
             $sisa = angkadoang($_POST['sisa']);
             $sisa_kredit = angkadoang($_POST['jumlah_kredit_baru']);
@@ -116,8 +116,6 @@ $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
             $total_tax = $jumlah_tax['total_tax'];
 
             $ppn_input = stringdoang($_POST['ppn_input']);
-            $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
-            $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
             // pengambilan data untuk jurnal
 
 
@@ -145,14 +143,14 @@ $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
 
 
-//PERSEDIAAN    
+        //PERSEDIAAN    
         $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Penjualan Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[persediaan]', '0', '$total_hpp', 'Penjualan', '$nomor_faktur','1', '$user')");
         
 
-//HPP    
+        //HPP    
       $insert_jurnal = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Penjualan Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$ambil_setting[hpp_penjualan]', '$total_hpp', '0', 'Penjualan', '$nomor_faktur','1', '$user')");
 
- //KAS
+        //KAS
         $insert_juranl = $db->query("INSERT INTO jurnal_trans (nomor_jurnal,waktu_jurnal,keterangan_jurnal,kode_akun_jurnal,debit,kredit,jenis_transaksi,no_faktur,approved,user_buat) VALUES ('".no_jurnal()."', '$tanggal $jam_sekarang', 'Penjualan Tunai - $ambil_kode_pelanggan[nama_pelanggan]', '$cara_bayar', '$total', '0', 'Penjualan', '$nomor_faktur','1', '$user')");
 
 
