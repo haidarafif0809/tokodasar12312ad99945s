@@ -14,7 +14,39 @@ $tanggal = stringdoang($_POST['tanggal']);
 $waktu = $tanggal." ".$jam_sekarang;
 
 
-$kode_pelanggan = stringdoang($_POST['kode_pelanggan']);
+ // siapkan "data" query
+            $kode_pelanggan = stringdoang($_POST['kode_pelanggan']);
+            $total = angkadoang($_POST['total']);
+            $total2 = angkadoang($_POST['total2']);
+            $potongan = angkadoang($_POST['potongan']);
+            $potongan_persen = stringdoang($_POST['potongan_persen']);
+            $tax = angkadoang($_POST['tax']);
+            $ppn_input = stringdoang($_POST['ppn_input']);
+            $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
+            
+            $x = angkadoang($_POST['x']);
+            
+            if ($x <= $total) {
+            $sisa = 0;
+            } 
+            
+            else {
+            $sisa = $x - $total;
+            }
+            
+            $cara_bayar = stringdoang($_POST['cara_bayar']);
+            $pembayaran = angkadoang($_POST['pembayaran']);
+            $sales = stringdoang($_POST['sales']);
+            $user = $_SESSION['user_name'];
+            $tanggal = stringdoang($_POST['tanggal']);
+            $kode_gudang = stringdoang($_POST['kode_gudang']);
+            
+            $tanggal_jt = angkadoang($_POST['tanggal_jt']);
+            $sisa_kredit = angkadoang($_POST['jumlah_kredit_baru']);
+            $tanggal = stringdoang($_POST['tanggal']);           
+            $user = $_SESSION['user_name'];
+ // siapkan "data" query
+           
 
 $select_kode_pelanggan = $db->query("SELECT id,nama_pelanggan FROM pelanggan WHERE id = '$kode_pelanggan'");
 $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
@@ -70,9 +102,24 @@ $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
 
 
-
+            // pengambilan data untuk jurnal
             $select_setting_akun = $db->query("SELECT persediaan,hpp_penjualan,total_penjualan,pajak_jual,potongan_jual,persediaan,pembayaran_kredit FROM setting_akun");
             $ambil_setting = mysqli_fetch_array($select_setting_akun);
+
+
+            $select = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_keluar WHERE no_faktur = '$nomor_faktur'");
+            $ambil = mysqli_fetch_array($select);
+            $total_hpp = $ambil['total_hpp'];
+
+            $sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_penjualan WHERE no_faktur = '$nomor_faktur'");
+            $jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
+            $total_tax = $jumlah_tax['total_tax'];
+
+            $ppn_input = stringdoang($_POST['ppn_input']);
+            $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
+            $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
+            // pengambilan data untuk jurnal
+
 
             if ($sisa_kredit == 0 ) 
             
@@ -88,51 +135,13 @@ $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
             $nomor_faktur, $kode_gudang, $kode_pelanggan, $total, $tanggal, $jam_sekarang , $user, $sales, $potongan,$potongan_persen, $tax, $sisa, $cara_bayar, $pembayaran, $ppn_input, $nomor_faktur);
 
             
-            // siapkan "data" query
-            $nomor_faktur = stringdoang($_POST['no_faktur']);
-            $kode_pelanggan = stringdoang($_POST['kode_pelanggan']);
-            $total = angkadoang($_POST['total']);
-            $total2 = angkadoang($_POST['total2']);
-            $potongan = angkadoang($_POST['potongan']);
-            $potongan_persen = stringdoang($_POST['potongan_persen']);
-            $tax = angkadoang($_POST['tax']);
-            $ppn_input = stringdoang($_POST['ppn_input']);
-            $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
-            
-            $x = angkadoang($_POST['x']);
-            
-            if ($x <= $total) {
-            $sisa = 0;
-            } 
-            
-            else {
-            $sisa = $x - $total;
-            }
-            
-            $cara_bayar = stringdoang($_POST['cara_bayar']);
-            $pembayaran = angkadoang($_POST['pembayaran']);
-            $sales = stringdoang($_POST['sales']);
-            $user = $_SESSION['user_name'];
-            $tanggal = stringdoang($_POST['tanggal']);
-            $kode_gudang = stringdoang($_POST['kode_gudang']);
-            
+
             // jalankan query
             
             $stmt2->execute();    
 
 
-$select = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_keluar WHERE no_faktur = '$nomor_faktur'");
-$ambil = mysqli_fetch_array($select);
-$total_hpp = $ambil['total_hpp'];
 
-
-$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_penjualan WHERE no_faktur = '$nomor_faktur'");
-$jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
-$total_tax = $jumlah_tax['total_tax'];
-
-    $ppn_input = stringdoang($_POST['ppn_input']);
-    $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
-    $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
 
 
@@ -215,43 +224,11 @@ if ($potongan != "" || $potongan != 0 ) {
             $stmt2->bind_param("sssisssssisiisiss", 
             $nomor_faktur, $kode_gudang, $kode_pelanggan, $total , $tanggal, $jam_sekarang, $tanggal_jt, $user, $sales, $potongan, $potongan_persen , $tax, $sisa_kredit, $cara_bayar, $pembayaran, $ppn_input, $nomor_faktur);
             
-            // siapkan "data" query
-            $nomor_faktur = stringdoang($_POST['no_faktur']);
-            $kode_pelanggan = stringdoang($_POST['kode_pelanggan']);
-            $total = angkadoang($_POST['total']);
-            $total2 = angkadoang($_POST['total2']);
-            $potongan = angkadoang($_POST['potongan']);
-            $potongan_persen = stringdoang($_POST['potongan_persen']);
 
-            $tax = angkadoang($_POST['tax']);
-            $ppn_input = stringdoang($_POST['ppn_input']);
-            $tanggal_jt = angkadoang($_POST['tanggal_jt']);
-            $sisa_pembayaran = angkadoang($_POST['sisa_pembayaran']);
-            $sisa_kredit = angkadoang($_POST['jumlah_kredit_baru']);
-            $pembayaran = angkadoang($_POST['pembayaran']);
-            $sales = stringdoang($_POST['sales']);
-            $cara_bayar = stringdoang($_POST['cara_bayar']);
-            $tanggal = stringdoang($_POST['tanggal']);
-            $kode_gudang = stringdoang($_POST['kode_gudang']);
-            
-            $user = $_SESSION['user_name'];
             
             // jalankan query
             $stmt2->execute(); 
             
-$select = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_keluar WHERE no_faktur = '$nomor_faktur'");
-$ambil = mysqli_fetch_array($select);
-
-$total_hpp = $ambil['total_hpp'];
-
-
-$sum_tax_tbs = $db->query("SELECT SUM(tax) AS total_tax FROM tbs_penjualan WHERE no_faktur = '$nomor_faktur'");
-$jumlah_tax = mysqli_fetch_array($sum_tax_tbs);
-$total_tax = $jumlah_tax['total_tax'];
-
-    $ppn_input = stringdoang($_POST['ppn_input']);
-    $select_kode_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
-    $ambil_kode_pelanggan = mysqli_fetch_array($select_kode_pelanggan);
 
 
 //PERSEDIAAN    
