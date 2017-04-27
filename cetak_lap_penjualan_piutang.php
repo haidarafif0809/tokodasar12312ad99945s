@@ -21,8 +21,6 @@ include 'db.php';
 
     $potongan_persen = $data0['potongan_persen'];
 
-   
-
     $jml_dibayar = $t_subtotal - $data0['potongan'];
 
     $ambil_footer = $db->query("SELECT keterangan, petugas FROM setting_footer_cetak");
@@ -230,8 +228,8 @@ include 'db.php';
             <td class='table1'></td>
             <td class='table1'>Jumlah Potongan Harga</td>
             <td class='table1' align='right'></td>
-            <td class='table1'></td>
-            <td class='table1' align='right'></td>
+            <td class='table1'>Disc</td>
+            <td class='table1' align='right'><?php echo persen($potongan_persen); ?></td>
             <td class='table1' align='right'><?php echo rp($data0['potongan']); ?></td>
         </tr>
 
