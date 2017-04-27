@@ -14,36 +14,39 @@ $sales = stringdoang($_GET['sales']);
     $data1 = mysqli_fetch_array($query1);
 
 // LOGIKA UNTUK AMBIL BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
-if ($konsumen == 'semua' AND $sales == 'semua')
-{
- $query02 = $db->query("SELECT SUM(pen.tunai) AS tunai_penjualan,SUM(pen.total) AS total_akhir, SUM(pen.kredit) AS total_kredit ,SUM(dpp.jumlah_bayar) + SUM(dpp.potongan) AS ambil_total_bayar FROM penjualan pen LEFT JOIN detail_pembayaran_piutang dpp ON pen.no_faktur = dpp.no_faktur_penjualan WHERE pen.tanggal >= '$dari_tanggal' AND pen.tanggal <= '$sampai_tanggal' AND pen.kredit != 0  ");
+if ($konsumen == 'semua' AND $sales == 'semua'){
+
+  $query_sum_dari_penjualan = $db->query("SELECT no_faktur,SUM(tunai) AS tunai_penjualan,SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 ");
+  $data_sum_dari_penjualan = mysqli_fetch_array($query_sum_dari_penjualan);
+  
 }
-else if ($konsumen != 'semua' AND $sales == 'semua')
+else if ($konsumen != 'semua' AND $sales == 'semua'){
 
-{
+  $query_sum_dari_penjualan = $db->query("SELECT no_faktur,SUM(tunai) AS tunai_penjualan,SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 AND kode_pelanggan = '$konsumen' ");
+  $data_sum_dari_penjualan = mysqli_fetch_array($query_sum_dari_penjualan);
 
-  $query02 = $db->query("SELECT SUM(pen.tunai) AS tunai_penjualan,SUM(pen.total) AS total_akhir, SUM(pen.kredit) AS total_kredit,SUM(dpp.jumlah_bayar) + SUM(dpp.potongan) AS ambil_total_bayar ,pl.nama_pelanggan,pen.sales FROM penjualan pen LEFT JOIN pelanggan pl ON pen.kode_pelanggan = pl.kode_pelanggan LEFT JOIN detail_pembayaran_piutang dpp ON pen.no_faktur = dpp.no_faktur_penjualan WHERE pen.tanggal >= '$dari_tanggal' AND pen.tanggal <= '$sampai_tanggal' AND pen.kredit != 0 AND pen.kode_pelanggan = '$konsumen' ");
+}
+else if ($konsumen == 'semua' AND $sales != 'semua'){
+
+   $query_sum_dari_penjualan = $db->query("SELECT no_faktur,SUM(tunai) AS tunai_penjualan,SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 AND  sales = '$sales' ");
+  $data_sum_dari_penjualan = mysqli_fetch_array($query_sum_dari_penjualan);
+
+}
+else{
+
+  $query_sum_dari_penjualan = $db->query("SELECT no_faktur,SUM(tunai) AS tunai_penjualan,SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 AND kode_pelanggan = '$konsumen' AND sales = '$sales' ");
+  $data_sum_dari_penjualan = mysqli_fetch_array($query_sum_dari_penjualan);
+
 }
 
-else if ($konsumen == 'semua' AND $sales != 'semua')
-{
+  $query_sum_dari_detail_pembayaran_piutang = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS ambil_total_bayar FROM detail_pembayaran_piutang WHERE no_faktur_penjualan = '$data_sum_dari_penjualan[no_faktur]' ");
+  $data_sum_dari_detail_pembayaran_piutang = mysqli_fetch_array($query_sum_dari_detail_pembayaran_piutang);
 
-  $query02 = $db->query("SELECT SUM(pen.tunai) AS tunai_penjualan,SUM(pen.total) AS total_akhir, SUM(pen.kredit) AS total_kredit,SUM(dpp.jumlah_bayar) + SUM(dpp.potongan) AS ambil_total_bayar ,pl.nama_pelanggan,pen.sales FROM penjualan pen LEFT JOIN pelanggan pl ON pen.kode_pelanggan = pl.kode_pelanggan LEFT JOIN detail_pembayaran_piutang dpp ON pen.no_faktur = dpp.no_faktur_penjualan WHERE pen.tanggal >= '$dari_tanggal' AND pen.tanggal <= '$sampai_tanggal' AND pen.kredit != 0 AND  pen.sales = '$sales' ");
-}
 
-else
-{
-
-  $query02 = $db->query("SELECT SUM(pen.tunai) AS tunai_penjualan,SUM(pen.total) AS total_akhir, SUM(pen.kredit) AS total_kredit,SUM(dpp.jumlah_bayar) + SUM(dpp.potongan) AS ambil_total_bayar ,pl.nama_pelanggan,pen.sales FROM penjualan pen LEFT JOIN pelanggan pl ON pen.kode_pelanggan = pl.kode_pelanggan LEFT JOIN detail_pembayaran_piutang dpp ON pen.no_faktur = dpp.no_faktur_penjualan WHERE pen.tanggal >= '$dari_tanggal' AND pen.tanggal <= '$sampai_tanggal' AND pen.kredit != 0 AND pen.kode_pelanggan = '$konsumen' AND pen.sales = '$sales' ");
-}
 // LOGIKA UNTUK  UNTUK AMBIL  BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
-
-
-$cek02 = mysqli_fetch_array($query02);
-
-$total_akhir = $cek02['total_akhir'];
-$total_kredit = $cek02['total_kredit'];
-$total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
+$total_akhir = $data_sum_dari_penjualan['total_akhir'];
+$total_kredit = $data_sum_dari_penjualan['total_kredit'];
+$total_bayar = $data_sum_dari_penjualan['tunai_penjualan'] +  $data_sum_dari_detail_pembayaran_piutang['ambil_total_bayar'];
 
 if ($konsumen == 'semua')
 {

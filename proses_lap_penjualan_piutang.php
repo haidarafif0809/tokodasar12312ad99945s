@@ -7,13 +7,18 @@ $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 
 
+// LOGIKA UNTUK AMBIL BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
+  $query_sum_dari_penjualan = $db->query("SELECT no_faktur,SUM(tunai) AS tunai_penjualan,SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 ");
+  $data_sum_dari_penjualan = mysqli_fetch_array($query_sum_dari_penjualan);
 
-$query02 = $db->query("SELECT SUM(pen.tunai) AS tunai_penjualan,SUM(pen.total) AS total_akhir, SUM(pen.kredit) AS total_kredit,SUM(dpp.jumlah_bayar) + SUM(dpp.potongan) AS ambil_total_bayar , SUM(nilai_kredit) AS nilai_kredit FROM penjualan pen LEFT JOIN detail_pembayaran_piutang dpp ON pen.no_faktur = dpp.no_faktur_penjualan WHERE pen.tanggal >= '$dari_tanggal' AND pen.tanggal <= '$sampai_tanggal' AND pen.kredit != 0 ");
-$cek02 = mysqli_fetch_array($query02);
+  $query_sum_dari_detail_pembayaran_piutang = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS ambil_total_bayar FROM detail_pembayaran_piutang WHERE no_faktur_penjualan = '$data_sum_dari_penjualan[no_faktur]' ");
+  $data_sum_dari_detail_pembayaran_piutang = mysqli_fetch_array($query_sum_dari_detail_pembayaran_piutang);
+// LOGIKA UNTUK  UNTUK AMBIL  BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
 
-$total_akhir = $cek02['total_akhir'];
-$total_kredit = $cek02['total_kredit'];
-$total_bayar = $cek02['tunai_penjualan'] +  $cek02['ambil_total_bayar'];
+  
+$total_akhir = $data_sum_dari_penjualan['total_akhir'];
+$total_kredit = $data_sum_dari_penjualan['total_kredit'];
+$total_bayar = $data_sum_dari_penjualan['tunai_penjualan'] +  $data_sum_dari_detail_pembayaran_piutang['ambil_total_bayar'];
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
