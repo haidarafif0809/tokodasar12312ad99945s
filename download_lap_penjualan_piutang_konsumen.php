@@ -170,15 +170,15 @@ else
 // MENCARI TOTAL PEMBAYARAN PIUTANG  
 $query_detail_pembayaran_piutang = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS total_bayar FROM detail_pembayaran_piutang WHERE no_faktur_penjualan = '$data_penjualan[no_faktur]' ");
 $data_detail_pembayaran_piutang = mysqli_fetch_array($query_detail_pembayaran_piutang);
-$jumlah_data_detail_pembayaran_detail = mysqli_num_rows($data_detail_pembayaran_piutang);
+$jumlah_data_detail_pembayaran_detail = mysqli_num_rows($query_detail_pembayaran_piutang);
 
 
 $sum_dp = $db->query("SELECT SUM(tunai) AS tunai_penjualan FROM penjualan WHERE no_faktur = '$data_penjualan[no_faktur]' ");
 $data_sum = mysqli_fetch_array($sum_dp);
-$total_tunai = $data_detail_pembayaran_piutang['tunai_penjualan']; 
+$total_tunai = $sum_dp['tunai_penjualan']; 
 
 
-$tot_bayar = $kel_bayar['total_bayar'] + $total_tunai;
+$tot_bayar = $data_detail_pembayaran_piutang['total_bayar'] + $total_tunai;
 // MENCARI TOTAL PEMBAYARAN PIUTANG  
 
 
