@@ -11,7 +11,6 @@ include 'db.php';
     $select_penjualan = $db->query("SELECT p.no_faktur,p.total,p.kode_pelanggan,p.tanggal,p.tanggal_jt,p.potongan,p.potongan_persen, pl.nama_pelanggan,pl.wilayah,da.nama_daftar_akun ,p.tunai FROM penjualan p INNER JOIN pelanggan pl ON p.kode_pelanggan = pl.kode_pelanggan INNER JOIN daftar_akun da ON p.cara_bayar = da.kode_daftar_akun  WHERE p.no_faktur = '$no_faktur' ORDER BY p.id DESC");
     $data0 = mysqli_fetch_array($select_penjualan);
 
-
     $select_perusahaan = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
     $data_perusahaan = mysqli_fetch_array($select_perusahaan);
 
@@ -21,8 +20,6 @@ include 'db.php';
     $t_subtotal = $data_sum['sub_total'];
 
     $potongan_persen = $data0['potongan_persen'];
-
-   
 
     $jml_dibayar = $t_subtotal - $data0['potongan'];
 
@@ -116,7 +113,7 @@ include 'db.php';
             <th class="table1" style="width: 5%"> <center> No. </center> </th>
             <th class="table1" style="width: 65%"> <center> Nama Barang </center> </th>
             <th class="table1" style="width: 5%"> <center> Jumlah </center> </th>
-            <th class="table1" style="width: 10%"> <center> Satuan </center> </th>
+            <th class="table1" style="width: 5%"> <center> Satuan </center> </th>
             <th class="table1" style="width: 10%"> <center> Harga Satuan </center> </th>
             <th class="table1" style="width: 10%"> <center> Harga Jual </center> </th>        
             
@@ -131,8 +128,9 @@ include 'db.php';
             //menyimpan data sementara yang ada pada $perintah
             while ($data5 = mysqli_fetch_array($query5))
             {
+ 
 
-               $pilih_konversi = $db->query("SELECT $data5[jumlah_barang] / sk.konversi AS jumlah_konversi, sk.harga_pokok / sk.konversi AS harga_konversi, sk.id_satuan, b.satuan,sk.konversi FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$data5[id_satuan]' AND sk.kode_produk = '$data5[kode_barang]'");
+            $pilih_konversi = $db->query("SELECT $data5[jumlah_barang] / sk.konversi AS jumlah_konversi, sk.harga_pokok / sk.konversi AS harga_konversi, sk.id_satuan, b.satuan,sk.konversi FROM satuan_konversi sk INNER JOIN barang b ON sk.id_produk = b.id  WHERE sk.id_satuan = '$data5[id_satuan]' AND sk.kode_produk = '$data5[kode_barang]'");
                 $data_konversi = mysqli_fetch_array($pilih_konversi);
 
             $query900 = $db->query("SELECT nama FROM satuan WHERE id = '$data_konversi[satuan]'");
@@ -149,13 +147,13 @@ include 'db.php';
                   $konver = "";
                 }
 
-
               $no_urut ++;
 
             echo "<tr>
             <td class='table1' align='center'>".$no_urut."</td>
             <td class='table1'>". $data5['nama_barang'] ."</td>
             <td class='table1' align='right'>". rp($jumlah_barang) ."</td>";
+
             if ($data_konversi['harga_konversi'] != 0 || $data_konversi['harga_konversi'] != "") {                
             echo "<td class='table1' align='right'>". $data5['satuan'] ." ( ".$konver." ".$cek011['nama']." ) </td>";
             }
@@ -230,8 +228,8 @@ include 'db.php';
             <td class='table1'></td>
             <td class='table1'>Jumlah Potongan Harga</td>
             <td class='table1' align='right'></td>
-            <td class='table1'></td>
-            <td class='table1' align='right'></td>
+            <td class='table1'>Disc</td>
+            <td class='table1' align='right'><?php echo persen($potongan_persen); ?></td>
             <td class='table1' align='right'><?php echo rp($data0['potongan']); ?></td>
         </tr>
 
