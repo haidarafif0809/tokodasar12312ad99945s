@@ -33,7 +33,24 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 <h3> LAPORAN PENJUALAN REKAP </h3><hr>
 
-<form class="form-inline" role="form">
+<form class="form-inline" role="form">	
+
+  				<div class="form-group"> 
+
+	  				 <select type="text" name="kategori" id="kategori" class="form-control chosen" required="">
+	     			  <option value="Semua Kategori"> Semua Kategori </option>
+					<?php 
+
+					$ambil_kategori = $db->query("SELECT nama_kategori FROM kategori");
+	  				  while($data_kategori = mysqli_fetch_array($ambil_kategori))
+	  				  {  
+	    			echo "<option value='".$data_kategori['nama_kategori'] ."' >".$data_kategori['nama_kategori'] ."</option>";
+	   					 }
+
+	 				?>
+	                 </select> 
+                  </div>
+
 				
 				  <div class="form-group"> 
 
@@ -54,15 +71,16 @@ tr:nth-child(even){background-color: #f2f2f2}
 <span id="result">
 <table id="table_lap_penjualan_rekap" class="table table-bordered table-sm">
 		<thead>
-			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>
 			<th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
-			<th style="background-color: #4CAF50; color: white;"> Kode Pelanggan</th>
-			<th style="background-color: #4CAF50; color: white;"> Total </th>
+			<th style="background-color: #4CAF50; color: white;"> Tanggal </th>	
 			<th style="background-color: #4CAF50; color: white;"> Jam </th>
+			<th style="background-color: #4CAF50; color: white;"> Kategori </th>
+			<th style="background-color: #4CAF50; color: white;"> Kode Pelanggan</th>
 			<th style="background-color: #4CAF50; color: white;"> User </th>
 			<th style="background-color: #4CAF50; color: white;"> Status </th>
 			<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 			<th style="background-color: #4CAF50; color: white;"> Tax </th>
+			<th style="background-color: #4CAF50; color: white;"> Total </th>
 			<th style="background-color: #4CAF50; color: white;"> Tunai </th>
 			<th style="background-color: #4CAF50; color: white;"> Kembalian </th>
 			<th style="background-color: #4CAF50; color: white;"> Kredit </th>
@@ -114,13 +132,16 @@ tr:nth-child(even){background-color: #f2f2f2}
 		});
 		
 		</script-->
-
+    <script type="text/javascript">     
+      $(".chosen").chosen({no_results_text: "Maaf, Data Tidak Ada!"});      
+      </script>
 	
 <script type="text/javascript">
 		$(document).on('click','#submit',function(e){
 			$('#table_lap_penjualan_rekap').DataTable().destroy();
 			var dari_tanggal = $("#dari_tanggal").val();
       		var sampai_tanggal = $("#sampai_tanggal").val();
+      		var kategori = $("#kategori").val();
       		if (dari_tanggal == '') {
             alert("Silakan dari tanggal diisi terlebih dahulu.");
             $("#dari_tanggal").focus();
@@ -139,6 +160,7 @@ tr:nth-child(even){background-color: #f2f2f2}
            	"data": function ( d ) {
                       d.dari_tanggal = $("#dari_tanggal").val();
                       d.sampai_tanggal = $("#sampai_tanggal").val();
+                      d.kategori = $("#kategori").val();
                       // d.custom = $('#myInput').val();
                       // etc
                   },
@@ -157,9 +179,9 @@ tr:nth-child(even){background-color: #f2f2f2}
         });
 
         $("#cetak").show();
-    	$("#cetak_lap").attr("href", "cetak_lap_penjualan_rekap.php?&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+    	$("#cetak_lap").attr("href", "cetak_lap_penjualan_rekap.php?&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&kategori="+kategori);
     	$("#download").show();
-    	$("#download_lap").attr("href", "download_lap_penjualan_rekap.php?&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"");
+    	$("#download_lap").attr("href", "download_lap_penjualan_rekap.php?&dari_tanggal="+dari_tanggal+"&sampai_tanggal="+sampai_tanggal+"&kategori="+kategori);
         }//end else
         $("form").submit(function(){
         return false;

@@ -218,7 +218,7 @@
                 <h6 style="text-align: left ; color: red"><i> * Jika sudah ada transaksi, tidak bisa mengubah satuan konversi.</i></h6>
 
 <br>
-<a href='barang.php?kategori=semua&tipe=barang' class='btn btn-primary'> <i class="fa fa-save"></i> Simpan</a>
+<a href='barang.php?kategori=semua&tipe=barang_jasa' class='btn btn-primary'> <i class="fa fa-save"></i> Simpan</a>
 
 </div> <!-- tag penutup div container -->
 
