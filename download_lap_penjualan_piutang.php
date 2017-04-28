@@ -16,7 +16,7 @@ $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
     $data_perusahaan = mysqli_fetch_array($query_perusahaan);
 
 
-$data_sum_dari_detail_pembayaran_piutang = 0;
+$data_sum_dari_detail_pembayaran = 0;
 
 // LOGIKA UNTUK AMBIL BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
   $query_sum_dari_penjualan = $db->query("SELECT no_faktur,SUM(tunai) AS tunai_penjualan,SUM(total) AS total_akhir, SUM(kredit) AS total_kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' AND kredit != 0 ");
@@ -29,14 +29,15 @@ while($data_faktur_penjualan = mysqli_fetch_array($query_faktur_penjualan)){
   $query_sum_dari_detail_pembayaran_piutang = $db->query("SELECT SUM(jumlah_bayar) + SUM(potongan) AS ambil_total_bayar FROM detail_pembayaran_piutang WHERE no_faktur_penjualan = '$data_faktur_penjualan[no_faktur]' ");
   $data_sum_dari_detail_pembayaran_piutang = mysqli_fetch_array($query_sum_dari_detail_pembayaran_piutang);
 
-  $data_sum_dari_detail_pembayaran_piutang = $data_sum_dari_detail_pembayaran_piutang + $data_sum_dari_detail_pembayaran_piutang['ambil_total_bayar'];
+  $data_sum_dari_detail_pembayaran = $data_sum_dari_detail_pembayaran + $data_sum_dari_detail_pembayaran_piutang['ambil_total_bayar'];
 // LOGIKA UNTUK  UNTUK AMBIL  BERDASARKAN KONSUMEN DAN SALES (QUERY TAMPIL AWAL)
 }
 
-$data_sum_dari_detail_pembayaran_piutang = mysqli_fetch_array($query_sum_dari_penjualan);
+$data_sum_dari_penjualan = mysqli_fetch_array($query_sum_dari_penjualan);
 $total_akhir = $data_sum_dari_penjualan['total_akhir'];
 $total_kredit = $data_sum_dari_penjualan['total_kredit'];
-$total_bayar = $data_sum_dari_penjualan['tunai_penjualan'] +  $data_sum_dari_detail_pembayaran_piutang;
+$total_bayar = $data_sum_dari_penjualan['tunai_penjualan'] +  $data_sum_dari_detail_pembayaran;
+
 
 
 
