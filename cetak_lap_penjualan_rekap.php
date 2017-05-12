@@ -90,10 +90,10 @@ $kategori = stringdoang($_GET['kategori']);
                   <th> Kategori </th>
                   <th> Kode Pelanggan</th>
                   <th> Jumlah Barang </th>
-                  <th> Subtotal </th>
+                  <th> Total Kotor </th>
                   <th> Potongan </th>
                   <th> Pajak </th>
-                  <th> Total Akhir </th>
+                  <th> Total Bersih </th>
                   <th> Bayar Tunai </th>
                   <th> Bayar Kredit </th>
                                     
@@ -172,11 +172,11 @@ $kategori = stringdoang($_GET['kategori']);
   <tbody>
 
       <tr><td width="70%">Jumlah Item</td> <td> :&nbsp; </td> <td> <?php echo $t_barang; ?> </td></tr>
-      <tr><td  width="70%">Total Subtotal</td> <td> :&nbsp; </td> <td> <?php echo rp($t_subtotal); ?> </td>
+      <tr><td  width="70%">Total Kotor</td> <td> :&nbsp; </td> <td> <?php echo rp($t_subtotal); ?> </td>
       </tr>
       <tr><td  width="70%">Total Potongan</td> <td> :&nbsp; </td> <td> <?php echo rp($total_potongan); ?></td></tr>
       <tr><td width="70%">Total Pajak</td> <td> :&nbsp; </td> <td> <?php echo rp($total_tax); ?> </td></tr>
-      <tr><td  width="70%">Total Akhir</td> <td> :&nbsp; </td> <td> <?php echo rp($total_akhir); ?> </td>
+      <tr><td  width="70%">Total Bersih</td> <td> :&nbsp; </td> <td> <?php echo rp($total_akhir); ?> </td>
       </tr>
       <tr><td  width="70%">Total Kredit</td> <td> :&nbsp; </td> <td> <?php echo rp($total_kredit); ?></td></tr>
             

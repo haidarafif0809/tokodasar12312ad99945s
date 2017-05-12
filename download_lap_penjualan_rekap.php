@@ -18,6 +18,7 @@ $kategori = stringdoang($_GET['kategori']);
         $total_kembalian = 0;
         $total_tunai = 0;
         $total_kredit = 0;
+        $total_akhir_kotor = 0;
 
     if ($kategori == "Semua Kategori") {
       # JIKA SEMUA KATEGORI
@@ -44,11 +45,12 @@ $kategori = stringdoang($_GET['kategori']);
       <th style="background-color: #4CAF50; color: white;"> Nomor Faktur </th>
       <th style="background-color: #4CAF50; color: white;"> Kategori</th>
       <th style="background-color: #4CAF50; color: white;"> Kode Pelanggan</th>
-      <th style="background-color: #4CAF50; color: white;"> Total </th>
       <th style="background-color: #4CAF50; color: white;"> Petugas </th>
       <th style="background-color: #4CAF50; color: white;"> Status </th>
+      <th style="background-color: #4CAF50; color: white;"> Total Kotor </th>
       <th style="background-color: #4CAF50; color: white;"> Potongan </th>
-      <th style="background-color: #4CAF50; color: white;"> Tax </th>
+      <th style="background-color: #4CAF50; color: white;"> Tax </th>      
+      <th style="background-color: #4CAF50; color: white;"> Total Bersih</th>
       <th style="background-color: #4CAF50; color: white;"> Tunai </th>
       <th style="background-color: #4CAF50; color: white;"> Kembalian </th>
       <th style="background-color: #4CAF50; color: white;"> Kredit </th>
@@ -69,8 +71,9 @@ $kategori = stringdoang($_GET['kategori']);
         $total_kembalian = $total_kembalian + $data1['sisa'];
         $total_tunai = $total_tunai + $data1['tunai'];
         $total_kredit = $total_kredit + $data1['kredit'];
+        $total_kotor = $data1['total'] + $data1['potongan'];
 
-
+       $total_akhir_kotor = $total_akhir_kotor + $total_kotor;
 
         //menampilkan data
       echo "<tr>
@@ -78,11 +81,12 @@ $kategori = stringdoang($_GET['kategori']);
       <td>". $data1['no_faktur'] ."</td>
       <td>". $data1['kategori'] ." </td>
       <td>". $data1['kode_pelanggan'] ." ". $data1['nama_pelanggan'] ."</td>
-      <td>". $data1['total'] ."</td>
       <td>". $data1['user'] ."</td>
       <td>". $data1['status'] ."</td>
+      <td>". $total_kotor ."</td>
       <td>". $data1['potongan'] ."</td>
       <td>". $data1['tax'] ."</td>
+      <td>". $data1['total'] ."</td>
       <td>". $data1['tunai'] ."</td>
       <td>". $data1['sisa'] ."</td>
       <td>". $data1['kredit'] ."</td>
@@ -94,11 +98,12 @@ echo"<br>";
       <td></td>
       <td></td>
       <td></td>
-      <td><p style='color: red; '><b>".$total_penjualan."</b></p></td>
       <td></td>
       <td></td>
+      <td><p style='color: red; '><b>".$total_akhir_kotor."</b></p></td>
       <td><p style='color: red; '><b>".$total_potongan."</b></p></td>
       <td><p style='color: red; '><b>".$total_tax."</b></p></td>
+      <td><p style='color: red; '><b>".$total_penjualan."</b></p></td>
       <td><p style='color: red; '><b>".$total_tunai."</b></p></td>
       <td><p style='color: red; '><b>".$total_kembalian."</b></p></td>
       <td><p style='color: red; '><b>".$total_kredit."</b></p></td>";
