@@ -78,9 +78,10 @@ tr:nth-child(even){background-color: #f2f2f2}
 			<th style="background-color: #4CAF50; color: white;"> Kode Pelanggan</th>
 			<th style="background-color: #4CAF50; color: white;"> User </th>
 			<th style="background-color: #4CAF50; color: white;"> Status </th>
+			<th style="background-color: #4CAF50; color: white;"> Total Kotor</th>
 			<th style="background-color: #4CAF50; color: white;"> Potongan </th>
 			<th style="background-color: #4CAF50; color: white;"> Tax </th>
-			<th style="background-color: #4CAF50; color: white;"> Total </th>
+			<th style="background-color: #4CAF50; color: white;"> Total Bersih</th>
 			<th style="background-color: #4CAF50; color: white;"> Tunai </th>
 			<th style="background-color: #4CAF50; color: white;"> Kembalian </th>
 			<th style="background-color: #4CAF50; color: white;"> Kredit </th>
