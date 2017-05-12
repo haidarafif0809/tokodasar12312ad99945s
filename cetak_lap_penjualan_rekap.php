@@ -39,6 +39,7 @@ $kategori = stringdoang($_GET['kategori']);
       $total_potongan = 0;
       $total_tax = 0;
       $total_akhir = 0;
+      $total_tunai = 0;
       $total_kredit = 0;
 
     $t_subtotal = $data_sum_jumlah_nilai_detail_jual['total_subtotal'];
@@ -112,11 +113,13 @@ $kategori = stringdoang($_GET['kategori']);
                         
                         
                         $query10 = $db->query("SELECT SUM(subtotal) AS total_subtotal FROM detail_penjualan WHERE no_faktur = '$data11[no_faktur]'");
+
                         $cek10 = mysqli_fetch_array($query10);
                         $total_subtotal = $cek10['total_subtotal'];
 
                         // hitung total kredit
                         $total_kredit = $total_kredit + $data11['kredit'];
+
                         #hitung total potongan
                         $total_potongan =$total_potongan + $data11['potongan'];
 
@@ -126,6 +129,9 @@ $kategori = stringdoang($_GET['kategori']);
                         #hitung total akhir
                         $total_akhir = $total_akhir + $data11['total'];
                         
+                        #hitung total akhir
+                        $total_tunai = $total_tunai + $data11['tunai'];
+
                   echo "<tr>
                   <td>". $data11['no_faktur'] ."</td>
                   <td>". $data11['tanggal'] ."</td>
@@ -142,6 +148,20 @@ $kategori = stringdoang($_GET['kategori']);
 
 
                   }
+                  echo "
+
+                  <td><p style='color:red'> TOTAL </p></td>
+                  <td><p style='color:red'> - </p></td>
+                  <td><p style='color:red'> - </p></td>
+                  <td><p style='color:red'> - </p></td>
+                  <td><p style='color:red' align='right' > ".rp($t_barang)." </p></td>
+                  <td><p style='color:red' align='right' > ".rp($t_subtotal)." </p></td>
+                  <td><p style='color:red' align='right' > ".rp($total_potongan)." </p></td> 
+                  <td><p style='color:red' align='right' > ".rp($total_tax)."</p></td>      
+                  <td><p style='color:red' align='right' > ".rp($total_akhir)."</p></td>   
+                  <td><p style='color:red' align='right' > ".rp($total_tunai)."</p></td>        
+                  <td><p style='color:red' align='right' > ".rp($total_kredit)." </p></td>
+                  ";
 
                           //Untuk Memutuskan Koneksi Ke Database
                           
@@ -160,31 +180,6 @@ $kategori = stringdoang($_GET['kategori']);
 <div class="col-sm-6">
 </div>
 
-
-<div class="col-sm-2">
-<h4><b>Total Keseluruhan :</b></h4>
-</div>
-
-
-<div class="col-sm-2">
-        
- <table>
-  <tbody>
-
-      <tr><td width="70%">Jumlah Item</td> <td> :&nbsp; </td> <td> <?php echo $t_barang; ?> </td></tr>
-      <tr><td  width="70%">Total Subtotal</td> <td> :&nbsp; </td> <td> <?php echo rp($t_subtotal); ?> </td>
-      </tr>
-      <tr><td  width="70%">Total Potongan</td> <td> :&nbsp; </td> <td> <?php echo rp($total_potongan); ?></td></tr>
-      <tr><td width="70%">Total Pajak</td> <td> :&nbsp; </td> <td> <?php echo rp($total_tax); ?> </td></tr>
-      <tr><td  width="70%">Total Akhir</td> <td> :&nbsp; </td> <td> <?php echo rp($total_akhir); ?> </td>
-      </tr>
-      <tr><td  width="70%">Total Kredit</td> <td> :&nbsp; </td> <td> <?php echo rp($total_kredit); ?></td></tr>
-            
-  </tbody>
-  </table>
-
-
-     </div>
 
  <script>
 $(document).ready(function(){
