@@ -8,8 +8,55 @@ $dari_tanggal = stringdoang($_POST['dari_tanggal']);
 $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 $kategori = stringdoang($_POST['kategori']);
 
+
+$total_akhir_kotor = 0;
+$total_potongan = 0;
+$total_tax = 0;
+$total_jual = 0;
+$total_tunai = 0;
+$total_sisa  = 0;
+$total_kredit = 0;
+
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
+	
+
+		if ($kategori == "Semua Kategori") {
+			# JIKA SEMUA KATEGORI
+			
+			$sql_total = $db->query("SELECT p.tunai,p.total,p.potongan,p.tax,p.sisa,p.kredit FROM penjualan p 
+			LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan 
+			LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang 
+			WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
+		}
+		else
+		{
+
+			$sql_total = $db->query("SELECT p.tunai,p.total,p.potongan,p.tax,p.sisa,p.kredit FROM penjualan p LEFT JOIN pelanggan pel 
+			ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur 
+			LEFT JOIN barang b ON dp.kode_barang = b.kode_barang WHERE p.tanggal >= '$dari_tanggal' 
+			AND p.tanggal <= '$sampai_tanggal' AND b.kategori = '$kategori'");
+		}
+
+		while ($data_total = mysqli_fetch_array($sql_total)) {
+
+				$total_kotor = $data_total['total'] + $data_total['potongan'];
+				
+				$total_akhir_kotor = $total_akhir_kotor + $total_kotor;
+				
+				$total_potongan = $total_potongan + $data_total['potongan'];
+				
+				$total_tax = $total_tax + $data_total['tax'];
+				
+				$total_jual = $total_jual + $data_total['total'];
+				
+				$total_tunai = $total_tunai + $data_total['tunai'];
+				
+				$total_sisa = $total_sisa + $data_total['sisa'];
+				
+				$total_kredit = $total_kredit + $data_total['kredit'];
+		}
+
 
 $columns = array( 
 // datatable column index  => database column name
@@ -87,6 +134,8 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array(); 
 
+		$total_kotor_jual = $row['total'] + $row['potongan'];
+
 				//menampilkan data
 				$nestedData[] = $row['no_faktur'];
 				$nestedData[] = $row['tanggal'];
@@ -95,6 +144,7 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 				$nestedData[] = $row['code_card'] ." - ". $row['nama_pelanggan'];
 				$nestedData[] = $row['user'];
 				$nestedData[] = $row['status'];
+				$nestedData[] = "<p align='right'>".rp($total_kotor_jual)."</p>";
 				$nestedData[] = "<p align='right'>".rp($row['potongan'])."</p>";
 				$nestedData[] = "<p align='right'>".rp($row['tax'])."</p>";
 				$nestedData[] = "<p align='right'>".rp($row['total'])."</p>";
@@ -104,6 +154,25 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 				$nestedData[] = $row["id"];
 				$data[] = $nestedData;
 			}
+
+$nestedData=array();      
+
+      $nestedData[] = "<p style='color:red'> TOTAL </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red'> - </p>";
+      $nestedData[] = "<p style='color:red' align='right'> ".rp($total_akhir_kotor)." </p>";
+      $nestedData[] = "<p style='color:red' align='right'> ".rp($total_potongan)." </p>";
+      $nestedData[] = "<p style='color:red' align='right'> ".rp($total_tax)." </p>"; 
+      $nestedData[] = "<p style='color:red' align='right'> ".rp($total_jual)." </p>";
+      $nestedData[] = "<p style='color:red' align='right'> ".rp($total_tunai)." </p>";
+      $nestedData[] = "<p style='color:red' align='right'> ".rp($total_sisa)." </p>";
+      $nestedData[] = "<p style='color:red' align='right'> ".rp($total_kredit)." </p>"; 
+
+  $data[] = $nestedData;
 
 
 
