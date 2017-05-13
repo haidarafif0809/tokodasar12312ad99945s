@@ -5,6 +5,7 @@
     include 'navbar.php';
     include 'sanitasi.php';
     include 'db.php';
+include 'persediaan.function.php';
 
 
 $kategori = $_GET['kategori'];
@@ -488,8 +489,7 @@ $barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
         $select_gudang = $db->query("SELECT nama_gudang FROM gudang WHERE kode_gudang = '$data1[gudang]'");
         $ambil_gudang = mysqli_fetch_array($select_gudang);
 
-        $select = $db->query("SELECT SUM(sisa) AS jumlah_barang FROM hpp_masuk WHERE kode_barang = '$data1[kode_barang]'");
-        $ambil_sisa = mysqli_fetch_array($select);
+          $stok = cekStokHpp($data1['kode_barang']);
     
         // menampilkan file yang ada di masing-masing data dibawah ini
         echo "<tr>
@@ -568,7 +568,7 @@ $pilih_akses_barang_hapus = $db->query("SELECT item_hapus FROM otoritas_master_d
 $barang_hapus = mysqli_num_rows($pilih_akses_barang_hapus);
 
 
-    if ($barang_hapus > 0 AND ($ambil_sisa['jumlah_barang'] == '0' OR $ambil_sisa['jumlah_barang'] == ''))     
+    if ($barang_hapus > 0 AND ($stok == '0' OR $stok == ''))     
 
             {
          
@@ -590,7 +590,7 @@ $barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
 
     if ($barang_edit > 0) {
 
-           if ($ambil_sisa['jumlah_barang'] == '0') 
+           if ($stok == '0') 
 
              {
             echo "<td> <a href='editbarang.php?id=". $data1['id']."' class='btn btn-success'><span class='glyphicon glyphicon-edit'></span> Edit</a> </td>
@@ -607,7 +607,7 @@ $pilih_akses_barang_edit = $db->query("SELECT item_edit FROM otoritas_master_dat
 $barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
 
 
-    if ($barang_edit > 0 AND $ambil_sisa['jumlah_barang'] != '0')
+    if ($barang_edit > 0 AND $stok != '0')
             {
 
             echo "<td> <a href='editbarang.php?id=". $data1['id']."' class='btn btn-success'><span class='glyphicon glyphicon-edit'></span> Edit</a> </td>";
