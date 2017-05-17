@@ -7,7 +7,7 @@
 
  $nomor_faktur_pembayaran = $_GET['no_faktur_pembayaran'];
 
-$query = $db->query("SELECT tanggal FROM pembayaran_piutang WHERE no_faktur_pembayaran = '$nomor_faktur_pembayaran'");
+$query = $db->query("SELECT tanggal,keterangan FROM pembayaran_piutang WHERE no_faktur_pembayaran = '$nomor_faktur_pembayaran'");
 $ambil_tanggal = mysqli_fetch_array($query);
  
  
@@ -136,7 +136,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
           <input type="hidden" name="no_faktur_pembayaran" id="no_faktur_pembayaran" class="form-control" readonly="" value="<?php echo $nomor_faktur_pembayaran; ?>" required="" >
 
-          <div class="form-group col-sm-4">
+          <div class="form-group col-sm-2">
           <label> Tanggal </label><br>
           <input type="text" name="tanggal"  style="height: 20px" id="tanggal" placeholder="Tanggal" value ="<?php echo $ambil_tanggal['tanggal']; ?>" class="form-control" required="" >
           </div>
@@ -163,33 +163,15 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
           </select>
           </div>
 
-          <div class="form-group col-sm-4">
-          <label> Cara Bayar </label><br>
-          <select type="text" name="cara_bayar" id="carabayar1" class="form-control" required="" >
-          <option value=""> --SILAHKAN PILIH-- </option>
-             <?php 
-             $sett_akun = $db->query("SELECT sa.kas, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.kas = da.kode_daftar_akun");
-             $data_sett = mysqli_fetch_array($sett_akun);
-             echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
-             
-             $query = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
-             while($data = mysqli_fetch_array($query))
-             {
-             echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
-             }
-             ?>
-          </select>
+          <div class="form-group col-sm-4"><br> 
+            <button type="button" class="btn btn-info" id="cari_produk_penjualan" data-toggle="modal" data-target="#myModal"> <i class='fa fa-search'> </i> Cari</button> 
           </div>
 
           <input type="hidden" class="form-control" id="jumlah1" name="jumlah0" placeholder="jumlah">
 
           
 
-</div> <!-- tag penutup div row -->
-
-
-
-<button type="button" class="btn btn-info" id="cari_produk_penjualan" data-toggle="modal" data-target="#myModal"> <i class='fa fa-search'> </i> Cari</button>
+</div> <!-- tag penutup div row --> 
 
 <!-- Tampilan Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -231,7 +213,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
    <!-- agar tampilan berada pada satu group -->
   <!-- memasukan teks pada kolom kode barang -->
 <br>
-<div class="form-group col-sm-3">
+<div class="form-group col-sm-2">
   <input type="text" class="form-control" name="no_faktur_penjualan" id="nomorfakturbeli" placeholder="Nomor Faktur Jual" readonly="">
   </div>
   
@@ -242,16 +224,13 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
 
 
-  <div class="form-group col-sm-3">
+  <div class="form-group col-sm-2">
           <input type="text" name="potongan" id="potongan_penjualan" class="form-control" placeholder="Potongan" autocomplete="off">
   </div>
 
   <div class="form-group col-sm-3">
     <input type="text" class="form-control" name="jumlah_bayar" id="jumlah_bayar" placeholder="Jumlah Bayar" autocomplete="off">
-  </div>
-
-<button type="submit" id="submit_tambah" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah </button>
-
+  </div> 
 <div class="form-group">
   <input type="hidden" name="total" id="total" class="form-control" value="" required="">
 </div>
@@ -262,6 +241,9 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 <input type="hidden" name="status" id="status" class="form-control" value="">
 
 
+<div class="form-group col-sm-2">
+<button type="submit" id="submit_tambah" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah </button>
+</div>
 </form>
   
   <div class="table-responsive">
@@ -292,6 +274,25 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
   <div class="col-sm-4">
 
 <br>
+
+  <div class="form-group">
+    <div class="card card-block">
+ <label> Cara Bayar </label><br>
+          <select type="text" name="cara_bayar" id="carabayar1" class="form-control" required="" >
+          <option value=""> --SILAHKAN PILIH-- </option>
+             <?php 
+             $sett_akun = $db->query("SELECT sa.kas, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.kas = da.kode_daftar_akun");
+             $data_sett = mysqli_fetch_array($sett_akun);
+             echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
+             
+             $query = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
+             while($data = mysqli_fetch_array($query))
+             {
+             echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
+             }
+             ?>
+          </select>
+
             <div class="total">
             <div class="form-group">
           <label> Total Bayar </label><br>
@@ -302,7 +303,7 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
             <div class="form-group">
           <label> Keterangan </label><br>
-          <textarea type="text" name="keterangan" id="keterangan" placeholder="Keterangan" class="form-control" > 
+          <textarea type="text" name="keterangan" id="keterangan" placeholder="Keterangan" class="form-control"><?php echo $ambil_tanggal['keterangan']; ?> 
           </textarea> 
           <br>
 
@@ -322,6 +323,8 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
           <span id="demo"> </span>
     </div><!-- end ofclass="total" -->
+    </div>
+    </div>
   </div><!-- end of col-sm-4 -->
 
 </div><!-- end of container -->
@@ -490,6 +493,27 @@ $no_faktur_penjualan = $data50['no_faktur_penjualan'];
 
   </script>
 
+
+  <script type="text/javascript">
+  //alert ketika potongan melebihi kredit
+   $(document).ready(function(){
+      $("#potongan_penjualan").keyup(function(){
+      var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val()))));
+      var potongan_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+      var hasil = potongan_penjualan - kredit;
+
+      $("#totalbayar").val(potongan_penjualan);
+      
+      if (hasil > 0 )
+      {
+      alert("Potongan Anda Melebihi Sisa");
+      $("#potongan_penjualan").val('');
+      }
+      
+      });
+   });
+
+  </script>
 
 
  <script>

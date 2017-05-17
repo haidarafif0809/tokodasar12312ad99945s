@@ -116,7 +116,13 @@
 <form action="proses_tbs_pembayaran_piutang.php" role="form" method="post" id="formtambahproduk">
 <div class="row">
 
-      
+          <div class="form-group col-sm-2">
+          <label> Tanggal </label><br>
+          <input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" style="height: 20px" value="<?php echo date("Y/m/d"); ?>" class="form-control" required="" >
+
+          <input type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >
+          </div>
+
           <div class="form-group col-sm-4">
           <label> Kode Pelanggan </label>
           <br>
@@ -142,48 +148,9 @@
           </div>
           
 
-          <div class="form-group col-sm-4">
-          <label> Cara Bayar </label><br>
-          <select type="text" name="cara_bayar" id="carabayar1" class="form-control" >
-          
-             <?php 
-             
-             
-             $sett_akun = $db->query("SELECT sa.kas, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.kas = da.kode_daftar_akun");
-             $data_sett = mysqli_fetch_array($sett_akun);
-             
-             
-             
-             echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
-             
-             $query = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
-             while($data = mysqli_fetch_array($query))
-             {
-             
-             
-             
-             
-             echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
-             
-             
-             
-             
-             }
-             
-             
-             ?>
-          
-          </select>
-          </div>
-          
-          <div class="form-group col-sm-4">
-          <label> Tanggal </label><br>
-          <input type="text" name="tanggal" id="tanggal" placeholder="Tanggal" style="height: 20px" value="<?php echo date("Y/m/d"); ?>" class="form-control" required="" >
-
-          <input type="hidden" name="session_id" id="session_id" class="form-control" readonly="" value="<?php echo $session_id; ?>" required="" >
-          </div>
-          
-    
+          <div class="form-group col-sm-2"><br>
+          <button type="button" class="btn btn-info" id="cari_produk_penjualan" data-toggle="modal" data-target="#myModal"> <i class='fa fa-search'> </i> Cari</button>
+          </div> 
 
           <input type="hidden" class="form-control" id="jumlah1" name="jumlah0" placeholder="jumlah">
 
@@ -192,8 +159,7 @@
 
 </div> <!-- tag penutup div row -->
 
-<button type="button" class="btn btn-info" id="cari_produk_penjualan" data-toggle="modal" data-target="#myModal"> <i class='fa fa-search'> </i> Cari</button>
-<br>
+
 
 <!-- Tampilan Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -230,18 +196,15 @@
 <div class="row">
   
   <div class="col-sm-8">
-<div class="form-group col-sm-3">
+<div class="form-group col-sm-2">
   <input type="text" class="form-control" name="no_faktur_penjualan" id="nomorfakturbeli" placeholder="Nomor Faktur Jual" readonly="">
   </div>
   
   <div class="form-group col-sm-3">
     <input type="text" class="form-control" name="kredit" id="kredit" placeholder="Kredit" readonly="">
-  </div>
+  </div> 
 
-
-
-
-  <div class="form-group col-sm-3">
+  <div class="form-group col-sm-2">
           <input type="text" name="potongan" id="potongan_penjualan" class="form-control" placeholder="Potongan" autocomplete="off">
   </div>
 
@@ -249,7 +212,9 @@
     <input type="text" class="form-control" name="jumlah_bayar" onkeydown="return numbersonly(this, event);" id="jumlah_bayar" placeholder="Jumlah Bayar" autocomplete="off">
   </div>
 
+  <div class="form-group col-sm-2">
 <button type="submit" id="submit_tambah" class="btn btn-success"> <i class='fa fa-plus'> </i> Tambah </button>
+</div>
 
 <div class="form-group">
   <input type="hidden" name="total" id="total" class="form-control" value="" required="">
@@ -324,6 +289,40 @@ mysqli_close($db);
   
   <div class="col-sm-4">
     
+  <div class="form-group">
+    <div class="card card-block">
+          <label> Cara Bayar </label><br>
+          <select type="text" name="cara_bayar" id="carabayar1" class="form-control" >
+          
+             <?php 
+                         
+             include 'db.php';
+             
+             $sett_akun = $db->query("SELECT sa.kas, da.nama_daftar_akun FROM setting_akun sa INNER JOIN daftar_akun da ON sa.kas = da.kode_daftar_akun");
+             $data_sett = mysqli_fetch_array($sett_akun);
+             
+             
+             
+             echo "<option selected value='".$data_sett['kas']."'>".$data_sett['nama_daftar_akun'] ."</option>";
+             
+             $query = $db->query("SELECT nama_daftar_akun, kode_daftar_akun FROM daftar_akun WHERE tipe_akun = 'Kas & Bank'");
+             while($data = mysqli_fetch_array($query))
+             {
+             
+             
+             
+             
+             echo "<option value='".$data['kode_daftar_akun']."'>".$data['nama_daftar_akun'] ."</option>";
+             
+             
+             
+             
+             }
+             
+             
+             ?>
+          
+          </select>
     <div class="form-group">
           <label> <b> Total Bayar </b> </label><br>
           <input type="text" name="total_bayar" id="totalbayar" placeholder="Total Bayar" class="form-control" readonly="" required="">
@@ -356,6 +355,8 @@ mysqli_close($db);
 
   </div>
 
+</div>
+</div>
 </div>
  
 
@@ -514,6 +515,26 @@ $("#nomorfakturbeli").val(data);
       </script>
 
 
+  <script type="text/javascript">
+  //alert ketika potongan melebihi kredit
+   $(document).ready(function(){
+      $("#potongan_penjualan").keyup(function(){
+      var kredit = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#kredit").val()))));
+      var potongan_penjualan = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah($("#potongan_penjualan").val()))));
+      var hasil = potongan_penjualan - kredit;
+
+      $("#totalbayar").val(potongan_penjualan);
+      
+      if (hasil > 0 )
+      {
+      alert("Potongan Anda Melebihi Sisa");
+      $("#potongan_penjualan").val('');
+      }
+      
+      });
+   });
+
+  </script>
 
 
 
