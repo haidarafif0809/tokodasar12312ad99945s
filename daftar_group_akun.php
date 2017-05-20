@@ -179,7 +179,7 @@ $satuan_hapus = mysqli_num_rows($pilih_akses_satuan_hapus);
 <script type="text/javascript">
     $(document).ready(function(){
 	//fungsi hapus data 
-		$(".btn-hapus").click(function(){
+                         $(document).on('click', '.btn-hapus', function (e) {
 		var nama_group = $(this).attr("data-satuan");
 		var id = $(this).attr("data-id");
 		$("#nama_group").val(nama_group);
@@ -189,8 +189,7 @@ $satuan_hapus = mysqli_num_rows($pilih_akses_satuan_hapus);
 		
 		});
 
-
-		$("#btn_jadi_hapus").click(function(){
+  $(document).on('click', '#btn_jadi_hapus', function (e) {
 		
 		var id = $("#id_hapus").val();
 		$.post("hapus_group_akun.php",{id:id},function(data){
