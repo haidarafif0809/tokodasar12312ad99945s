@@ -21,43 +21,6 @@ $total_kredit = 0;
 $requestData= $_REQUEST;
 	
 
-		if ($kategori == "Semua Kategori") {
-			# JIKA SEMUA KATEGORI
-			
-			$sql_total = $db->query("SELECT p.tunai,p.total,p.potongan,p.tax,p.sisa,p.kredit FROM penjualan p 
-			LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan 
-			LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang 
-			WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
-		}
-		else
-		{
-
-			$sql_total = $db->query("SELECT p.tunai,p.total,p.potongan,p.tax,p.sisa,p.kredit FROM penjualan p LEFT JOIN pelanggan pel 
-			ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur 
-			LEFT JOIN barang b ON dp.kode_barang = b.kode_barang WHERE p.tanggal >= '$dari_tanggal' 
-			AND p.tanggal <= '$sampai_tanggal' AND b.kategori = '$kategori'");
-		}
-
-		while ($data_total = mysqli_fetch_array($sql_total)) {
-
-				$total_kotor = $data_total['total'] + $data_total['potongan'];
-				
-				$total_akhir_kotor = $total_akhir_kotor + $total_kotor;
-				
-				$total_potongan = $total_potongan + $data_total['potongan'];
-				
-				$total_tax = $total_tax + $data_total['tax'];
-				
-				$total_jual = $total_jual + $data_total['total'];
-				
-				$total_tunai = $total_tunai + $data_total['tunai'];
-				
-				$total_sisa = $total_sisa + $data_total['sisa'];
-				
-				$total_kredit = $total_kredit + $data_total['kredit'];
-		}
-
-
 $columns = array( 
 // datatable column index  => database column name
 	0 =>'nama_pelanggan', 
@@ -132,7 +95,26 @@ $query=mysqli_query($conn, $sql) or die("eror 3");
 
 $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
-	$nestedData=array(); 
+	$nestedData=array();
+
+	// untuk perhitungan jumlah total
+				$total_kotor = $row['total'] + $row['potongan'];
+				
+				$total_akhir_kotor = $total_akhir_kotor + $total_kotor;
+				
+				$total_potongan = $total_potongan + $row['potongan'];
+				
+				$total_tax = $total_tax + $row['tax'];
+				
+				$total_jual = $total_jual + $row['total'];
+				
+				$total_tunai = $total_tunai + $row['tunai'];
+				
+				$total_sisa = $total_sisa + $row['sisa'];
+				
+				$total_kredit = $total_kredit + $row['kredit']; 
+	// untuk perhitungan jumlah total
+
 
 		$total_kotor_jual = $row['total'] + $row['potongan'];
 
