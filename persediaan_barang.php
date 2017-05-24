@@ -5,6 +5,7 @@
     include 'navbar.php';
     include 'sanitasi.php';
     include 'db.php';
+include 'persediaan.function.php';
 
 $kategori = $_GET['kategori'];
 $tipe = $_GET['tipe'];
@@ -425,12 +426,15 @@ th {
 
           <li class="nav-item"><a class="nav-link active" href='persediaan_barang.php?kategori=semua&tipe=barang'> Umum </a></li>
           <li class="nav-item"><a class="nav-link" href='persediaan_barang2.php?kategori=semua&tipe=barang' > Lain - lain </a></li>
+          <li class="nav-item"><a class="nav-link" href='menu_filter_stok_produk.php?kategori=semua&tipe=barang'> Filter Stok Produk </a></li>
 
           <?php else: ?>
 
 
           <li class="nav-item"><a class="nav-link active" href='persediaan_barang.php?kategori=semua&tipe=barang_jasa'> Umum </a></li>
           <li class="nav-item"><a class="nav-link" href='persediaan_barang2.php?kategori=semua&tipe=barang_jasa' > Lain - lain </a></li>
+          <li class="nav-item"><a class="nav-link" href='menu_filter_stok_produk.php?kategori=semua&tipe=barang_jasa' > Filter Stok Produk </a></li>
+
               
           <?php endif ?>
           
@@ -441,7 +445,7 @@ th {
 <div class="table-responsive">
           
 <span id="table_baru">
-    <table id="tableuser" class="table table-bordered">
+    <table id="tableuser" class="table table-bordered table-sm">
 
         <!-- membuat nama kolom tabel -->
         <thead>
@@ -506,8 +510,9 @@ $f = round($e, 2);
         $select_gudang = $db->query("SELECT nama_gudang FROM gudang WHERE kode_gudang = '$data1[gudang]'");
         $ambil_gudang = mysqli_fetch_array($select_gudang);
 
-        $select = $db->query("SELECT SUM(sisa) AS jumlah_barang FROM hpp_masuk WHERE kode_barang = '$data1[kode_barang]'");
-        $ambil_sisa = mysqli_fetch_array($select);
+         $stok = cekStokHpp($data1['kode_barang']);
+
+
 
             $hpp_masuk = $db->query("SELECT SUM(total_nilai) AS total_hpp FROM hpp_masuk WHERE kode_barang = '$data1[kode_barang]'");
             $cek_awal_masuk = mysqli_fetch_array($hpp_masuk);
@@ -550,7 +555,7 @@ if ($data1['berkaitan_dgn_stok'] == 'Jasa') {
     echo "<td>0</td>";
 }
 else {
-    echo "<td>". $ambil_sisa['jumlah_barang'] ."</td>";
+    echo "<td>". $stok ."</td>";
 }
 
 // SATUAN
@@ -625,7 +630,7 @@ $pilih_akses_barang_hapus = $db->query("SELECT item_hapus FROM otoritas_master_d
 $barang_hapus = mysqli_num_rows($pilih_akses_barang_hapus);
 
 
-    if ($barang_hapus > 0 AND ($ambil_sisa['jumlah_barang'] == '0' OR $ambil_sisa['jumlah_barang'] == ''))      
+    if ($barang_hapus > 0 AND ($stok == '0' OR $stok == ''))      
 
             {
          
@@ -646,7 +651,7 @@ $barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
 
     if ($barang_edit > 0) {
 
-           if ($ambil_sisa['jumlah_barang'] == '0') 
+           if ($stok == '0') 
 
              {
             echo "<td> <a href='editbarang.php?id=". $data1['id']."' class='btn btn-success'><span class='glyphicon glyphicon-edit'></span> Edit</a> </td>
@@ -663,7 +668,7 @@ $pilih_akses_barang_edit = $db->query("SELECT item_edit FROM otoritas_master_dat
 $barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
 
 
-    if ($barang_edit > 0 AND $ambil_sisa['jumlah_barang'] != '0')
+    if ($barang_edit > 0 AND $stok != '0')
             {
 
             echo "<td> <a href='editbarang.php?id=". $data1['id']."' class='btn btn-success'><span class='glyphicon glyphicon-edit'></span> Edit</a> </td>";
