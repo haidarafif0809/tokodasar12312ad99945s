@@ -12,23 +12,27 @@ $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 $kategori = stringdoang($_GET['kategori']);
 
-
-$total_akhir_kotor = 0;
-$total_potongan = 0;
-$total_tax = 0;
-$total_jual = 0;
-$total_tunai = 0;
-$total_sisa  = 0;
-$total_kredit = 0;
-
-
 if ($kategori == "Semua Kategori") {
   # JIKA SEMUA KATEGORI
-  $perintah_tampil = $db->query(" SELECT b.kategori,pel.nama_pelanggan,pel.kode_pelanggan AS code_card,p.tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'  GROUP BY p.no_faktur");
+  $query_sum_total = $db->query(" SELECT SUM(p.tunai) as tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,SUM(p.total) as total,p.jam,p.user,p.status,SUM(p.potongan) as potongan ,SUM(p.tax) as tax,SUM(p.sisa) as sisa,SUM(p.kredit) as kredit FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang 
+   WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
 }
 else{
-  $perintah_tampil = $db->query(" SELECT b.kategori,pel.nama_pelanggan,pel.kode_pelanggan AS code_card,p.tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND b.kategori = '$kategori' GROUP BY p.no_faktur");
+  $query_sum_total = $db->query(" SELECT SUM(p.tunai) as tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,SUM(p.total) as total,p.jam,p.user,p.status,SUM(p.potongan) as potongan ,SUM(p.tax) as tax,SUM(p.sisa) as sisa,SUM(p.kredit) as kredit
+  FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang
+   WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND b.kategori = '$kategori'");
 }
+
+$data_sum_total = mysqli_fetch_array($query_sum_total);
+
+
+$total_akhir_kotor = $data_sum_total['total'] + $data_sum_total['potongan'];
+$total_potongan = $data_sum_total['potongan'];
+$total_tax = $data_sum_total['tax'];
+$total_jual = $data_sum_total['total'];
+$total_tunai = $data_sum_total['tunai'];
+$total_sisa  = $data_sum_total['sisa'];
+$total_kredit = $data_sum_total['kredit'];
 
 
 ?>
@@ -56,33 +60,19 @@ else{
     
     <tbody>
     <?php
+    
+      if ($kategori == "Semua Kategori") {
+  # JIKA SEMUA KATEGORI
+        $perintah_tampil = $db->query(" SELECT b.kategori,pel.nama_pelanggan,pel.kode_pelanggan AS code_card,p.tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' GROUP BY p.no_faktur");
+      }
+      else{
+        $perintah_tampil = $db->query(" SELECT b.kategori,pel.nama_pelanggan,pel.kode_pelanggan AS code_card,p.tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND b.kategori = '$kategori' GROUP BY p.no_faktur  ");
+      }
 
       //menyimpan data sementara yang ada pada $perintah
       while ($data1 = mysqli_fetch_array($perintah_tampil))
 
       {
-
-       
-        // untuk perhitungan jumlah total
-        $total_kotor = $data1['total'] + $data1['potongan'];
-        
-        $total_akhir_kotor = $total_akhir_kotor + $total_kotor;
-        
-        $total_potongan = $total_potongan + $data1['potongan'];
-        
-        $total_tax = $total_tax + $data1['tax'];
-        
-        $total_jual = $total_jual + $data1['total'];
-        
-        $total_tunai = $total_tunai + $data1['tunai'];
-        
-        $total_sisa = $total_sisa + $data1['sisa'];
-        
-        $total_kredit = $total_kredit + $data1['kredit']; 
-        // untuk perhitungan jumlah total
-
-
-
                     $total_kotor_jual = $data1['total'] + $data1['potongan'];
           
                   echo "<tr>
