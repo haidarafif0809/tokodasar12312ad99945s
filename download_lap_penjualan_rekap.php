@@ -14,13 +14,10 @@ $kategori = stringdoang($_GET['kategori']);
 
 if ($kategori == "Semua Kategori") {
   # JIKA SEMUA KATEGORI
-  $query_sum_total = $db->query(" SELECT SUM(p.tunai) as tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,SUM(p.total) as total,p.jam,p.user,p.status,SUM(p.potongan) as potongan ,SUM(p.tax) as tax,SUM(p.sisa) as sisa,SUM(p.kredit) as kredit FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang 
-   WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
+  $query_sum_total = $db->query("SELECT SUM(tunai) as tunai,id,tanggal,no_faktur,kode_pelanggan,SUM(total) as total,jam,user,status,SUM(potongan) as potongan ,SUM(tax) as tax,SUM(sisa) as sisa,SUM(kredit) as kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
 }
 else{
-  $query_sum_total = $db->query(" SELECT SUM(p.tunai) as tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,SUM(p.total) as total,p.jam,p.user,p.status,SUM(p.potongan) as potongan ,SUM(p.tax) as tax,SUM(p.sisa) as sisa,SUM(p.kredit) as kredit
-  FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang
-   WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND b.kategori = '$kategori'");
+  $query_sum_total = $db->query("SELECT SUM(tunai) as tunai,id,tanggal,no_faktur,kode_pelanggan,SUM(total) as total,jam,user,status,SUM(potongan) as potongan ,SUM(tax) as tax,SUM(sisa) as sisa,SUM(kredit) as kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
 }
 
 $data_sum_total = mysqli_fetch_array($query_sum_total);
