@@ -9,13 +9,26 @@ $sampai_tanggal = stringdoang($_POST['sampai_tanggal']);
 $kategori = stringdoang($_POST['kategori']);
 
 
-$total_akhir_kotor = 0;
-$total_potongan = 0;
-$total_tax = 0;
-$total_jual = 0;
-$total_tunai = 0;
-$total_sisa  = 0;
-$total_kredit = 0;
+
+
+if ($kategori == "Semua Kategori") {
+	# JIKA SEMUA KATEGORI
+	$query_sum_total = $db->query("SELECT SUM(tunai) as tunai,id,tanggal,no_faktur,kode_pelanggan,SUM(total) as total,jam,user,status,SUM(potongan) as potongan ,SUM(tax) as tax,SUM(sisa) as sisa,SUM(kredit) as kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
+}
+else{
+	$query_sum_total = $db->query("SELECT SUM(tunai) as tunai,id,tanggal,no_faktur,kode_pelanggan,SUM(total) as total,jam,user,status,SUM(potongan) as potongan ,SUM(tax) as tax,SUM(sisa) as sisa,SUM(kredit) as kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
+}
+
+$data_sum_total = mysqli_fetch_array($query_sum_total);
+
+
+$total_akhir_kotor = $data_sum_total['total'] + $data_sum_total['potongan'];
+$total_potongan = $data_sum_total['potongan'];
+$total_tax = $data_sum_total['tax'];
+$total_jual = $data_sum_total['total'];
+$total_tunai = $data_sum_total['tunai'];
+$total_sisa  = $data_sum_total['sisa'];
+$total_kredit = $data_sum_total['kredit'];
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
@@ -97,26 +110,9 @@ $data = array();
 while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 	$nestedData=array();
 
-	// untuk perhitungan jumlah total
-				$total_kotor = $row['total'] + $row['potongan'];
-				
-				$total_akhir_kotor = $total_akhir_kotor + $total_kotor;
-				
-				$total_potongan = $total_potongan + $row['potongan'];
-				
-				$total_tax = $total_tax + $row['tax'];
-				
-				$total_jual = $total_jual + $row['total'];
-				
-				$total_tunai = $total_tunai + $row['tunai'];
-				
-				$total_sisa = $total_sisa + $row['sisa'];
-				
-				$total_kredit = $total_kredit + $row['kredit']; 
-	// untuk perhitungan jumlah total
 
+                    $total_kotor_jual = $row['total'] + $row['potongan'];
 
-		$total_kotor_jual = $row['total'] + $row['potongan'];
 
 				//menampilkan data
 				$nestedData[] = $row['no_faktur'];

@@ -12,22 +12,27 @@ $kategori = stringdoang($_GET['kategori']);
     $data1 = mysqli_fetch_array($query1);
 
 
-$total_akhir_kotor = 0;
-$total_potongan = 0;
-$total_tax = 0;
-$total_jual = 0;
-$total_tunai = 0;
-$total_sisa  = 0;
-$total_kredit = 0;
-
 
 if ($kategori == "Semua Kategori") {
   # JIKA SEMUA KATEGORI
-  $perintah_tampil = $db->query(" SELECT b.kategori,pel.nama_pelanggan,pel.kode_pelanggan AS code_card,p.tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
+  $query_sum_total = $db->query("SELECT SUM(tunai) as tunai,id,tanggal,no_faktur,kode_pelanggan,SUM(total) as total,jam,user,status,SUM(potongan) as potongan ,SUM(tax) as tax,SUM(sisa) as sisa,SUM(kredit) as kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
 }
 else{
-  $perintah_tampil = $db->query(" SELECT b.kategori,pel.nama_pelanggan,pel.kode_pelanggan AS code_card,p.tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND b.kategori = '$kategori'");
+  $query_sum_total = $db->query("SELECT SUM(tunai) as tunai,id,tanggal,no_faktur,kode_pelanggan,SUM(total) as total,jam,user,status,SUM(potongan) as potongan ,SUM(tax) as tax,SUM(sisa) as sisa,SUM(kredit) as kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
 }
+
+$data_sum_total = mysqli_fetch_array($query_sum_total);
+
+
+$total_akhir_kotor = $data_sum_total['total'] + $data_sum_total['potongan'];
+$total_potongan = $data_sum_total['potongan'];
+$total_tax = $data_sum_total['tax'];
+$total_jual = $data_sum_total['total'];
+$total_tunai = $data_sum_total['tunai'];
+$total_sisa  = $data_sum_total['sisa'];
+$total_kredit = $data_sum_total['kredit'];
+
+
  ?>
 <div class="container">
  <div class="row"><!--row1-->
@@ -87,30 +92,16 @@ else{
             
             <tbody>
             <?php
-
+      if ($kategori == "Semua Kategori") {
+  # JIKA SEMUA KATEGORI
+        $perintah_tampil = $db->query(" SELECT b.kategori,pel.nama_pelanggan,pel.kode_pelanggan AS code_card,p.tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' GROUP BY p.no_faktur");
+      }
+      else{
+        $perintah_tampil = $db->query(" SELECT b.kategori,pel.nama_pelanggan,pel.kode_pelanggan AS code_card,p.tunai,p.id,p.tanggal,p.no_faktur,p.kode_pelanggan,p.total,p.jam,p.user,p.status,p.potongan,p.tax,p.sisa,p.kredit FROM penjualan p LEFT JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan LEFT JOIN detail_penjualan dp ON p.no_faktur = dp.no_faktur LEFT JOIN barang b ON dp.kode_barang = b.kode_barang  WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND b.kategori = '$kategori' GROUP BY p.no_faktur  ");
+      }
                   while ($data11 = mysqli_fetch_array($perintah_tampil))
 
                   {
-
-        // untuk perhitungan jumlah total
-        $total_kotor = $data11['total'] + $data11['potongan'];
-        
-        $total_akhir_kotor = $total_akhir_kotor + $total_kotor;
-        
-        $total_potongan = $total_potongan + $data11['potongan'];
-        
-        $total_tax = $total_tax + $data11['tax'];
-        
-        $total_jual = $total_jual + $data11['total'];
-        
-        $total_tunai = $total_tunai + $data11['tunai'];
-        
-        $total_sisa = $total_sisa + $data11['sisa'];
-        
-        $total_kredit = $total_kredit + $data11['kredit']; 
-        // untuk perhitungan jumlah total
-
-
 
                     $total_kotor_jual = $data11['total'] + $data11['potongan'];
           
