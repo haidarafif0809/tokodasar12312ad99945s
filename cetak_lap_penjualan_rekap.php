@@ -8,29 +8,16 @@ $dari_tanggal = stringdoang($_GET['dari_tanggal']);
 $sampai_tanggal = stringdoang($_GET['sampai_tanggal']);
 $kategori = stringdoang($_GET['kategori']);
 
-    $query1 = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
-    $data1 = mysqli_fetch_array($query1);
+$query1 = $db->query("SELECT foto,nama_perusahaan,alamat_perusahaan,no_telp FROM perusahaan ");
+$data1 = mysqli_fetch_array($query1);
 
-
-
-if ($kategori == "Semua Kategori") {
-  # JIKA SEMUA KATEGORI
-  $query_sum_total = $db->query("SELECT SUM(tunai) as tunai,id,tanggal,no_faktur,kode_pelanggan,SUM(total) as total,jam,user,status,SUM(potongan) as potongan ,SUM(tax) as tax,SUM(sisa) as sisa,SUM(kredit) as kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
-}
-else{
-  $query_sum_total = $db->query("SELECT SUM(tunai) as tunai,id,tanggal,no_faktur,kode_pelanggan,SUM(total) as total,jam,user,status,SUM(potongan) as potongan ,SUM(tax) as tax,SUM(sisa) as sisa,SUM(kredit) as kredit FROM penjualan WHERE tanggal >= '$dari_tanggal' AND tanggal <= '$sampai_tanggal' ");
-}
-
-$data_sum_total = mysqli_fetch_array($query_sum_total);
-
-
-$total_akhir_kotor = $data_sum_total['total'] + $data_sum_total['potongan'];
-$total_potongan = $data_sum_total['potongan'];
-$total_tax = $data_sum_total['tax'];
-$total_jual = $data_sum_total['total'];
-$total_tunai = $data_sum_total['tunai'];
-$total_sisa  = $data_sum_total['sisa'];
-$total_kredit = $data_sum_total['kredit'];
+$total_akhir_kotor = 0;
+$total_potongan = 0;
+$total_tax = 0;
+$total_jual = 0;
+$total_tunai = 0;
+$total_sisa = 0;
+$total_kredit = 0;
 
 
  ?>
@@ -103,24 +90,33 @@ $total_kredit = $data_sum_total['kredit'];
 
                   {
 
-                    $total_kotor_jual = $data11['total'] + $data11['potongan'];
-          
-                  echo "<tr>
-                  <td>". $data11['no_faktur'] ."</td>
-                  <td>". $data11['tanggal'] ."</td>
-                  <td>". $data11['jam'] ."</td>
-                  <td>". $data11['kategori'] ."</td>
-                  <td>". $data11['code_card'] ." - ". $data11['nama_pelanggan'] ."</td>
-                  <td>". $data11['user'] ."</td>
-                  <td>". $data11['status'] ."</td>
-                  <td align='right'>". rp($total_kotor_jual) ."</td>
-                  <td align='right'>". rp($data11['potongan']) ."</td>
-                  <td align='right'>". rp($data11['tax']) ."</td>
-                  <td align='right'>". rp($data11['total']) ."</td>
-                  <td align='right'>". rp($data11['tunai']) ."</td>
-                  <td align='right'>". rp($data11['sisa']) ."</td>
-                  <td align='right'>". rp($data11['kredit']) ."</td>
-                  </tr>";
+                      $total_kotor_jual = $data11['total'] + $data11['potongan'];
+              
+                      echo "<tr>
+                      <td>". $data11['no_faktur'] ."</td>
+                      <td>". $data11['tanggal'] ."</td>
+                      <td>". $data11['jam'] ."</td>
+                      <td>". $data11['kategori'] ."</td>
+                      <td>". $data11['code_card'] ." - ". $data11['nama_pelanggan'] ."</td>
+                      <td>". $data11['user'] ."</td>
+                      <td>". $data11['status'] ."</td>
+                      <td align='right'>". rp($total_kotor_jual) ."</td>
+                      <td align='right'>". rp($data11['potongan']) ."</td>
+                      <td align='right'>". rp($data11['tax']) ."</td>
+                      <td align='right'>". rp($data11['total']) ."</td>
+                      <td align='right'>". rp($data11['tunai']) ."</td>
+                      <td align='right'>". rp($data11['sisa']) ."</td>
+                      <td align='right'>". rp($data11['kredit']) ."</td>
+                      </tr>";
+
+
+                       $total_akhir_kotor = $total_akhir_kotor + $total_kotor_jual;
+                       $total_potongan = $total_potongan + $data11['potongan'];
+                       $total_tax = $total_tax + $data11['tax'];
+                       $total_jual = $total_jual + $data11['total'];
+                       $total_tunai = $total_tunai + $data11['tunai'];
+                       $total_sisa = $total_sisa + $data11['sisa'];
+                       $total_kredit = $total_kredit + $data11['kredit'];
 
 
                   }
