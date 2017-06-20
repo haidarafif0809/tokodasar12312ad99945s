@@ -574,7 +574,7 @@ $total_modal = $total_modal + $datadaftar_akun['total'];
 
 }
 
-if ($total_laba_tahun_berjalan > 0) {
+if ($total_laba_tahun_berjalan != 0) {
 
 
 if ($total_laba_tahun_berjalan < 0) {
