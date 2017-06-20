@@ -581,7 +581,7 @@ if ($total_laba_tahun_berjalan < 0) {
   echo "
  <table>
   <tbody>
-    <tr><td width='100%'><h4 style='padding-left:50px'>" .$data_sett['laba_tahun_berjalan'] ." - >" .$data_sett['laba_tahun_berjalan'] ."</h4></td> <td> <h4> (".rp($total_laba_tahun_berjalan).") </h4>  </td></tr>
+    <tr><td width='100%'><h4 style='padding-left:50px'>" .$data_sett['laba_tahun_berjalan'] ." " .$data_sett['nama_daftar_akun'] ."</h4></td> <td> <h4> (".rp($total_laba_tahun_berjalan).") </h4>  </td></tr>
   </tbody>
 </table>
 ";
