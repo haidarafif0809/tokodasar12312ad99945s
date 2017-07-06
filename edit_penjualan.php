@@ -13,6 +13,12 @@ include 'sanitasi.php';
  $nama_gudang = $_GET['nama_gudang'];
  $kode_gudang = $_GET['kode_gudang'];
 
+
+
+    $query_pelanggan = $db->query("SELECT nama_pelanggan FROM pelanggan WHERE kode_pelanggan = '$kode_pelanggan'");
+    $data_pelanggan = mysqli_fetch_array($query_pelanggan);
+    $nama_pelanggan = $data_pelanggan['nama_pelanggan'];
+
     $perintah = $db->query("SELECT tanggal FROM penjualan WHERE no_faktur = '$nomor_faktur'");
     $ambil_tanggal = mysqli_fetch_array($perintah);
 
@@ -32,12 +38,15 @@ include 'sanitasi.php';
     $ambil_tax = mysqli_fetch_array($data_tax);
     $pajak_exclude = $ambil_tax['tax'];
 
-    $data_potongan = $db->query("SELECT potongan, tax, ppn, total,potongan_persen FROM penjualan WHERE no_faktur = '$nomor_faktur'");
+    $data_potongan = $db->query("SELECT potongan, tax, ppn, total,potongan_persen,sales,tunai,tanggal_jt FROM penjualan WHERE no_faktur = '$nomor_faktur'");
     $ambil_potongan = mysqli_fetch_array($data_potongan);
     $potongan = $ambil_potongan['potongan'];
     $ppn = $ambil_potongan['ppn'];
     $tax = $ambil_potongan['tax'];
     $total_akhir = $ambil_potongan['total'];
+    $sales = $ambil_potongan['sales'];
+    $tunai = $ambil_potongan['tunai'];
+    $jatuh_tempo = $ambil_potongan['tanggal_jt'];
 
 
     $data_potongan_persen = $db->query("SELECT SUM(subtotal) AS subtotal FROM detail_penjualan WHERE no_faktur = '$nomor_faktur'");
@@ -71,12 +80,11 @@ include 'sanitasi.php';
     $( ".tanggal" ).datepicker({dateFormat: "yy-mm-dd"});
   });
 
-  <!-- js untuk tombol shortcut -->
-<!-- js untuk tombol shortcut -->
   </script>
 
+  <!-- js untuk tombol shortcut -->
  <script src="shortcut.js"></script>
-
+<!-- js untuk tombol shortcut -->
 
 <!--untuk membuat agar tampilan form terlihat rapih dalam satu tempat -->
  <div style="padding-left: 5%; padding-right: 5%">
@@ -103,7 +111,7 @@ include 'sanitasi.php';
 <div class="form-group col-sm-2">
   <label> Kode Pelanggan </label>
   <select type="text" name="kode_pelanggan" id="kd_pelanggan" class="form-control chosen"  required="" autofocus="">
-  <option value="<?php echo $kode_pelanggan; ?>"><?php echo $kode_pelanggan; ?></option>
+  <option value="<?php echo $kode_pelanggan; ?>"><?php echo $kode_pelanggan; ?> - <?php echo $nama_pelanggan; ?> </option>
           
   <?php 
     
@@ -113,8 +121,13 @@ include 'sanitasi.php';
     //untuk menyimpan data sementara yang ada pada $query
     while($data = mysqli_fetch_array($query))
     {
+      if($kode_pelanggan == $data['kode_pelanggan']){
+        echo "<option selected value='".$kode_pelanggan ."' class='opt-pelanggan-".$kode_pelanggan."' data-level='".$data['level_harga'] ."'>".$kode_pelanggan." - ".$nama_pelanggan."</option>";
+      }
+      else{
+       echo "<option value='".$data['kode_pelanggan'] ."' class='opt-pelanggan-".$data['kode_pelanggan']."' data-level='".$data['level_harga'] ."'>".$data['kode_pelanggan'] ." - ".$data['nama_pelanggan'] ."</option>";
+      }
     
-    echo "<option value='".$data['kode_pelanggan'] ."' class='opt-pelanggan-".$data['kode_pelanggan']."' data-level='".$data['level_harga'] ."'>".$data['kode_pelanggan'] ." - ".$data['nama_pelanggan'] ."</option>";
     }
     
     
@@ -123,25 +136,19 @@ include 'sanitasi.php';
   </div>
 
   <div class="form-group  col-sm-2">
-          <label> Gudang </label><br>
-          
-          <select name="kode_gudang" id="kode_gudang" class="form-control chosen" required="" >
+      <label> Gudang </label><br>
+        <select name="kode_gudang" id="kode_gudang" class="form-control chosen" required="" >
           <option value=<?php echo $kode_gudang; ?>><?php echo $nama_gudang; ?></option>
           <?php 
-          
+        
           // menampilkan seluruh data yang ada pada tabel suplier
           $query = $db->query("SELECT kode_gudang,nama_gudang FROM gudang");
-          
-          // menyimpan data sementara yang ada pada $query
-          while($data = mysqli_fetch_array($query))
-          {
-          
-          echo "<option value='".$data['kode_gudang'] ."'>".$data['nama_gudang'] ."</option>";
+          while($data = mysqli_fetch_array($query)){
+            echo "<option value='".$data['kode_gudang'] ."'>".$data['nama_gudang'] ."</option>";
           }
           
-          
           ?>
-          </select>
+        </select>
 </div>
 
 <div class="form-group col-sm-2">
@@ -156,26 +163,23 @@ include 'sanitasi.php';
 
 
 
-  <div class="form-group col-sm-2">
-<label>Sales</label>
-<select name="sales" id="sales" class="form-control" required="">
+<div class="form-group col-sm-2">
+  <label>Sales</label>
+    <select name="sales" id="sales" class="form-control" required="">
+      <?php 
+      //untuk menampilkan semua data pada tabel pelanggan dalam DB
+      $query_sales = $db->query("SELECT nama FROM user WHERE status_sales = 'Iya'");
 
-  <?php 
-    
-    //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama FROM user WHERE status_sales = 'Iya'");
-
-    //untuk menyimpan data sementara yang ada pada $query
-    while($data01 = mysqli_fetch_array($query01))
-    {
-    
-    echo "<option value='".$data01['nama'] ."'>".$data01['nama'] ."</option>";
-    }
-    
-    
-    ?>
-
-</select>
+      while($data_sales = mysqli_fetch_array($query_sales)){
+        if($sales == $data_sales['nama']){
+          echo "<option selected value='".$sales."'>".$sales ."</option>";
+        }
+        else{
+          echo "<option value='".$data_sales['nama'] ."'>".$data_sales['nama'] ."</option>";
+        }
+      }
+      ?>
+    </select>
 </div>
 
 <div class="form-group col-sm-2">
@@ -514,7 +518,7 @@ include 'sanitasi.php';
 
           <div class="form-group col-sm-6">
           <label> Tanggal Jatuh Tempo </label><br>
-          <input type="text" name="tanggal_jt" id="tanggal_jt" style="height:15px;font-size:15px"  value="" class="form-control tanggal" >
+          <input type="text" name="tanggal_jt" id="tanggal_jt" style="height:15px;font-size:15px"  value="<?php echo $jatuh_tempo ?>" class="form-control tanggal" >
           </div>
 
            <div class="col-sm-6">
@@ -560,7 +564,7 @@ include 'sanitasi.php';
 
           <div class="col-sm-6">
              <label> Pembayaran </label><br>
-          <b><input type="text" name="pembayaran" id="pembayaran_penjualan" style="height: 50px; width:90%; font-size:25px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"></b>
+          <b><input type="text" name="pembayaran" id="pembayaran_penjualan" value="<?php echo $tunai ?>" style="height: 50px; width:90%; font-size:25px;" autocomplete="off" class="form-control"   style="font-size: 20px"  onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);"></b>
           </div>
                    
 </div>
@@ -2379,8 +2383,29 @@ $(function() {
 
 
 
-
-
+<script type="text/javascript">
+  $(document).ready(function(){
+    var pembayaran = bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#pembayaran_penjualan").val() ))));
+    var total =  bersihPemisah(bersihPemisah(bersihPemisah(bersihPemisah( $("#total1").val() ))));
+    var sisa = pembayaran - total;
+    var sisa_kredit = total - pembayaran; 
+        
+      if (sisa < 0 ){
+        $("#kredit").val( tandaPemisahTitik(sisa_kredit));
+        $("#sisa_pembayaran_penjualan").val('0');
+        $("#tanggal_jt").attr("disabled", false);
+        
+      }
+      else{
+        $("#sisa_pembayaran_penjualan").val(tandaPemisahTitik(sisa));
+        $("#kredit").val('0');
+        $("#tanggal_jt").attr("disabled", true);
+        
+      } 
+        
+        
+  });     
+</script>
 
 <!-- memasukan file footer.php -->
 <?php include 'footer.php'; ?>

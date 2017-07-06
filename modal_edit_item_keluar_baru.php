@@ -29,7 +29,7 @@ $columns = array(
 
 
 // getting total number records without any search
-$sql = "SELECT b.id,s.nama,b.kode_barang,b.nama_barang,b.satuan,b.harga_beli,b.satuan,b.kategori,b.suplier, b.berkaitan_dgn_stok ";
+$sql = "SELECT b.id,s.nama,b.kode_barang,b.nama_barang,b.satuan,b.harga_beli,b.harga_jual,b.harga_jual2,b.harga_jual3,b.stok_barang,b.satuan,b.kategori,b.suplier, b.berkaitan_dgn_stok ";
 $sql.=" FROM barang b INNER JOIN satuan s ON b.satuan = s.id  WHERE b.berkaitan_dgn_stok = 'Barang'";
 
 
@@ -38,7 +38,7 @@ $totalData = mysqli_num_rows($query);
 $totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-$sql = " SELECT b.id,s.nama,b.kode_barang,b.nama_barang,b.satuan,b.harga_beli,b.satuan,b.kategori,b.suplier, b.berkaitan_dgn_stok ";
+$sql = " SELECT b.id,s.nama,b.kode_barang,b.nama_barang,b.satuan,b.harga_beli,b.harga_jual,b.harga_jual2,b.harga_jual3,b.stok_barang,b.satuan,b.kategori,b.suplier, b.berkaitan_dgn_stok ";
 $sql.="  FROM barang b INNER JOIN satuan s ON b.satuan = s.id ";
 $sql.=" WHERE 1=1 AND b.berkaitan_dgn_stok = 'Barang'";
 
@@ -65,22 +65,37 @@ $data = array();
 
 while( $row=mysqli_fetch_array($query) ) {
 
-            $nestedData=array(); 
+    $nestedData=array(); 
 
-            $nestedData[] = $row["kode_barang"];
-            $nestedData[] = $row["nama_barang"];
+    $nestedData[] = $row["kode_barang"];
+    $nestedData[] = $row["nama_barang"];
 
-    // mencari jumlah Barang
-            $stok_barang = cekStokHpp($row["kode_barang"]);
+    $stok_barang = cekStokHpp($row["kode_barang"]);
 
-        
-            $nestedData[] =  $stok_barang;
-                  
+       $cek_harga_hpp = $db->query("SELECT total_nilai,jumlah_kuantitas FROM hpp_masuk WHERE kode_barang = '$row[kode_barang]' AND sisa != 0 ORDER BY waktu DESC LIMIT 1  ");
+        $harga_kel = mysqli_fetch_array($cek_harga_hpp);
+
+        $jumlah_kuantitas = $harga_kel['jumlah_kuantitas'];
+
+        if ($jumlah_kuantitas == 0)
+        {
+            $jumlah_kuantitas = 1;
+        }
+
+        $harga_hpp = $harga_kel['total_nilai'] / $jumlah_kuantitas;
+
+
+            if ($row['berkaitan_dgn_stok'] == 'Jasa') {
+                 $nestedData[] =  "0";
+             }      
+             else{
+                $nestedData[] =  $stok_barang;
+             }      
 
             $nestedData[] =  $row["kategori"];
             $nestedData[] =  $row["suplier"];
             $nestedData[] =  $row["nama"];
-            $nestedData[] =  $row["harga_beli"];
+            $nestedData[] =  round($harga_hpp);
             $nestedData[] =  $row["satuan"];
 
     
