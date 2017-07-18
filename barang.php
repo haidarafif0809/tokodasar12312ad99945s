@@ -404,7 +404,7 @@ echo '<br><button type="button" class="btn btn-info" data-toggle="modal" data-ta
     <div class="form-group">
         <label> Nama Barang :</label>
         <input type="text" id="data_barang" class="form-control" autocomplete="off" readonly=""> 
-        <input type="text" id="id_hapus" class="form-control" > 
+        <input type="hidden" id="id_hapus" class="form-control" > 
                 <input type="hidden" id="kode_barang_hapus" class="form-control" > 
 
     </div>
