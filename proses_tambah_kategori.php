@@ -6,13 +6,11 @@
     // mengirim data menggunakan metode POST
 
 
-    $perintah = $db->prepare("INSERT INTO kategori (id,nama_kategori) VALUES (?,?)");
+    $perintah = $db->prepare("INSERT INTO kategori (nama_kategori) VALUES (?)");
 
-    $perintah->bind_param("ss",
-        $id, $nama);
-        
-        $id = stringdoang($_POST['id']);
-        $nama = stringdoang($_POST['nama']); 
+    $perintah->bind_param("s",
+          $nama_kategori); 
+        $nama_kategori = stringdoang($_POST['nama_kategori']); 
     
     $perintah->execute();
 

@@ -670,8 +670,7 @@ $barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
                                 $("#modal_hapus").modal('show');
                                 
                                 });
-                                
-                                $("#btn_jadi_hapus").click(function(){
+                               $(document).on('click', '#btn_jadi_hapus', function (e) {
                                 
                                 var id = $("#id_hapus").val();
                                 var kode = $("#kode_barang_hapus").val();
@@ -685,10 +684,7 @@ $barang_edit = mysqli_num_rows($pilih_akses_barang_edit);
                                 
                                 });
                         // end fungsi hapus data
-
-
-
-                             </script>
+                            </script>
 
 
 

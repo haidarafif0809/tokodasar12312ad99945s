@@ -31,7 +31,7 @@ $kode_barang, $nama_barang, $harga_beli, $harga_jual, $harga_jual_2, $harga_jual
     $harga_jual_2 = angkadoang($_POST['harga_jual_2']);
     $harga_jual_3 = angkadoang($_POST['harga_jual_3']);
     $satuan = stringdoang($_POST['satuan']);
-    $kategori = stringdoang($_POST['kategori']);
+    $kategori = stringdoang($_POST['kategori_obat']);
     $gudang = stringdoang($_POST['gudang']);
     $status = stringdoang($_POST['status']);
     $tipe = stringdoang($_POST['tipe']);

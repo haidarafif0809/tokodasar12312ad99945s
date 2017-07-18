@@ -57,11 +57,23 @@ while( $row=mysqli_fetch_array($query) ) {  // preparing an array
 
           $nestedData[] = $row['nama'];
           if ($data_otoritas_master_data_satuan['satuan_edit'] == 1){
-          $nestedData[] = "<button class='btn btn-danger btn-hapus btn-sm' data-id='". $row['id'] ."' data-satuan='". $row['nama'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button>";
-          }
-          else{
-			$nestedData[] = "<p></p>";
-          }
+
+
+          $query_cek_satuan_barang = $db->query("SELECT kode_barang FROM barang WHERE satuan = '$row[id]' ");
+          $jumlah_cek_satuan_barang = mysqli_num_rows($query_cek_satuan_barang);
+
+              if ($jumlah_cek_satuan_barang == 0){
+
+                  $nestedData[] = "<button class='btn btn-danger btn-hapus btn-sm' data-id='". $row['id'] ."' data-satuan='". $row['nama'] ."'> <span class='glyphicon glyphicon-trash'> </span> Hapus </button> </td>";
+
+                  }
+                  else{
+                  $nestedData[] = "<p style='color:red;'>Sudah Terpakai</p>";
+                  }
+              }
+              else{
+			         $nestedData[] = "<p></p>";
+              }
 
           if ($data_otoritas_master_data_satuan['satuan_hapus'] == 1){
           $nestedData[] = "<button class='btn btn-success btn-edit btn-sm' data-satuan='". $row['nama'] ."' data-id='". $row['id'] ."' > <span class='glyphicon glyphicon-edit'> </span> Edit </button>";

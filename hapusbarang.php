@@ -9,6 +9,10 @@ $id = angkadoang($_POST['id']);
 
 $kode_barang = stringdoang($_POST['kode_barang']);
 
+
+$query = $db->query("DELETE FROM barang WHERE id = '$id'");
+
+
     // membuat objek cache
       $cache = new Cache();
 
@@ -19,7 +23,6 @@ $kode_barang = stringdoang($_POST['kode_barang']);
       $cache->erase($kode_barang);
 
 // menghapus seluruh data yang ada pada tabel barang berdasrkan id
-$query = $db->query("DELETE FROM barang WHERE id = '$id'");
 
 
 $query_barang = $db->query("SELECT * FROM barang ");
