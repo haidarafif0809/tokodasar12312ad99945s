@@ -162,10 +162,9 @@ include 'sanitasi.php';
   </div>
 
 
-
-<div class="form-group col-sm-2">
-  <label>Sales</label>
-    <select name="sales" id="sales" class="form-control" required="">
+ 
+<!-- Sales Dan Flafon di haden -->
+    <select style="display: none;" name="sales" id="sales" class="form-control" required="">
       <?php 
       //untuk menampilkan semua data pada tabel pelanggan dalam DB
       $query_sales = $db->query("SELECT nama FROM user WHERE status_sales = 'Iya'");
@@ -179,8 +178,8 @@ include 'sanitasi.php';
         }
       }
       ?>
-    </select>
-</div>
+    </select> 
+<!-- /Sales Dan Flafon di haden -->
 
 <div class="form-group col-sm-2">
           <label>PPN</label>
@@ -199,6 +198,10 @@ include 'sanitasi.php';
 
 
       <input type="hidden" name="nomor_faktur_penjualan" id="nomor_faktur_penjualan"  value="<?php echo $nomor_faktur; ?>" class="form-control tanggal" >
+
+<div class="form-group col-sm-2"><br>
+    <button type="button" id="cari_produk_penjualan" class="btn btn-info" data-toggle="modal" data-target="#myModal"> <i class='fa  fa-search'> </i> Cari (F1)</button>
+</div>
 
 
 </div>
@@ -366,10 +369,6 @@ include 'sanitasi.php';
 <!-- membuat form prosestbspenjual -->
 <form class="form" action="proses_tambah_edit_penjualan.php" role="form" id="formtambahproduk">
 <br>
-
-<div class="form-group">
-    <button type="button" id="cari_produk_penjualan" class="btn btn-info" data-toggle="modal" data-target="#myModal"> <i class='fa  fa-search'> </i> Cari (F1)</button>
-</div>
 
 
 <div class="row">

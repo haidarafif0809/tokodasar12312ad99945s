@@ -88,8 +88,8 @@ nama_pelanggan FROM pelanggan");
     
     ?>
     </select><br>
-<label>Sisa Plafon </label>
-    <input type="text" name="sisa_plafon"  id="sisa_plafon" class="form-control">
+ 
+    <input type="text" name="sisa_plafon"  id="sisa_plafon" class="form-control" style="display: none;">
 </div>
     
 
@@ -137,10 +137,9 @@ nama_gudang FROM gudang");
     </select>
     </div>
 
-
-<div class="col-sm-2">
-<label class="gg" >Sales</label>
-<select style="font-size:15px; height:35px" name="sales" id="sales" class="form-control gg" required="">
+ 
+<!-- Sales Dan Flafon di haden -->
+<select style="display: none;" name="sales" id="sales" class="form-control gg" required="">
 
   <?php 
     
@@ -166,8 +165,8 @@ nama_gudang FROM gudang");
     
     ?>
 
-</select>
-</div>
+</select> 
+<!-- /Sales Dan Flafon di haden -->
 
 <div class="col-sm-2">
           <label class="gg">PPN</label>
@@ -179,14 +178,18 @@ nama_gudang FROM gudang");
           </select>
 </div>
 
+<div class="col-sm-2"><br>
+  <button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa  fa-search'> Cari (F1)</i>  </button> 
+</div>
+
+
 </div>  <!-- END ROW dari kode pelanggan - ppn -->
+
 
 
   </form><!--tag penutup form-->
   
   
-
-<button type="button" id="cari_produk_penjualan" class="btn btn-info " data-toggle="modal" data-target="#myModal"><i class='fa  fa-search'> Cari (F1)</i>  </button> 
 
 
 <!--tampilan modal-->
