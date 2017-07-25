@@ -164,22 +164,10 @@ include 'sanitasi.php';
 
  
 <!-- Sales Dan Flafon di haden -->
-    <select style="display: none;" name="sales" id="sales" class="form-control" required="">
-      <?php 
-      //untuk menampilkan semua data pada tabel pelanggan dalam DB
-      $query_sales = $db->query("SELECT nama FROM user WHERE status_sales = 'Iya'");
+<input type="hidden" name="sales" id="sales" class="form-control gg" required="">
 
-      while($data_sales = mysqli_fetch_array($query_sales)){
-        if($sales == $data_sales['nama']){
-          echo "<option selected value='".$sales."'>".$sales ."</option>";
-        }
-        else{
-          echo "<option value='".$data_sales['nama'] ."'>".$data_sales['nama'] ."</option>";
-        }
-      }
-      ?>
-    </select> 
 <!-- /Sales Dan Flafon di haden -->
+
 
 <div class="form-group col-sm-2">
           <label>PPN</label>

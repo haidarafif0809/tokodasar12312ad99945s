@@ -89,9 +89,9 @@ nama_pelanggan FROM pelanggan");
     ?>
     </select><br>
  
-    <input type="text" name="sisa_plafon"  id="sisa_plafon" class="form-control" style="display: none;">
+  
 </div>
-    
+      <input type="hidden" name="sisa_plafon"  id="sisa_plafon" class="form-control">
 
 <div class="col-sm-2">
           <label class="gg" > Gudang </label><br>
@@ -139,33 +139,8 @@ nama_gudang FROM gudang");
 
  
 <!-- Sales Dan Flafon di haden -->
-<select style="display: none;" name="sales" id="sales" class="form-control gg" required="">
+<input type="hidden" name="sales" id="sales" class="form-control gg" required="">
 
-  <?php 
-    
-    //untuk menampilkan semua data pada tabel pelanggan dalam DB
-    $query01 = $db->query("SELECT nama,default_sales FROM user WHERE status_sales = 'Iya'");
-
-    //untuk menyimpan data sementara yang ada pada $query
-    while($data01 = mysqli_fetch_array($query01))
-    {
-    
-    if ($data01['default_sales'] == '1') {
-
-    echo "<option selected value='".$data01['nama'] ."'>".$data01['nama'] ."</option>";
-      
-    }
-    else{
-
-    echo "<option value='".$data01['nama'] ."'>".$data01['nama'] ."</option>";
-
-    }
-    }
-    
-    
-    ?>
-
-</select> 
 <!-- /Sales Dan Flafon di haden -->
 
 <div class="col-sm-2">
