@@ -33,12 +33,14 @@
 
     $jumlah_bayar_lama = $jumlah_bayar + $potongan_hutang;
 
-    $data_potongan = $db->query("SELECT total, potongan, tax, ppn FROM pembelian WHERE no_faktur = '$nomor_faktur'");
+    $data_potongan = $db->query("SELECT tanggal_jt, tunai, total, potongan, tax, ppn FROM pembelian WHERE no_faktur = '$nomor_faktur'");
     $ambil_potongan = mysqli_fetch_array($data_potongan);
     $potongan = $ambil_potongan['potongan'];
     $tax = $ambil_potongan['tax'];
     $ppn = $ambil_potongan['ppn'];
     $total = $ambil_potongan['total'];
+    $tunai_pembelian = $ambil_potongan['tunai'];
+    $tanggal_tempo = $ambil_potongan['tanggal_jt'];
 
 
     $data_potongan_persen = $db->query("SELECT SUM(subtotal) AS subtotal FROM detail_pembelian WHERE no_faktur = '$nomor_faktur'");
@@ -604,13 +606,13 @@ else
 
           <div class="col-sm-6">
           <label> Tanggal Jatuh Tempo </label><br>
-          <input type="text" name="tanggal_jt" id="tanggal_jt" placeholder="  " style="height:25px;font-size:15px" value="" class="form-control tanggal" >
+          <input type="text" name="tanggal_jt" id="tanggal_jt" placeholder="  " style="height:25px;font-size:15px" value="<?php echo $tanggal_tempo; ?>" class="form-control tanggal" >
 
           </div>
 </div>          
            
           <b><label> Pembayaran </label><br>
-          <input type="text" name="pembayaran" id="pembayaran_pembelian" autocomplete="off" style="height:25px;font-size:15px" class="form-control" placeholder="" required="" style="font-size: 20px"></b>
+          <input type="text" name="pembayaran" id="pembayaran_pembelian" autocomplete="off" style="height:25px;font-size:15px" value="<?php echo $tunai_pembelian; ?>" class="form-control" placeholder="" required="" style="font-size: 20px"></b>
           
 
 <div class="row">
@@ -1104,6 +1106,22 @@ $.post("cek_total_coba.php",
         $("#total_pembelian"). val(data);
 
     });
+  
+    var pembayaran = $("#pembayaran_pembelian").val();
+    var total = $("#total_pembelian").val();
+    var sisa = pembayaran - total;
+    var sisa_kredit = total - pembayaran;
+
+    if (sisa < 0  ){
+      $("#kredit").val(sisa_kredit);
+      $("#sisa_pembayaran_pembelian").val('0');
+      $("#tanggal_jt").attr("disabled", false);
+    }
+    else{
+      $("#sisa_pembayaran_pembelian").val(sisa);
+      $("#kredit").val('0');
+      $("#tanggal_jt").attr("disabled", true);
+    } 
 
 });
 
