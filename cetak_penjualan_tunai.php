@@ -32,11 +32,12 @@ $no_faktur = $_GET['no_faktur'];
 
 
   <?php echo $data1['nama_perusahaan']; ?><br>
-  <?php echo $data1['alamat_perusahaan']; ?><br><br>
+  <?php echo $data1['alamat_perusahaan']; ?><hr><br><br>
   ===================<br>
   No Faktur : <?php echo $data0['no_faktur']; ?> || Kasir : <?php echo $_SESSION['nama']; ?><br>
   ===================<br>
- <table>
+ 
+ <table rules="all"  style="border-color:gray;">
 
   <tbody>
            <?php 
