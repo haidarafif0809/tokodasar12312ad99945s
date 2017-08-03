@@ -86,16 +86,16 @@ else{
         
 
         if ($kode_pelanggan == 'semua' AND $sales == 'semua') {
-          $select = $db->query("SELECT p.no_faktur, p.tanggal, p.kode_pelanggan, pel.nama_pelanggan, p.total, p.tunai, p.sales, p.sisa FROM penjualan p INNER JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal'");
+          $select = $db->query("SELECT p.no_faktur, p.tanggal, p.kode_pelanggan, pel.nama_pelanggan, p.total, p.tunai, p.sales, p.sisa FROM penjualan p INNER JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' ORDER BY pel.id DESC");
         }
         else if ($kode_pelanggan == 'semua' AND $sales != 'semua') {
-          $select = $db->query("SELECT p.no_faktur, p.tanggal, p.kode_pelanggan, pel.nama_pelanggan, p.total, p.tunai, p.sales, p.sisa FROM penjualan p INNER JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.sales = '$sales'");
+          $select = $db->query("SELECT p.no_faktur, p.tanggal, p.kode_pelanggan, pel.nama_pelanggan, p.total, p.tunai, p.sales, p.sisa FROM penjualan p INNER JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.sales = '$sales' ORDER BY pel.id DESC");
         }
         else if ($kode_pelanggan != 'semua' AND $sales == 'semua') {
-          $select = $db->query("SELECT p.no_faktur, p.tanggal, p.kode_pelanggan, pel.nama_pelanggan, p.total, p.tunai, p.sales, p.sisa FROM penjualan p INNER JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kode_pelanggan = '$kode_pelanggan'");
+          $select = $db->query("SELECT p.no_faktur, p.tanggal, p.kode_pelanggan, pel.nama_pelanggan, p.total, p.tunai, p.sales, p.sisa FROM penjualan p INNER JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kode_pelanggan = '$kode_pelanggan' ORDER BY pel.id DESC");
         }
         else{
-          $select = $db->query("SELECT p.no_faktur, p.tanggal, p.kode_pelanggan, pel.nama_pelanggan, p.total, p.tunai, p.sales, p.sisa FROM penjualan p INNER JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kode_pelanggan = '$kode_pelanggan' AND p.sales = '$sales'");
+          $select = $db->query("SELECT p.no_faktur, p.tanggal, p.kode_pelanggan, pel.nama_pelanggan, p.total, p.tunai, p.sales, p.sisa FROM penjualan p INNER JOIN pelanggan pel ON p.kode_pelanggan = pel.kode_pelanggan WHERE p.tanggal >= '$dari_tanggal' AND p.tanggal <= '$sampai_tanggal' AND p.kode_pelanggan = '$kode_pelanggan' AND p.sales = '$sales' ORDER BY pel.id DESC");
         }
 
           while ($data = mysqli_fetch_array($select))
