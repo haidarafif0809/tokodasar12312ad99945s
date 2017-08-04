@@ -164,6 +164,7 @@ if ($row['status'] == 'Piutang') {
 				
 				<ul class='dropdown-menu'>
 				<li><a href='cetak_lap_penjualan_piutang.php?no_faktur=".$row['no_faktur']."' target='blank'> Cetak Piutang </a></li>  
+				<li><a href='cetak_penjualan_surat_jalan.php?no_faktur=".$row['no_faktur']."' target='blank'> Cetak Surat Jalan </a></li>
 				</ul>
 				</div>";
 
