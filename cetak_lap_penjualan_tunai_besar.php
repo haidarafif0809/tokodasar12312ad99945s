@@ -251,7 +251,7 @@ include 'db.php';
    </div>
 
    <div class="col-sm-3">    
-      <font class="satu"><b> <center>Hormat Kami,</center> <br><br><br> <font class="satu"> <center>(<?php echo $_SESSION['nama'];?>)</center></font></b></font>
+      <font class="satu"><b> <center>Hormat Kami,</center> <br><br><br> <font class="satu"> <center>(<?php echo $data_footer['petugas'];?>)</center></font></b></font>
   </div>
 
 </div> <!--/container-->
