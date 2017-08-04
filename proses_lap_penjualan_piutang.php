@@ -61,10 +61,9 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 $sql.=" AND ( dp.no_faktur LIKE '".$requestData['search']['value']."%' ";
 $sql.=" OR dp.tanggal LIKE '".$requestData['search']['value']."%' ";
 $sql.=" OR dp.sales LIKE '".$requestData['search']['value']."%' ";
-$sql.=" OR dp.nama_pelanggan LIKE '".$requestData['search']['value']."%' )";
+$sql.=" OR pel.nama_pelanggan LIKE '".$requestData['search']['value']."%' )";
 	
 }
-
 $query=mysqli_query($conn, $sql) or die("eror 2");
 $totalFiltered = mysqli_num_rows($query); // when there is a search parameter then we have to modify total number filtered rows as per search result. 
 $sql.="ORDER BY dp.tanggal DESC  LIMIT ".$requestData['start']." ,".$requestData['length']." ";
