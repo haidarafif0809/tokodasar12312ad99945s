@@ -139,8 +139,20 @@ nama_gudang FROM gudang");
 
  
 <!-- Sales Dan Flafon di haden -->
-<input type="hidden" name="sales" id="sales" class="form-control gg" required="">
+<div class="col-sm-2">
+    <label class="gg">Sales</label>
+      <select type="hidden" style="font-size:15px; height:35px" name="sales" id="sales" class="form-control gg">
+        <?php 
+            $query = $db->query("SELECT id, nama  FROM user WHERE otoritas = 'sales' ");
+            while($data = mysqli_fetch_array($query)){
+          
+            echo "<option value='".$data['nama']."'>".$data['nama'] ."</option>";
 
+            }
+                      
+        ?>
+    </select>
+</div>
 <!-- /Sales Dan Flafon di haden -->
 
 <div class="col-sm-2">
